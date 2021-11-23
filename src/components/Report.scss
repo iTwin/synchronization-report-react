@@ -1,0 +1,27 @@
+.isr-report-main {
+  display: grid;
+  height: 100%;
+  width: 100%;
+  min-height: 0; // allow scrolling if total height overflows
+}
+.isr-report-tabs-wrapper {
+  display: grid;
+  min-height: 0;
+
+  // This element should only have one child, i.e. the HorizontalTabs component.
+  // This is a workaround because HorizontalTabs doesn't allow setting custom className on wrapper.
+  // Using * makes it compatible with any future classname changes to iui-tabs-wrapper
+  > * {
+    display: grid;
+    grid-template-rows: auto 1fr; // make table fill up remaining height
+    min-height: 0;
+  }
+}
+
+.isr-report-tabs-content {
+  min-height: 0;
+}
+
+.isr-report-table {
+  height: 100%;
+}

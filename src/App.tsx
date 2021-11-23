@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import { IconButton, Tooltip, useTheme } from '@itwin/itwinui-react';
+import { useMediaQuery } from 'beautiful-react-hooks';
+import { SvgSun, SvgMoon } from '@itwin/itwinui-icons-react';
+import { Report } from './components/Report';
+import testReport from './test-report';
 import './App.scss';
 
-function App() {
+const Main = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+      <Report data={testReport} />
+    </>
+  );
+};
+
+export const App = () => {
+  const [isDark, setIsDark] = useState(useMediaQuery('(prefers-color-scheme: dark'));
+  useTheme(isDark ? 'dark' : 'light');
+
+  return (
+    <div className='App'>
+      <Tooltip content={`Switch to ${isDark ? 'light' : 'dark'} theme`} placement='left'>
+        <IconButton className='App-theme-icon' styleType='borderless' onClick={() => setIsDark((dark) => !dark)}>
+          {isDark ? <SvgSun /> : <SvgMoon />}
+        </IconButton>
+      </Tooltip>
+      <main className='App-content'>
+        <Main></Main>
+      </main>
     </div>
   );
-}
+};
 
 export default App;
