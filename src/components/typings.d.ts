@@ -12,7 +12,7 @@ export type SourceFilesInfo = {
   fileName?: string;
   fileExists?: boolean;
   bimFileExists?: boolean;
-  files?: SourceFile[];
+  Files?: SourceFile[];
 };
 
 export type SourceFile = {
@@ -23,6 +23,7 @@ export type SourceFile = {
   bimFileExists?: boolean;
   state?: string;
   iModelFileId?: string;
+  [k: string]: unknown;
 };
 
 export type ReportDataContext = {
@@ -59,4 +60,5 @@ export type AuditInfo = {
   message?: string;
   type?: string;
   fileName?: string;
+  [k: string]: unknown;
 };

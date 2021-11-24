@@ -6,7 +6,7 @@ export const FilesTable = ({
   sourceFilesInfo,
   ...rest
 }: { sourceFilesInfo?: SourceFilesInfo } & Partial<TableProps>) => {
-  const data = useMemo(() => [{ ...sourceFilesInfo }, ...(sourceFilesInfo?.files ?? [])], [sourceFilesInfo]);
+  const data = useMemo(() => [{ ...sourceFilesInfo }, ...(sourceFilesInfo?.Files ?? [])], [sourceFilesInfo]);
 
   const columns = useMemo(
     () => [
@@ -21,7 +21,7 @@ export const FilesTable = ({
           },
           {
             id: 'status',
-            accessor: 'status',
+            accessor: 'state',
             Header: 'Status',
             Filter: tableFilters.TextFilter(),
             maxWidth: 250,
