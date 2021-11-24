@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@itwin/itwinui-css": "^0.39.1",
+    "@itwin/itwinui-icons-color-react": "^1.0.1",
     "@itwin/itwinui-icons-react": "^1.3.0",
     "@itwin/itwinui-react": "^1.25.0"
   },

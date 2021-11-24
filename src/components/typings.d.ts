@@ -23,6 +23,7 @@ export type SourceFile = {
   bimFileExists?: boolean;
   state?: string;
   iModelFileId?: string;
+  failureReason?: string;
 };
 
 export type ReportDataContext = {

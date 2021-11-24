@@ -1,0 +1,25 @@
+@import '@itwin/itwinui-css/scss/variables';
+@import '@itwin/itwinui-css/scss/icon/index.scss';
+
+.status-message {
+  padding: $iui-s $iui-xs;
+  display: grid;
+  grid-template-columns: $iui-m auto;
+  grid-row-gap: $iui-xxs;
+  grid-column-gap: $iui-s;
+  width: 100%;
+  align-items: center;
+  svg {
+    @include iui-icons-default;
+  }
+  &.iui-positive {
+    .iui-text-block {
+      color: t(iui-color-foreground-positive);
+    }
+  }
+  &.iui-negative {
+    .iui-text-block {
+      color: t(iui-color-foreground-negative);
+    }
+  }
+}

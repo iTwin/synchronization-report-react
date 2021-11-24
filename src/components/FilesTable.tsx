@@ -1,6 +1,8 @@
-import { Leading, Table, tableFilters, TableProps } from '@itwin/itwinui-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { Leading, Table, tableFilters, TableProps, Text, Small } from '@itwin/itwinui-react';
+import { SvgStatusSuccess, SvgStatusError } from '@itwin/itwinui-icons-color-react';
+import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import { SourceFilesInfo, SourceFile } from './typings';
+import './FilesTable.scss';
 
 export const FilesTable = ({
   sourceFilesInfo,
@@ -25,6 +27,21 @@ export const FilesTable = ({
             Header: 'Status',
             Filter: tableFilters.TextFilter(),
             maxWidth: 250,
+            Cell: (props: any) => {
+              return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
+                <div className='status-message iui-negative'>
+                  <SvgStatusError />
+                  <Text>Failed</Text>
+                  <div></div>
+                  <Small>File by that name not found at this datasource/path.</Small>
+                </div>
+              ) : (
+                <div className='status-message iui-positive'>
+                  <SvgStatusSuccess />
+                  <Text>Processed</Text>
+                </div>
+              );
+            },
           },
           {
             id: 'issues',
