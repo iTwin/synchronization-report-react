@@ -1,0 +1,78 @@
+.isr-report-header {
+  display: grid;
+  grid-template-areas:
+    'a b'
+    'c c'
+    'd e ';
+  padding-bottom: 12px;
+  gap: 8px;
+}
+
+.isr-header-title-wrapper {
+  grid-area: a;
+}
+
+.isr-header-title {
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.isr-header-titleDate {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.4); // Todo: Fix dark theme
+}
+
+.isr-header-close {
+  grid-area: b;
+  align-self: end;
+  display: flex;
+  gap: 8px;
+  margin-bottom: auto;
+  margin-left: auto;
+}
+
+.isr-header-issues {
+  grid-area: c;
+  border: 1px solid rgb(134, 134, 134, 0.5);
+  background-color: rgba(134, 134, 134, 0.1);
+  font-size: 16px;
+  padding: 2px 8px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.isr-status-icon {
+  height: 16px;
+  width: 16px;
+  padding: 3px;
+
+  &.isr-informational {
+    fill: #008be1; //fill: #efa9a9;
+  }
+
+  &.isr-positive {
+    fill: #53a21a; //fill: #efa9a9;
+  }
+
+  &.isr-warning {
+    fill: #f18b12; //fill: #efa9a9;
+  }
+
+  &.isr-negative {
+    fill: #d30a0a; //fill: #efa9a9;
+  }
+}
+
+.isr-header-support {
+  grid-area: e;
+  color: #008be1; // Todo: Fix dark theme color: #a5d7f5;
+  cursor: pointer;
+  margin-left: auto;
+  user-select: none;
+
+  &:hover {
+    color: darken(#008be1, 10%); //Todo: Fix dark theme
+    text-decoration: underline;
+  }
+}
