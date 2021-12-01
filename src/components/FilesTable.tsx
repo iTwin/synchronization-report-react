@@ -1,4 +1,4 @@
-import { Leading, Table, tableFilters, TableProps, Text, Small } from '@itwin/itwinui-react';
+import { Leading, Table, tableFilters, TableProps, Text, Small, MiddleTextTruncation } from '@itwin/itwinui-react';
 import { SvgStatusSuccess, SvgStatusError } from '@itwin/itwinui-icons-color-react';
 import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import { SourceFilesInfo, SourceFile } from './typings';
@@ -43,18 +43,21 @@ export const FilesTable = ({
               );
             },
           },
-          // {
-          //   id: 'issues',
-          //   accessor: 'issues',
-          //   Header: 'Issues',
-          //   Filter: tableFilters.TextFilter(),
-          //   maxWidth: 180,
-          // },
+          {
+            id: 'issues',
+            accessor: 'issues',
+            Header: 'Issues',
+            Filter: tableFilters.TextFilter(),
+            maxWidth: 180,
+          },
           {
             id: 'path',
             accessor: 'path',
             Header: 'Path',
             Filter: tableFilters.TextFilter(),
+            Cell: (props: any) => {
+              return <MiddleTextTruncation text={props.row.original.path} />;
+            },
           },
           {
             id: 'fileId',
