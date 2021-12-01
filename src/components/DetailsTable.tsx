@@ -1,5 +1,5 @@
-import { Leading, Table, tableFilters, TablePaginator, TableProps } from '@itwin/itwinui-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo } from 'react';
+import { Table, tableFilters, TablePaginator, TableProps } from '@itwin/itwinui-react';
 import type { FileRecord, SourceFilesInfo } from './typings';
 import type { Column } from 'react-table';
 
@@ -34,7 +34,7 @@ export const DetailsTable = ({
       sourceFilesInfo?.fileId === id
         ? sourceFilesInfo?.fileName
         : sourceFilesInfo?.Files?.find((file) => file.fileId === id)?.fileName,
-    []
+    [sourceFilesInfo]
   );
 
   const columns: Column<Partial<typeof data[number]>>[] = useMemo(
@@ -78,7 +78,7 @@ export const DetailsTable = ({
         ],
       },
     ],
-    []
+    [getFileNameFromId]
   );
 
   return (

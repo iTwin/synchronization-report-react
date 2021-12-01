@@ -1,6 +1,6 @@
-import { Leading, Table, tableFilters, TableProps } from '@itwin/itwinui-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { SourceFilesInfo, SourceFile } from './typings';
+import { Table, tableFilters, TableProps } from '@itwin/itwinui-react';
+import { useMemo } from 'react';
+import { SourceFilesInfo } from './typings';
 
 export const FilesTable = ({
   sourceFilesInfo,

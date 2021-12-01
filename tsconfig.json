@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "esnext",
+    "useDefineForClassFields": true,
     "lib": [
       "dom",
       "dom.iterable",

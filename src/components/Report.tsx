@@ -14,7 +14,7 @@ export const Report = ({ data }: { data?: ReportData }) => {
         <HorizontalTabs
           activeIndex={selectedTab}
           onTabSelected={setSelectedTab}
-          labels={[<Tab label='Files' />, <Tab label='Details' />]}
+          labels={[<Tab key='files' label='Files' />, <Tab key='details' label='Details' />]}
           type='borderless'
           contentClassName='isr-report-tabs-content'
         >
