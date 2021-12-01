@@ -33,7 +33,7 @@ export const DetailsTable = ({
     (id?: string) =>
       sourceFilesInfo?.fileId === id
         ? sourceFilesInfo?.fileName
-        : sourceFilesInfo?.files?.find((file) => file.fileId === id)?.fileName,
+        : sourceFilesInfo?.Files?.find((file) => file.fileId === id)?.fileName,
     []
   );
 

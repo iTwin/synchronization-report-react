@@ -889,73 +889,65 @@ export default <ReportData>{
 };
 
 // EXTRA MOCK DATA
-export const filesTableData = <SourceFile>[
+export const filesTableData = <SourceFile[]>[
   {
     fileName: 'File 1.dgn',
-    status: 'Failed',
-    issues: 'Not processed',
+    state: 'Failed',
     path: 'https://projectwisedocumentservice.bentley.com/pwdi-download?guid=bd8f1159-2bf0-4955-9cf2-c0caf3dd204e',
     fileId: 'bd8f1159-2bf0-4955-9cf2-c0caf3dd204e',
     dataSource: '{Datasource}',
   },
   {
     fileName: 'File 2.dgn',
-    status: 'Processed',
-    issues: 'No issues',
+    state: 'Processed',
     path: '{Path}',
     fileId: '{File ID}',
     dataSource: '{Datasource}',
   },
   {
     fileName: 'File 3.dgn',
-    status: 'Processed',
-    issues: 'No issues',
+    state: 'Processed',
     path: '{Path}',
     fileId: '{File ID}',
     dataSource: '{Datasource}',
   },
   {
     fileName: 'File 4.dgn',
-    status: 'Processed',
-    issues: 'No issues',
+    state: 'Processed',
     path: '{Path}',
     fileId: '{File ID}',
     dataSource: '{Datasource}',
   },
   {
     fileName: 'File 5.dgn',
-    status: 'Processed',
-    issues: 'No issues',
+    state: 'Processed',
     path: '{Path}',
     fileId: '{File ID}',
     dataSource: '{Datasource}',
   },
   {
     fileName: 'File 6.dgn',
-    status: 'Processed',
-    issues: 'No issues',
+    state: 'Processed',
     path: '{Path}',
     fileId: '{File ID}',
     dataSource: '{Datasource}',
   },
   {
     fileName: 'File 7.dgn',
-    status: 'Processed',
-    issues: 'No issues',
+    state: 'Processed',
     path: '{Path}',
     fileId: '{File ID}',
     dataSource: '{Datasource}',
   },
   {
     fileName: 'File 8.dgn',
-    status: 'Processed',
-    issues: 'No issues',
+    state: 'Processed',
     path: '{Path}',
     fileId: '{File ID}',
     dataSource: '{Datasource}',
   },
 ];
-export const detailsTableData = <AuditInfo>[
+export const detailsTableData = <AuditInfo[]>[
   {
     fileName: '053-AKB-02-00-MM.i.dgn',
     level: 'Error',
