@@ -43,13 +43,13 @@ export const FilesTable = ({
               );
             },
           },
-          {
-            id: 'issues',
-            accessor: 'issues',
-            Header: 'Issues',
-            Filter: tableFilters.TextFilter(),
-            maxWidth: 180,
-          },
+          // {
+          //   id: 'issues',
+          //   accessor: 'issues',
+          //   Header: 'Issues',
+          //   Filter: tableFilters.TextFilter(),
+          //   maxWidth: 180,
+          // },
           {
             id: 'path',
             accessor: 'path',
