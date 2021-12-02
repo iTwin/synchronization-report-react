@@ -7,10 +7,12 @@
 
 # testing
 /coverage
+/cypress/videos
+/cypress/screenshots
 
 # production
 /build
-dist/
+/dist/
 
 # misc
 .DS_Store
