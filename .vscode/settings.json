@@ -3,10 +3,7 @@
   "files.eol": "\n",
   "files.insertFinalNewline": true,
   "editor.formatOnSave": true,
-  "prettier.singleQuote": true,
-  "prettier.jsxSingleQuote": true,
-  "prettier.printWidth": 120,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  },
+  }
 }
