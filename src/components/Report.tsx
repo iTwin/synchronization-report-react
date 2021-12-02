@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import * as React from 'react';
 import { HorizontalTabs, Tab } from '@itwin/itwinui-react';
 import { DetailsTable } from './DetailsTable';
 import { FilesTable } from './FilesTable';
@@ -6,7 +6,7 @@ import { ReportData } from './typings';
 import './Report.scss';
 
 export const Report = ({ data }: { data?: ReportData }) => {
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = React.useState(0);
 
   return (
     <div className='isr-report-main'>

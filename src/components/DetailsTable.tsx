@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import * as React from 'react';
 import { Table, tableFilters, TablePaginator, TableProps } from '@itwin/itwinui-react';
 import type { FileRecord, SourceFilesInfo } from './typings';
 import type { Column } from 'react-table';
@@ -19,7 +19,7 @@ export const DetailsTable = ({
   fileRecords?: FileRecord[];
   sourceFilesInfo?: SourceFilesInfo;
 } & Partial<TableProps>) => {
-  const data = useMemo(
+  const data = React.useMemo(
     () =>
       (fileRecords ?? [])
         .map(({ file, auditrecords }) =>
@@ -29,7 +29,7 @@ export const DetailsTable = ({
     [fileRecords]
   );
 
-  const getFileNameFromId = useCallback(
+  const getFileNameFromId = React.useCallback(
     (id?: string) =>
       sourceFilesInfo?.fileId === id
         ? sourceFilesInfo?.fileName
@@ -37,7 +37,7 @@ export const DetailsTable = ({
     [sourceFilesInfo]
   );
 
-  const columns: Column<Partial<typeof data[number]>>[] = useMemo(
+  const columns: Column<Partial<typeof data[number]>>[] = React.useMemo(
     () => [
       {
         Header: 'Table',

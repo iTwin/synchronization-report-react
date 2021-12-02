@@ -1,14 +1,14 @@
+import * as React from 'react';
 import { Table, tableFilters, TableProps } from '@itwin/itwinui-react';
-import { useMemo } from 'react';
 import { SourceFilesInfo } from './typings';
 
 export const FilesTable = ({
   sourceFilesInfo,
   ...rest
 }: { sourceFilesInfo?: SourceFilesInfo } & Partial<TableProps>) => {
-  const data = useMemo(() => [{ ...sourceFilesInfo }, ...(sourceFilesInfo?.Files ?? [])], [sourceFilesInfo]);
+  const data = React.useMemo(() => [{ ...sourceFilesInfo }, ...(sourceFilesInfo?.Files ?? [])], [sourceFilesInfo]);
 
-  const columns = useMemo(
+  const columns = React.useMemo(
     () => [
       {
         Header: 'Table',

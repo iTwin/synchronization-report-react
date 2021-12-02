@@ -7,12 +7,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'prettier',
     'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
   ],
-  settings: {
-    react: { version: '17.0' },
-  },
   rules: {},
   ignorePatterns: ['/dist', '*.scss', '*.css', '/node_modules', '/build', '*.js'],
 };
