@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Table, tableFilters, TableProps, Text, Small, Tooltip, MiddleTextTruncation } from '@itwin/itwinui-react';
-import { SourceFilesInfo } from './typings';
+import { SourceFilesInfo, SourceFile } from './typings';
 import { CellProps } from 'react-table';
-import SvgStatusError from '@itwin/itwinui-icons-color-react/esm/icons/StatusError';
-import SvgStatusSuccess from '@itwin/itwinui-icons-color-react/esm/icons/StatusSuccess';
+import SvgStatusError from '@itwin/itwinui-icons-react/esm/icons/StatusError';
+import SvgStatusSuccess from '@itwin/itwinui-icons-react/esm/icons/StatusSuccess';
 import './FilesTable.scss';
 
 export const FilesTable = ({
@@ -30,15 +30,15 @@ export const FilesTable = ({
             maxWidth: 250,
             Cell: (props: CellProps<SourceFile>) => {
               return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
-                <div className='isr-status-message'>
+                <div className='isr-status-message isr-status-negative'>
                   <SvgStatusError className='isr-grid-icon' />
-                  <Text className='isr-grid-text isr-status-negative'>Failed</Text>
+                  <Text className='isr-grid-text'>Failed</Text>
                   <Small className='isr-grid-subText'>File by that name not found at this datasource/path.</Small>
                 </div>
               ) : (
-                <div className='isr-status-message'>
+                <div className='isr-status-message isr-status-positive'>
                   <SvgStatusSuccess className='isr-grid-icon' />
-                  <Text className='isr-grid-text isr-status-positive'>Processed</Text>
+                  <Text className='isr-grid-text'>Processed</Text>
                 </div>
               );
             },
@@ -57,15 +57,13 @@ export const FilesTable = ({
             Filter: tableFilters.TextFilter(),
             Cell: (props: CellProps<SourceFile>) => {
               return (
-                <Tooltip content={props.row.original.path}>
-                  <div className='isr-tooltip-block'>
-                    <MiddleTextTruncation
-                      className='isr-data-text'
-                      style={{ flexGrow: 1 }}
-                      text={props.row.original.path!}
-                    />
-                  </div>
-                </Tooltip>
+                props.row.original.path && (
+                  <Tooltip content={props.row.original.path}>
+                    <div className='isr-tooltip-block'>
+                      <MiddleTextTruncation className='isr-data-text' text={props.row.original.path} />
+                    </div>
+                  </Tooltip>
+                )
               );
             },
           },
@@ -75,7 +73,7 @@ export const FilesTable = ({
             Header: 'File ID',
             Filter: tableFilters.TextFilter(),
             maxWidth: 320,
-            Cell: (props: any) => {
+            Cell: (props: CellProps<SourceFile>) => {
               return (
                 <Tooltip content={props.row.original.fileId}>
                   <div className='isr-tooltip-block'>

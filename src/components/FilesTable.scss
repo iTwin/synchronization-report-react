@@ -12,6 +12,18 @@
   grid-column-gap: $iui-s;
   width: 100%;
   align-items: center;
+
+  &.isr-status-positive {
+    color: var(--iui-color-foreground-positive);
+  }
+  &.isr-status-negative {
+    color: var(--iui-color-foreground-negative);
+  }
+  svg {
+    @include iui-icons-default;
+    fill: currentColor;
+  }
+
   .isr-grid-icon {
     grid-area: icon;
   }
@@ -20,16 +32,7 @@
   }
   .isr-grid-subText {
     grid-area: subText;
-  }
-  svg {
-    @include iui-icons-default;
-    fill: currentColor;
-  }
-  .isr-status-positive {
-    color: var(--iui-color-foreground-positive);
-  }
-  .isr-status-negative {
-    color: var(--iui-color-foreground-negative);
+    color: var(--iui-color-foreground-body);
   }
 }
 .isr-tooltip-block {
