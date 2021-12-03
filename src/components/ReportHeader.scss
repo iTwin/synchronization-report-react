@@ -64,8 +64,12 @@
   }
 }
 
-.isr-header-support {
+.isr-header-supportWrapper {
   grid-area: e;
+  margin-left: auto;
+}
+
+.isr-support-button {
   color: #008be1; // Todo: Fix dark theme color: #a5d7f5;
   cursor: pointer;
   margin-left: auto;
@@ -75,4 +79,43 @@
     color: darken(#008be1, 10%); //Todo: Fix dark theme
     text-decoration: underline;
   }
+}
+
+.isr-support-debugIDWrapper {
+  background-color: white; //Todo: dark theme
+  position: absolute;
+  z-index: 1;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+  top: 170px;
+  right: 60px;
+  overflow: visible;
+  line-height: 1.5em;
+  padding: 8px;
+  max-width: calc(100% - 200px);
+}
+
+.isr-support-debugID {
+  &-title {
+    font-weight: bold;
+    width: 100px;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-right: 8px;
+    text-align: right;
+  }
+
+  &-id {
+    display: inline-block;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    max-width: calc(100% - 108px);
+  }
+}
+
+.isr-support-debugID-buttons {
+  padding-top: 8px;
+  display: flex;
+  justify-content: space-between;
 }
