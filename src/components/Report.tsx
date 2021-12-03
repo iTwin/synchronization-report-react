@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import * as React from 'react';
 import { HorizontalTabs, Tab } from '@itwin/itwinui-react';
 import { DetailsTable } from './DetailsTable';
 import { FilesTable } from './FilesTable';
@@ -6,7 +6,7 @@ import { ReportData } from './typings';
 import './Report.scss';
 
 export const Report = ({ data }: { data?: ReportData }) => {
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = React.useState(0);
 
   return (
     <div className='isr-report-main'>
@@ -14,7 +14,7 @@ export const Report = ({ data }: { data?: ReportData }) => {
         <HorizontalTabs
           activeIndex={selectedTab}
           onTabSelected={setSelectedTab}
-          labels={[<Tab label='Files' />, <Tab label='Details' />]}
+          labels={[<Tab key='files' label='Files' />, <Tab key='details' label='Details' />]}
           type='borderless'
           contentClassName='isr-report-tabs-content'
         >

@@ -1,18 +1,18 @@
+import * as React from 'react';
 import { Table, tableFilters, TableProps, Text, Small, Tooltip, MiddleTextTruncation } from '@itwin/itwinui-react';
+import { SourceFilesInfo } from './typings';
 import { CellProps } from 'react-table';
 import SvgStatusError from '@itwin/itwinui-icons-color-react/esm/icons/StatusError';
 import SvgStatusSuccess from '@itwin/itwinui-icons-color-react/esm/icons/StatusSuccess';
-import { useMemo } from 'react';
-import { SourceFile, SourceFilesInfo } from './typings';
 import './FilesTable.scss';
 
 export const FilesTable = ({
   sourceFilesInfo,
   ...rest
 }: { sourceFilesInfo?: SourceFilesInfo } & Partial<TableProps>) => {
-  const data = useMemo(() => [{ ...sourceFilesInfo }, ...(sourceFilesInfo?.Files ?? [])], [sourceFilesInfo]);
+  const data = React.useMemo(() => [{ ...sourceFilesInfo }, ...(sourceFilesInfo?.Files ?? [])], [sourceFilesInfo]);
 
-  const columns = useMemo(
+  const columns = React.useMemo(
     () => [
       {
         Header: 'Table',
