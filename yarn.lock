@@ -488,8 +488,9 @@ __metadata:
   dependencies:
     "@cypress/react": ^5.10.3
     "@cypress/vite-dev-server": ^2.2.1
+    "@itwin/itwinui-css": ^0.39.1
     "@itwin/itwinui-icons-react": ^1.3.0
-    "@itwin/itwinui-react": ^1.26.0
+    "@itwin/itwinui-react": ^1.26.1
     "@types/node": ^12.0.0
     "@types/react": ^17.0.0
     "@types/react-dom": ^17.0.0
@@ -541,9 +542,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@itwin/itwinui-react@npm:^1.26.0":
-  version: 1.26.0
-  resolution: "@itwin/itwinui-react@npm:1.26.0"
+"@itwin/itwinui-react@npm:^1.26.1":
+  version: 1.26.1
+  resolution: "@itwin/itwinui-react@npm:1.26.1"
   dependencies:
     "@itwin/itwinui-css": ^0.39.1
     "@itwin/itwinui-icons-react": ^1.1.1
@@ -556,7 +557,7 @@ __metadata:
   peerDependencies:
     react: ^16.8.6 || ^17.0.0
     react-dom: ^16.8.6 || ^17.0.0
-  checksum: 2da918f9740e5d25be666f7a5416a894b874c332d076a88c6abaf8882e24e76858d9a7d67a4fcda63c37c9a9d65ddd5d62d6fe0f1752510b5450d965dc3da649
+  checksum: 308520f7995d0274d5eaa87faaa8f58b65255f3de7800645def2988e734c335e1f7b374b212d47d8960ad82c835bff71a791945a2662139c461211ea024c5f37
   languageName: node
   linkType: hard
 
