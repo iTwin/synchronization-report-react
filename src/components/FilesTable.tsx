@@ -10,7 +10,7 @@ export const FilesTable = ({
   sourceFilesInfo,
   ...rest
 }: { sourceFilesInfo?: SourceFilesInfo } & Partial<TableProps>) => {
-  const data = useMemo(() => [{ ...sourceFilesInfo }, ...(sourceFilesInfo?.files ?? [])], [sourceFilesInfo]);
+  const data = useMemo(() => [{ ...sourceFilesInfo }, ...(sourceFilesInfo?.Files ?? [])], [sourceFilesInfo]);
 
   const columns = useMemo(
     () => [

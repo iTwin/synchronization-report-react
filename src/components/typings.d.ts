@@ -12,7 +12,7 @@ export type SourceFilesInfo = {
   fileName?: string;
   fileExists?: boolean;
   bimFileExists?: boolean;
-  files?: SourceFile[];
+  Files?: SourceFile[];
 };
 
 export type SourceFile = {

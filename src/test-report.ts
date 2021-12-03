@@ -18,7 +18,7 @@ export default <ReportData>{
     fileId: '0c7c3266-ecc1-4c89-8fe5-34083703d445',
     fileName: 'House_Model.dgn',
     fileExists: true,
-    files: [
+    Files: [
       {
         fileId: '',
         fileName: 'drawingseed.dgnlib',
