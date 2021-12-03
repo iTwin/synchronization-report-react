@@ -1,0 +1,45 @@
+@import '@itwin/itwinui-css/scss/variables';
+@import '@itwin/itwinui-css/scss/icon/index.scss';
+
+.isr-status-message {
+  padding: $iui-s $iui-xs;
+  display: grid;
+  grid-template-areas:
+    'icon text'
+    '- subText';
+  grid-template-columns: $iui-m auto;
+  grid-row-gap: $iui-xxs;
+  grid-column-gap: $iui-s;
+  width: 100%;
+  align-items: center;
+
+  &.isr-status-positive {
+    color: var(--iui-color-foreground-positive);
+  }
+  &.isr-status-negative {
+    color: var(--iui-color-foreground-negative);
+  }
+  svg {
+    @include iui-icons-default;
+    fill: currentColor;
+  }
+
+  .isr-grid-icon {
+    grid-area: icon;
+  }
+  .isr-grid-text {
+    grid-area: text;
+  }
+  .isr-grid-subText {
+    grid-area: subText;
+    color: var(--iui-color-foreground-body);
+  }
+}
+.isr-tooltip-block {
+  width: 100%;
+}
+.isr-data-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

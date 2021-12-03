@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import * as React from 'react';
 import { IconButton, Tooltip, useTheme } from '@itwin/itwinui-react';
 import { useMediaQuery } from 'beautiful-react-hooks';
 import { SvgSun, SvgMoon } from '@itwin/itwinui-icons-react';
@@ -17,7 +17,7 @@ const Main = () => {
 };
 
 export const App = () => {
-  const [isDark, setIsDark] = useState(useMediaQuery('(prefers-color-scheme: dark'));
+  const [isDark, setIsDark] = React.useState(useMediaQuery('(prefers-color-scheme: dark'));
   useTheme(isDark ? 'dark' : 'light');
 
   return (

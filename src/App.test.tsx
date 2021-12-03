@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import * as React from 'react';
+import { mount } from '@cypress/react';
 import App from './App';
 
-test('renders app', () => {
-  render(<App />);
-  expect(screen.getByText('Files')).toBeInTheDocument();
+it('renders app', () => {
+  mount(<App />);
+  cy.get('.isr-report-main').should('be.visible');
 });

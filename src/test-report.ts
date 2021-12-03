@@ -1,6 +1,6 @@
 import { AuditInfo, ReportData, SourceFile } from './components/typings';
 
-export default <ReportData>{
+export default {
   context: {
     reportType: 'detailReport',
     operationType: 'NORMAL_UPDATE',
@@ -886,10 +886,10 @@ export default <ReportData>{
       ],
     },
   ],
-};
+} as ReportData;
 
 // EXTRA MOCK DATA
-export const filesTableData = <SourceFile[]>[
+export const filesTableData = [
   {
     fileName: 'File 1.dgn',
     state: 'Failed',
@@ -946,8 +946,8 @@ export const filesTableData = <SourceFile[]>[
     fileId: '{File ID}',
     dataSource: '{Datasource}',
   },
-];
-export const detailsTableData = <AuditInfo[]>[
+] as SourceFile[];
+export const detailsTableData = [
   {
     fileName: '053-AKB-02-00-MM.i.dgn',
     level: 'Error',
@@ -996,4 +996,4 @@ export const detailsTableData = <AuditInfo[]>[
     message: 'PBR materials not supported for texture file',
     recommendedaction: 'Review models in the source',
   },
-];
+] as AuditInfo[];
