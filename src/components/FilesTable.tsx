@@ -1,14 +1,16 @@
-import { Leading, Table, tableFilters, TableProps, Text, Small, MiddleTextTruncation } from '@itwin/itwinui-react';
-import { SvgStatusSuccess, SvgStatusError } from '@itwin/itwinui-icons-color-react';
-import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
-import { SourceFilesInfo, SourceFile } from './typings';
+import { Table, tableFilters, TableProps, Text, Small, Tooltip, MiddleTextTruncation } from '@itwin/itwinui-react';
+import { CellProps } from 'react-table';
+import SvgStatusError from '@itwin/itwinui-icons-color-react/esm/icons/StatusError';
+import SvgStatusSuccess from '@itwin/itwinui-icons-color-react/esm/icons/StatusSuccess';
+import { useMemo } from 'react';
+import { SourceFile, SourceFilesInfo } from './typings';
 import './FilesTable.scss';
 
 export const FilesTable = ({
   sourceFilesInfo,
   ...rest
 }: { sourceFilesInfo?: SourceFilesInfo } & Partial<TableProps>) => {
-  const data = useMemo(() => [{ ...sourceFilesInfo }, ...(sourceFilesInfo?.Files ?? [])], [sourceFilesInfo]);
+  const data = useMemo(() => [{ ...sourceFilesInfo }, ...(sourceFilesInfo?.files ?? [])], [sourceFilesInfo]);
 
   const columns = useMemo(
     () => [
@@ -23,22 +25,20 @@ export const FilesTable = ({
           },
           {
             id: 'status',
-            accessor: 'state',
             Header: 'Status',
             Filter: tableFilters.TextFilter(),
             maxWidth: 250,
-            Cell: (props: any) => {
+            Cell: (props: CellProps<SourceFile>) => {
               return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
-                <div className='status-message iui-negative'>
-                  <SvgStatusError />
-                  <Text>Failed</Text>
-                  <div></div>
-                  <Small>File by that name not found at this datasource/path.</Small>
+                <div className='isr-status-message'>
+                  <SvgStatusError className='isr-grid-icon' />
+                  <Text className='isr-grid-text isr-status-negative'>Failed</Text>
+                  <Small className='isr-grid-subText'>File by that name not found at this datasource/path.</Small>
                 </div>
               ) : (
-                <div className='status-message iui-positive'>
-                  <SvgStatusSuccess />
-                  <Text>Processed</Text>
+                <div className='isr-status-message'>
+                  <SvgStatusSuccess className='isr-grid-icon' />
+                  <Text className='isr-grid-text isr-status-positive'>Processed</Text>
                 </div>
               );
             },
@@ -55,8 +55,14 @@ export const FilesTable = ({
             accessor: 'path',
             Header: 'Path',
             Filter: tableFilters.TextFilter(),
-            Cell: (props: any) => {
-              return <MiddleTextTruncation text={props.row.original.path} />;
+            Cell: (props: CellProps<SourceFile>) => {
+              return (
+                <Tooltip content={props.row.original.path}>
+                  <div className='isr-tooltip-block'>
+                    <Text className='isr-data-text'>{props.row.original.path}</Text>
+                  </div>
+                </Tooltip>
+              );
             },
           },
           {
@@ -65,6 +71,15 @@ export const FilesTable = ({
             Header: 'File ID',
             Filter: tableFilters.TextFilter(),
             maxWidth: 320,
+            Cell: (props: any) => {
+              return (
+                <Tooltip content={props.row.original.fileId}>
+                  <div className='isr-tooltip-block'>
+                    <Text className='isr-data-text'>{props.row.original.fileId}</Text>
+                  </div>
+                </Tooltip>
+              );
+            },
           },
           {
             id: 'dataSource',
