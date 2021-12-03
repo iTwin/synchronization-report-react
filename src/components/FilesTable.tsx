@@ -59,7 +59,11 @@ export const FilesTable = ({
               return (
                 <Tooltip content={props.row.original.path}>
                   <div className='isr-tooltip-block'>
-                    <Text className='isr-data-text'>{props.row.original.path}</Text>
+                    <MiddleTextTruncation
+                      className='isr-data-text'
+                      style={{ flexGrow: 1 }}
+                      text={props.row.original.path!}
+                    />
                   </div>
                 </Tooltip>
               );
