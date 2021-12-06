@@ -12,6 +12,7 @@ export type SourceFilesInfo = {
   fileName?: string;
   fileExists?: boolean;
   bimFileExists?: boolean;
+  master?: boolean;
   Files?: SourceFile[];
 };
 
