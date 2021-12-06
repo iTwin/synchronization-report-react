@@ -1,11 +1,13 @@
+@import '@itwin/itwinui-css/scss/menu/menu.scss';
+
 .isr-report-header {
   display: grid;
   grid-template-areas:
     'a b'
     'c c'
     'd e ';
-  padding-bottom: 12px;
-  gap: 8px;
+  padding-bottom: $iui-sm;
+  gap: $iui-s;
 }
 
 .isr-header-title-wrapper {
@@ -13,54 +15,53 @@
 }
 
 .isr-header-title {
-  font-size: 32px;
-  margin-bottom: 4px;
+  font-size: $iui-xl;
+  margin-bottom: $iui-xs;
 }
 
 .isr-header-titleDate {
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.4); // Todo: Fix dark theme
+  font-size: $iui-sm;
+  color: t(iui-text-color-muted);
 }
 
 .isr-header-close {
   grid-area: b;
   align-self: end;
   display: flex;
-  gap: 8px;
+  gap: $iui-s;
   margin-bottom: auto;
   margin-left: auto;
 }
 
 .isr-header-issues {
   grid-area: c;
-  border: 1px solid rgb(134, 134, 134, 0.5);
-  background-color: rgba(134, 134, 134, 0.1);
-  font-size: 16px;
-  padding: 2px 8px;
+  border: 1px solid rgba(0, 0, 0, t(iui-opacity-4));
+  background-color: t(iui-color-background-3);
+  font-size: $iui-m;
+  padding: $iui-xxs $iui-s;
   display: flex;
   flex-direction: row;
-  gap: 4px;
+  gap: $iui-xs;
 }
 
 .isr-status-icon {
-  height: 16px;
-  width: 16px;
+  @include iui-icons-default;
   padding: 3px;
 
   &.isr-informational {
-    fill: #008be1; //fill: #efa9a9;
+    fill: t(iui-icons-color-primary);
   }
 
   &.isr-positive {
-    fill: #53a21a; //fill: #efa9a9;
+    fill: t(iui-icons-color-positive);
   }
 
   &.isr-warning {
-    fill: #f18b12; //fill: #efa9a9;
+    fill: t(iui-icons-color-warning);
   }
 
   &.isr-negative {
-    fill: #d30a0a; //fill: #efa9a9;
+    fill: t(iui-icons-color-negative);
   }
 }
 
@@ -70,27 +71,27 @@
 }
 
 .isr-support-button {
-  color: #008be1; // Todo: Fix dark theme color: #a5d7f5;
+  color: t(iui-icons-color-primary);
   cursor: pointer;
   margin-left: auto;
   user-select: none;
 
   &:hover {
-    color: darken(#008be1, 10%); //Todo: Fix dark theme
+    color: t(iui-color-foreground-primary-overlay);
     text-decoration: underline;
   }
 }
 
 .isr-support-debugIDWrapper {
-  background-color: white; //Todo: dark theme
+  @include iui-dropdown;
+  background-color: t(iui-color-background-1);
   position: absolute;
   z-index: 1;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
   top: 170px;
   right: 60px;
   overflow: visible;
   line-height: 1.5em;
-  padding: 8px;
+  padding: $iui-s;
   max-width: calc(100% - 200px);
 }
 
@@ -102,7 +103,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    padding-right: 8px;
+    padding-right: $iui-s;
     text-align: right;
   }
 
@@ -115,7 +116,7 @@
 }
 
 .isr-support-debugID-buttons {
-  padding-top: 8px;
+  padding-top: $iui-s;
   display: flex;
   justify-content: space-between;
 }
