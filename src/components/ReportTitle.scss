@@ -1,0 +1,17 @@
+@import '@itwin/itwinui-css/scss/variables';
+
+.isr-report-title {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.isr-title {
+  font-size: $iui-font-size-headline;
+}
+
+.isr-title-buttons {
+  display: flex;
+  gap: $iui-s;
+}

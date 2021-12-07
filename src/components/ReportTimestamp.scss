@@ -1,0 +1,7 @@
+@import '@itwin/itwinui-css/scss/variables';
+
+.isr-header-timestamp {
+  font-size: $iui-font-size-small;
+  color: t(iui-text-color-muted);
+  margin-bottom: $iui-baseline;
+}
