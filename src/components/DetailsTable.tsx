@@ -1,15 +1,8 @@
 import * as React from 'react';
 import { Table, tableFilters, TablePaginator, TableProps } from '@itwin/itwinui-react';
+import { ReportContext } from './Report';
 import type { FileRecord, SourceFilesInfo } from './typings';
 import type { Column } from 'react-table';
-
-// const SynchronizationSeverity = {
-//   info: 'Info',
-//   warning: 'Warning',
-//   criticalWarning: 'Critical warning',
-//   error: 'Error',
-//   fatalError: 'Fatal error',
-// } as const;
 
 export const DetailsTable = ({
   fileRecords,
@@ -19,22 +12,24 @@ export const DetailsTable = ({
   fileRecords?: FileRecord[];
   sourceFilesInfo?: SourceFilesInfo;
 } & Partial<TableProps>) => {
-  const data = React.useMemo(
-    () =>
-      (fileRecords ?? [])
-        .map(({ file, auditrecords }) =>
-          (auditrecords ?? []).map(({ auditinfo }) => ({ fileId: file?.identifier, ...auditinfo }))
-        )
-        .flat(),
-    [fileRecords]
-  );
+  const context = React.useContext(ReportContext);
+  const data = React.useMemo(() => {
+    const files = fileRecords || context?.reportData.filerecords || [];
+    return files
+      .map(({ file, auditrecords }) =>
+        (auditrecords ?? []).map(({ auditinfo }) => ({ fileId: file?.identifier, ...auditinfo }))
+      )
+      .flat();
+  }, [fileRecords, context?.reportData.filerecords]);
 
   const getFileNameFromId = React.useCallback(
-    (id?: string) =>
-      sourceFilesInfo?.fileId === id
-        ? sourceFilesInfo?.fileName
-        : sourceFilesInfo?.Files?.find((file) => file.fileId === id)?.fileName,
-    [sourceFilesInfo]
+    (id?: string) => {
+      const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
+      return filesInfo?.fileId === id
+        ? filesInfo?.fileName
+        : filesInfo?.Files?.find((file) => file.fileId === id)?.fileName;
+    },
+    [sourceFilesInfo, context?.reportData.sourceFilesInfo]
   );
 
   const columns: Column<Partial<typeof data[number]>>[] = React.useMemo(
@@ -95,3 +90,5 @@ export const DetailsTable = ({
     </>
   );
 };
+
+export default DetailsTable;
