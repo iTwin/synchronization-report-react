@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Table, tableFilters, TableProps, Text, Small, Tooltip, MiddleTextTruncation } from '@itwin/itwinui-react';
 import { SourceFilesInfo, SourceFile } from './typings';
 import { CellProps } from 'react-table';
-import SvgStatusError from '@itwin/itwinui-icons-react/esm/icons/StatusError';
-import SvgStatusSuccess from '@itwin/itwinui-icons-react/esm/icons/StatusSuccess';
+import { StatusIcon } from './StatusIcon';
 import './FilesTable.scss';
 
 export const FilesTable = ({
@@ -31,13 +30,13 @@ export const FilesTable = ({
             Cell: (props: CellProps<SourceFile>) => {
               return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
                 <div className='isr-status-message isr-status-negative'>
-                  <SvgStatusError className='isr-grid-icon' />
+                  <StatusIcon status='error' className='isr-grid-icon' />
                   <Text className='isr-grid-text'>Failed</Text>
                   <Small className='isr-grid-subText'>File by that name not found at this datasource/path.</Small>
                 </div>
               ) : (
                 <div className='isr-status-message isr-status-positive'>
-                  <SvgStatusSuccess className='isr-grid-icon' />
+                  <StatusIcon status='success' className='isr-grid-icon' />
                   <Text className='isr-grid-text'>Processed</Text>
                 </div>
               );
