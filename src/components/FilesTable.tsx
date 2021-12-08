@@ -13,9 +13,9 @@ export const FilesTable = ({
 }: { sourceFilesInfo?: SourceFilesInfo } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
   const data = React.useMemo(() => {
-    const filesInfo = sourceFilesInfo || context?.data.sourceFilesInfo;
+    const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
     return [{ ...filesInfo }, ...(filesInfo?.Files ?? [])];
-  }, [sourceFilesInfo, context?.data.sourceFilesInfo]);
+  }, [sourceFilesInfo, context?.reportData.sourceFilesInfo]);
 
   const columns = React.useMemo(
     () => [

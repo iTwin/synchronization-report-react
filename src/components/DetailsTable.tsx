@@ -14,22 +14,22 @@ export const DetailsTable = ({
 } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
   const data = React.useMemo(() => {
-    const files = fileRecords || context?.data.filerecords || [];
+    const files = fileRecords || context?.reportData.filerecords || [];
     return files
       .map(({ file, auditrecords }) =>
         (auditrecords ?? []).map(({ auditinfo }) => ({ fileId: file?.identifier, ...auditinfo }))
       )
       .flat();
-  }, [fileRecords, context?.data.filerecords]);
+  }, [fileRecords, context?.reportData.filerecords]);
 
   const getFileNameFromId = React.useCallback(
     (id?: string) => {
-      const filesInfo = sourceFilesInfo || context?.data.sourceFilesInfo;
+      const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
       return filesInfo?.fileId === id
         ? filesInfo?.fileName
         : filesInfo?.Files?.find((file) => file.fileId === id)?.fileName;
     },
-    [sourceFilesInfo, context?.data.sourceFilesInfo]
+    [sourceFilesInfo, context?.reportData.sourceFilesInfo]
   );
 
   const columns: Column<Partial<typeof data[number]>>[] = React.useMemo(

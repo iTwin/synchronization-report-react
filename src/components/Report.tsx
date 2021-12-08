@@ -9,7 +9,7 @@ type _TabName = 'files' | 'details';
 
 export const ReportContext = React.createContext<
   | {
-      data: ReportData;
+      reportData: ReportData;
       currentTab: _TabName;
       setCurrentTab: (tab: _TabName | ((prev: _TabName) => _TabName)) => void;
     }
@@ -20,7 +20,7 @@ export const Report = ({ data }: { data: ReportData }) => {
   const [selectedTab, setSelectedTab] = React.useState<_TabName>('files');
 
   return (
-    <ReportContext.Provider value={{ data: data, currentTab: selectedTab, setCurrentTab: setSelectedTab }}>
+    <ReportContext.Provider value={{ reportData: data, currentTab: selectedTab, setCurrentTab: setSelectedTab }}>
       <div className='isr-report-main'>
         <div className='isr-report-tabs-wrapper'>
           <HorizontalTabs
