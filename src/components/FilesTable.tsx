@@ -3,13 +3,18 @@ import { Table, tableFilters, TableProps, Text, Small, Tooltip, MiddleTextTrunca
 import { SourceFilesInfo, SourceFile } from './typings';
 import { CellProps } from 'react-table';
 import { StatusIcon } from './StatusIcon';
+import { ReportContext } from './Report';
 import './FilesTable.scss';
 
 export const FilesTable = ({
   sourceFilesInfo,
   ...rest
 }: { sourceFilesInfo?: SourceFilesInfo } & Partial<TableProps>) => {
-  const data = React.useMemo(() => [{ ...sourceFilesInfo }, ...(sourceFilesInfo?.Files ?? [])], [sourceFilesInfo]);
+  const context = React.useContext(ReportContext);
+  const data = React.useMemo(() => {
+    const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
+    return [{ ...filesInfo }, ...(filesInfo?.Files ?? [])];
+  }, [sourceFilesInfo, context?.reportData.sourceFilesInfo]);
 
   const columns = React.useMemo(
     () => [
