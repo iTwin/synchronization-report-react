@@ -1,5 +1,4 @@
 @import '@itwin/itwinui-css/scss/variables';
-@import '@itwin/itwinui-css/scss/icon/index.scss';
 
 .isr-status-message {
   padding: $iui-s $iui-xs;
@@ -18,10 +17,6 @@
   }
   &.isr-status-negative {
     color: var(--iui-color-foreground-negative);
-  }
-  svg {
-    @include iui-icons-default;
-    fill: currentColor;
   }
 
   .isr-grid-icon {
