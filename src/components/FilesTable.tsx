@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Table, tableFilters, TableProps, Text, Small, Tooltip, MiddleTextTruncation } from '@itwin/itwinui-react';
 import { SourceFilesInfo, SourceFile } from './typings';
 import { CellProps } from 'react-table';
+import { ReportContext } from './Report';
 import SvgStatusError from '@itwin/itwinui-icons-react/esm/icons/StatusError';
 import SvgStatusSuccess from '@itwin/itwinui-icons-react/esm/icons/StatusSuccess';
 import './FilesTable.scss';
@@ -10,7 +11,11 @@ export const FilesTable = ({
   sourceFilesInfo,
   ...rest
 }: { sourceFilesInfo?: SourceFilesInfo } & Partial<TableProps>) => {
-  const data = React.useMemo(() => [{ ...sourceFilesInfo }, ...(sourceFilesInfo?.Files ?? [])], [sourceFilesInfo]);
+  const context = React.useContext(ReportContext);
+  const data = React.useMemo(() => {
+    const filesInfo = sourceFilesInfo || context?.data.sourceFilesInfo;
+    return [{ ...filesInfo }, ...(filesInfo?.Files ?? [])];
+  }, [sourceFilesInfo, context?.data.sourceFilesInfo]);
 
   const columns = React.useMemo(
     () => [
