@@ -7,34 +7,14 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  color: t(iui-text-color);
-  border: 1px solid rgba(0, 0, 0, t(iui-opacity-4));
-  background-color: t(iui-color-background-3);
-  padding: $iui-xxs $iui-s;
+  color: var(--iui-text-color);
+  border: 1px solid rgba(0, 0, 0, var(--iui-opacity-4));
+  background-color: var(--iui-color-background-3);
+  padding: $iui-baseline $iui-s;
   gap: $iui-xs;
   margin-bottom: $iui-baseline;
 
   &.isr-negative {
     @include iui-alert-category($statusColor: 'negative', $rootSelector: '.isr-header-banner');
-  }
-}
-
-.isr-status-icon {
-  @include iui-icons-default;
-
-  &.isr-informational {
-    fill: t(iui-icons-color-primary);
-  }
-
-  &.isr-positive {
-    fill: t(iui-icons-color-positive);
-  }
-
-  &.isr-warning {
-    fill: t(iui-icons-color-warning);
-  }
-
-  &.isr-negative {
-    fill: t(iui-icons-color-negative);
   }
 }

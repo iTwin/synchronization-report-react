@@ -1,7 +1,8 @@
-@import '@itwin/itwinui-css/scss/icon/index';
+@import '@itwin/itwinui-css/scss/icon/variables';
 
 .isr-status-icon {
-  @include iui-icons-default;
+  width: $iui-icons-default;
+  height: $iui-icons-default;
 
   &-success {
     fill: var(--iui-icons-color-positive);

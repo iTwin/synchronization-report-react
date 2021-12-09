@@ -1,14 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import cx from 'classnames';
-import {
-  SvgStatusSuccess,
-  SvgStatusWarning,
-  SvgStatusError,
-  SvgInfoCircular,
-} from '@itwin/itwinui-icons-react/cjs/icons';
 import { FileRecord, SourceFile } from './typings';
 import './ReportBanner.scss';
+import { StatusIcon } from './StatusIcon';
 
 export type ReportBannerProps = {
   filesTabOpen: boolean;
@@ -71,7 +66,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
               <div className='isr-header-banner-message'>{filesProcessed.length + ' File(s) Processed | '}</div>
               {failedFileCount > 0 && (
                 <>
-                  <SvgStatusError className='isr-status-icon isr-negative' />
+                  <StatusIcon status='error' />
                   <div className='isr-header-banner-message'>
                     {failedFileCount + ' file(s) failed to synchronize  | '}
                   </div>
@@ -81,7 +76,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
                 <div className='isr-header-banner-message'>{issuesCount + ' Synchronization Issues Found'}</div>
               ) : (
                 <>
-                  <SvgStatusSuccess className='isr-status-icon isr-positive' />
+                  <StatusIcon status='success' />
                   <div>{'No Synchronization Issues Found'}</div>
                 </>
               )}
@@ -96,26 +91,26 @@ export const ReportBanner = (props: ReportBannerProps) => {
                   <div>{issuesCount + ' Synchronization Issues |'}</div>
                   {errorCount > 0 && (
                     <>
-                      <SvgStatusError className='isr-status-icon isr-negative' />
+                      <StatusIcon status='error' />
                       <div>{'Errors: ' + errorCount + ' |'}</div>
                     </>
                   )}
                   {warningCount > 0 && (
                     <>
-                      <SvgStatusWarning className='isr-status-icon isr-warning' />
+                      <StatusIcon status='warning' />
                       <div>{'Warnings: ' + warningCount + ' |'}</div>
                     </>
                   )}
                   {infoCount > 0 && (
                     <>
-                      <SvgInfoCircular className='isr-status-icon isr-informational' />
+                      <StatusIcon status='informational' />
                       <div>{'Other Issues: ' + infoCount}</div>
                     </>
                   )}
                 </>
               ) : (
                 <>
-                  <SvgStatusSuccess className='isr-status-icon isr-positive' />
+                  <StatusIcon status='success' />
                   <div>{'No Synchronization Issues Found'}</div>
                 </>
               )}
