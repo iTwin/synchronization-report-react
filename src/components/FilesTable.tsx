@@ -20,7 +20,7 @@ export const FilesTable = ({
   ...rest
 }: { sourceFilesInfo?: SourceFilesInfo } & Partial<TableProps>) => {
   const data = React.useMemo(
-    () => [{ ...sourceFilesInfo, master: true }, ...(sourceFilesInfo?.Files ?? [])],
+    () => [{ ...sourceFilesInfo, mainFile: true }, ...(sourceFilesInfo?.Files ?? [])],
     [sourceFilesInfo]
   );
 
@@ -38,7 +38,7 @@ export const FilesTable = ({
               return (
                 <div className='isr-file-name'>
                   <Text>{props.row.original.fileName}</Text>
-                  {props.row.original.master && <Badge backgroundColor='primary'>MASTER</Badge>}
+                  {props.row.original.mainFile && <Badge backgroundColor='primary'>master</Badge>}
                 </div>
               );
             },
@@ -63,14 +63,6 @@ export const FilesTable = ({
               );
             },
           },
-          // Commenting until figured out how to count and link
-          // {
-          //   id: 'issues',
-          //   accessor: 'issues',
-          //   Header: 'Issues',
-          //   Filter: tableFilters.TextFilter(),
-          //   maxWidth: 180,
-          // },
           {
             id: 'path',
             accessor: 'path',
