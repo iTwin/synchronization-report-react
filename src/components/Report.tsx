@@ -3,6 +3,9 @@ import { HorizontalTabs, Tab } from '@itwin/itwinui-react';
 import { DetailsTable } from './DetailsTable';
 import { FilesTable } from './FilesTable';
 import { ReportData } from './typings';
+import { ReportTitle } from './ReportTitle';
+import { ReportTimestamp } from './ReportTimestamp';
+import { ReportBanner } from './ReportBanner';
 import './Report.scss';
 
 type _TabName = 'files' | 'details';
@@ -22,6 +25,13 @@ export const Report = ({ data }: { data: ReportData }) => {
   return (
     <ReportContext.Provider value={{ reportData: data, currentTab: selectedTab, setCurrentTab: setSelectedTab }}>
       <div className='isr-report-main'>
+        <div className='isr-report-header'>
+          <ReportTitle fileName={data?.sourceFilesInfo?.fileName} />
+          <ReportTimestamp timestamp={data?.context?.timestamp} />
+          <ReportBanner fileRecords={data?.filerecords} filesProcessed={data?.sourceFilesInfo?.Files} />
+          {/* Todo: Add ReportDebugIds */}
+        </div>
+
         <div className='isr-report-tabs-wrapper'>
           <HorizontalTabs
             activeIndex={selectedTab === 'files' ? 0 : 1}

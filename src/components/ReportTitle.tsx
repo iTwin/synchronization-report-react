@@ -8,9 +8,5 @@ export type ReportTitleProps = {
 export const ReportTitle = (props: ReportTitleProps) => {
   const { fileName } = props;
 
-  return (
-    <div className='isr-report-title'>
-      <div className='isr-title'>{'Synchronization Report | ' + fileName ?? 'unknown'}</div>
-    </div>
-  );
+  return <div className='isr-title'>{'Synchronization Report | ' + fileName ?? 'unknown'}</div>;
 };

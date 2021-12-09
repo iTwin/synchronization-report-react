@@ -4,16 +4,17 @@ import cx from 'classnames';
 import { FileRecord, SourceFile } from './typings';
 import './ReportBanner.scss';
 import { StatusIcon } from './StatusIcon';
+import { ReportContext } from './Report';
 
 export type ReportBannerProps = {
-  filesTabOpen: boolean;
   fileRecords?: FileRecord[];
   filesProcessed?: SourceFile[];
 };
 
 export const ReportBanner = (props: ReportBannerProps) => {
-  const { filesTabOpen, fileRecords, filesProcessed } = props;
+  const { fileRecords, filesProcessed } = props;
 
+  const context = React.useContext(ReportContext);
   const [errorCount, setErrorCount] = useState(0);
   const [warningCount, setWarningCount] = useState(0);
   const [infoCount, setInfoCount] = useState(0);
@@ -59,9 +60,13 @@ export const ReportBanner = (props: ReportBannerProps) => {
   return (
     <>
       {(fileRecords || filesProcessed) && (
-        <div className={cx('isr-header-banner', { 'isr-negative': filesTabOpen && failedFileCount > 0 })}>
+        <div
+          className={cx('isr-header-banner', {
+            'isr-negative': context?.currentTab === 'files' && failedFileCount > 0,
+          })}
+        >
           {/* Todo: Make files table filter by status when clicking on '1 file failed'*/}
-          {filesTabOpen && filesProcessed && (
+          {context?.currentTab === 'files' && filesProcessed && (
             <>
               <div className='isr-header-banner-message'>{filesProcessed.length + ' File(s) Processed | '}</div>
               {failedFileCount > 0 && (
@@ -84,7 +89,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
           )}
 
           {/* Todo: Make details table filter by issue type when clicking on issue*/}
-          {!filesTabOpen && fileRecords && (
+          {context?.currentTab === 'details' && fileRecords && (
             <>
               {issuesCount > 0 ? (
                 <>
