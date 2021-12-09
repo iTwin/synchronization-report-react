@@ -1,0 +1,21 @@
+@import '@itwin/itwinui-css/scss/icon/index';
+
+.isr-status-icon {
+  @include iui-icons-default;
+
+  &-success {
+    fill: var(--iui-icons-color-positive);
+  }
+
+  &-error {
+    fill: var(--iui-icons-color-negative);
+  }
+
+  &-warning {
+    fill: var(--iui-icons-color-warning);
+  }
+
+  &-informational {
+    fill: var(--iui-icons-color-primary);
+  }
+}
