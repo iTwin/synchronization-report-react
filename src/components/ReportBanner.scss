@@ -7,14 +7,16 @@
   background-color: var(--iui-color-background-3);
   margin: $iui-baseline 0;
 
-  &-message:not(:last-child)::after {
-    content: '';
-    border-left: 1px solid black;
-    margin-left: 16px;
-  }
+  &-message {
+    &:not(:last-child)::after {
+      content: '';
+      border-left: 1px solid black;
+      margin-left: 16px;
+    }
 
-  &-message + &-message {
-    margin-left: 0px;
+    &.isr-no-icon {
+      margin-left: 0px;
+    }
   }
 
   .isr-status-icon:first-child {

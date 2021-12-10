@@ -80,7 +80,9 @@ export const ReportBanner = (props: ReportBannerProps) => {
                 </>
               )}
               {issuesCount > 0 ? (
-                <div className='isr-header-banner-message'>{issuesCount + ' Synchronization Issues Found'}</div>
+                <div className='isr-header-banner-message isr-no-icon'>
+                  {issuesCount + ' Synchronization Issues Found'}
+                </div>
               ) : (
                 <>
                   <StatusIcon status='success' />
