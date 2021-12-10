@@ -71,59 +71,69 @@ export const ReportBanner = (props: ReportBannerProps) => {
         >
           {/* Todo: Make files table filter by status when clicking on '1 file failed'*/}
           {currentTab === 'files' && filesProcessed && (
-            <>
-              <div className='isr-header-banner-message'>{filesProcessed.length + ' File(s) Processed'}</div>
+            <div className='isr-header-banner-message'>
+              <span className='isr-header-banner-section'>
+                <span className='isr-header-banner-section-message'>
+                  {filesProcessed.length + ' File(s) Processed'}
+                </span>
+              </span>
               {failedFileCount > 0 && (
-                <>
+                <span className='isr-header-banner-section'>
                   <StatusIcon status='error' />
-                  <div className='isr-header-banner-message'>{failedFileCount + ' file(s) failed to synchronize'}</div>
-                </>
+                  <span className='isr-header-banner-section-message'>
+                    {failedFileCount + ' file(s) failed to synchronize'}
+                  </span>
+                </span>
               )}
               {issuesCount > 0 ? (
-                <div className='isr-header-banner-message isr-no-icon'>
-                  {issuesCount + ' Synchronization Issues Found'}
-                </div>
+                <span className='isr-header-banner-section'>
+                  <span className='isr-header-banner-section-message'>
+                    {issuesCount + ' Synchronization Issues Found'}
+                  </span>
+                </span>
               ) : (
-                <>
+                <span className='isr-header-banner-section'>
                   <StatusIcon status='success' />
-                  <div className='isr-header-banner-message'>{'No Synchronization Issues Found'}</div>
-                </>
+                  <span className='isr-header-banner-section-message'>{'No Synchronization Issues Found'}</span>
+                </span>
               )}
-            </>
+            </div>
           )}
 
           {/* Todo: Make details table filter by issue type when clicking on issue*/}
           {currentTab === 'details' && fileRecords && (
-            <>
+            <div className='isr-header-banner-message'>
               {issuesCount > 0 ? (
                 <>
-                  <div className='isr-header-banner-message'>{issuesCount + ' Synchronization Issues'}</div>
+                  <span className='isr-header-banner-section'>
+                    <span className='isr-header-banner-section-message'>{issuesCount + ' Synchronization Issues'}</span>
+                  </span>
                   {errorCount > 0 && (
-                    <>
+                    <span className='isr-header-banner-section'>
                       <StatusIcon status='error' />
-                      <div className='isr-header-banner-message'>{'Errors: ' + errorCount}</div>
-                    </>
+                      <span className='isr-header-banner-section-message'>{'Errors: ' + errorCount}</span>
+                    </span>
                   )}
                   {warningCount > 0 && (
-                    <>
+                    <span className='isr-header-banner-section'>
                       <StatusIcon status='warning' />
-                      <div className='isr-header-banner-message'>{'Warnings: ' + warningCount}</div>
-                    </>
+                      <span className='isr-header-banner-section-message'>{'Warnings: ' + warningCount}</span>
+                    </span>
                   )}
                   {infoCount > 0 && (
-                    <>
+                    <span className='isr-header-banner-section'>
                       <StatusIcon status='informational' />
-                      <div className='isr-header-banner-message'>{'Other Issues: ' + infoCount}</div>
-                    </>
+                      <span className='isr-header-banner-section-message'>{'Other Issues: ' + infoCount}</span>
+                    </span>
                   )}
                 </>
               ) : (
-                <>
+                <span className='isr-header-banner-section'>
                   <StatusIcon status='success' />
-                  <div className='isr-header-banner-message'>{'No Synchronization Issues Found'}</div>
-                </>
+                  <span className='isr-header-banner-section-message'>{'No Synchronization Issues Found'}</span>
+                </span>
               )}
-            </>
+            </div>
           )}
         </div>
       )}

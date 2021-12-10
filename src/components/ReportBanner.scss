@@ -8,22 +8,24 @@
   margin: $iui-baseline 0;
 
   &-message {
-    &:not(:last-child)::after {
-      content: '';
-      border-left: 1px solid black;
-      margin-left: 16px;
-    }
-
-    &.isr-no-icon {
-      margin-left: 0px;
-    }
+    display: flex;
+    gap: $iui-sm;
   }
 
-  .isr-status-icon:first-child {
-    margin-left: $iui-m;
+  &-section {
+    display: flex;
+    gap: $iui-s;
+    align-items: center;
+
+    &:not(:last-child)::after {
+      content: '';
+      width: 1px;
+      height: 1em;
+      background-color: var(--iui-text-color);
+    }
   }
 
   &.isr-negative {
-    @include iui-alert-category($statusColor: 'negative', $rootSelector: '.isr-header-banner');
+    @include iui-alert-category($statusColor: 'negative', $rootSelector: '.isr-header-banner-section');
   }
 }
