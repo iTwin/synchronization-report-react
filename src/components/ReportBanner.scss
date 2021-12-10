@@ -12,6 +12,7 @@
   background-color: var(--iui-color-background-3);
   padding: $iui-baseline $iui-s;
   gap: $iui-xs;
+  margin: $iui-baseline 0;
 
   &.isr-negative {
     @include iui-alert-category($statusColor: 'negative', $rootSelector: '.isr-header-banner');

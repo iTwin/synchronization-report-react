@@ -1,5 +1,5 @@
-@import '@itwin/itwinui-css/scss/variables';
+@import '@itwin/itwinui-css/scss/text/mixins';
 
 .isr-title {
-  font-size: $iui-font-size-title;
+  @include iui-text(title);
 }

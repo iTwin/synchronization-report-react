@@ -25,12 +25,10 @@ export const Report = ({ data }: { data: ReportData }) => {
   return (
     <ReportContext.Provider value={{ reportData: data, currentTab: selectedTab, setCurrentTab: setSelectedTab }}>
       <div className='isr-report-main'>
-        <div className='isr-report-header'>
-          <ReportTitle fileName={data?.sourceFilesInfo?.fileName} />
-          <ReportTimestamp timestamp={data?.context?.timestamp} />
-          <ReportBanner fileRecords={data?.filerecords} filesProcessed={data?.sourceFilesInfo?.Files} />
-          {/* Todo: Add ReportDebugIds */}
-        </div>
+        <ReportTitle />
+        <ReportTimestamp />
+        <ReportBanner />
+        {/* Todo: Add ReportDebugIds */}
 
         <div className='isr-report-tabs-wrapper'>
           <HorizontalTabs
