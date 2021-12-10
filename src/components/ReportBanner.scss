@@ -3,16 +3,23 @@
 @import '@itwin/itwinui-css/scss/alert/alert.scss';
 
 .isr-header-banner {
-  border-radius: $iui-border-radius;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  color: var(--iui-text-color);
-  border: 1px solid rgba(0, 0, 0, var(--iui-opacity-4));
+  @include iui-alert;
   background-color: var(--iui-color-background-3);
-  padding: $iui-baseline $iui-s;
-  gap: $iui-xs;
   margin: $iui-baseline 0;
+
+  &-message:not(:last-child)::after {
+    content: '';
+    border-left: 1px solid black;
+    margin-left: 16px;
+  }
+
+  &-message + &-message {
+    margin-left: 0px;
+  }
+
+  .isr-status-icon:first-child {
+    margin-left: $iui-m;
+  }
 
   &.isr-negative {
     @include iui-alert-category($statusColor: 'negative', $rootSelector: '.isr-header-banner');

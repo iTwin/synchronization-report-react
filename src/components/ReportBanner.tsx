@@ -72,13 +72,11 @@ export const ReportBanner = (props: ReportBannerProps) => {
           {/* Todo: Make files table filter by status when clicking on '1 file failed'*/}
           {currentTab === 'files' && filesProcessed && (
             <>
-              <div className='isr-header-banner-message'>{filesProcessed.length + ' File(s) Processed | '}</div>
+              <div className='isr-header-banner-message'>{filesProcessed.length + ' File(s) Processed'}</div>
               {failedFileCount > 0 && (
                 <>
                   <StatusIcon status='error' />
-                  <div className='isr-header-banner-message'>
-                    {failedFileCount + ' file(s) failed to synchronize  | '}
-                  </div>
+                  <div className='isr-header-banner-message'>{failedFileCount + ' file(s) failed to synchronize'}</div>
                 </>
               )}
               {issuesCount > 0 ? (
@@ -86,7 +84,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
               ) : (
                 <>
                   <StatusIcon status='success' />
-                  <div>{'No Synchronization Issues Found'}</div>
+                  <div className='isr-header-banner-message'>{'No Synchronization Issues Found'}</div>
                 </>
               )}
             </>
@@ -97,30 +95,30 @@ export const ReportBanner = (props: ReportBannerProps) => {
             <>
               {issuesCount > 0 ? (
                 <>
-                  <div>{issuesCount + ' Synchronization Issues |'}</div>
+                  <div className='isr-header-banner-message'>{issuesCount + ' Synchronization Issues'}</div>
                   {errorCount > 0 && (
                     <>
                       <StatusIcon status='error' />
-                      <div>{'Errors: ' + errorCount + ' |'}</div>
+                      <div className='isr-header-banner-message'>{'Errors: ' + errorCount}</div>
                     </>
                   )}
                   {warningCount > 0 && (
                     <>
                       <StatusIcon status='warning' />
-                      <div>{'Warnings: ' + warningCount + ' |'}</div>
+                      <div className='isr-header-banner-message'>{'Warnings: ' + warningCount}</div>
                     </>
                   )}
                   {infoCount > 0 && (
                     <>
                       <StatusIcon status='informational' />
-                      <div>{'Other Issues: ' + infoCount}</div>
+                      <div className='isr-header-banner-message'>{'Other Issues: ' + infoCount}</div>
                     </>
                   )}
                 </>
               ) : (
                 <>
                   <StatusIcon status='success' />
-                  <div>{'No Synchronization Issues Found'}</div>
+                  <div className='isr-header-banner-message'>{'No Synchronization Issues Found'}</div>
                 </>
               )}
             </>
