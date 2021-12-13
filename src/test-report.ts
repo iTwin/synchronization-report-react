@@ -45,7 +45,7 @@ export default {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
-            level: 'Error',
+            level: 'Fatal',
             category: 'MissingData',
             message: 'The file was not found - z:\\materials\\anisotropy\\anisotropy_crosshatched001.jpg',
             type: 'Material',

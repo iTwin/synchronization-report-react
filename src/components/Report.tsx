@@ -22,21 +22,19 @@ export const Report = ({ data }: { data: ReportData }) => {
   return (
     <ReportContext.Provider value={{ reportData: data, currentTab: selectedTab, setCurrentTab: setSelectedTab }}>
       <div className='isr-report-main'>
-        <div className='isr-report-tabs-wrapper'>
-          <HorizontalTabs
-            activeIndex={selectedTab === 'files' ? 0 : 1}
-            onTabSelected={(index) => setSelectedTab(index === 0 ? 'files' : 'details')}
-            labels={[<Tab key='files' label='Files' />, <Tab key='details' label='Details' />]}
-            type='borderless'
-            contentClassName='isr-report-tabs-content'
-          >
-            {selectedTab === 'files' ? (
-              <FilesTable className='isr-report-table' />
-            ) : (
-              <DetailsTable className='isr-report-table' />
-            )}
-          </HorizontalTabs>
-        </div>
+        <HorizontalTabs
+          activeIndex={selectedTab === 'files' ? 0 : 1}
+          onTabSelected={(index) => setSelectedTab(index === 0 ? 'files' : 'details')}
+          labels={[<Tab key='files' label='Files' />, <Tab key='details' label='Details' />]}
+          type='borderless'
+          contentClassName='isr-report-tabs-content'
+        >
+          {selectedTab === 'files' ? (
+            <FilesTable className='isr-report-table' />
+          ) : (
+            <DetailsTable className='isr-report-table' />
+          )}
+        </HorizontalTabs>
       </div>
     </ReportContext.Provider>
   );

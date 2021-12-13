@@ -56,7 +56,7 @@ export type AuditRecord = {
 };
 
 export type AuditInfo = {
-  level?: string;
+  level?: 'Fatal' | 'Error' | 'Critical' | 'Warning' | 'Info';
   category?: string;
   message?: string;
   type?: string;
