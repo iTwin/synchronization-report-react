@@ -1,6 +1,6 @@
-import React from 'react';
-import './ReportTitle.scss';
+import * as React from 'react';
 import { ReportContext } from './Report';
+import { Text } from '@itwin/itwinui-react';
 
 export type ReportTitleProps = {
   fileName?: string;
@@ -12,5 +12,5 @@ export const ReportTitle = (props: ReportTitleProps) => {
     return props.fileName || context?.reportData.sourceFilesInfo?.fileName;
   }, [context?.reportData.sourceFilesInfo?.fileName, props.fileName]);
 
-  return <div className='isr-title'>{'Synchronization Report | ' + fileName ?? 'unknown'}</div>;
+  return <Text variant={'title'}>{'Synchronization Report | ' + fileName ?? 'unknown'}</Text>;
 };

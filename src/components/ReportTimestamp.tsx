@@ -1,7 +1,6 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import './ReportTimestamp.scss';
+import * as React from 'react';
 import { ReportContext } from './Report';
+import { Text } from '@itwin/itwinui-react';
 
 export type ReportTimestampProps = {
   timestamp?: string;
@@ -13,8 +12,8 @@ export const ReportTimestamp = (props: ReportTimestampProps) => {
     return props.timestamp || context?.reportData.context?.timestamp;
   }, [context?.reportData.context?.timestamp, props.timestamp]);
 
-  const [date, setDate] = useState<string>('');
-  useEffect(() => {
+  const [date, setDate] = React.useState<string>('');
+  React.useEffect(() => {
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: 'long',
@@ -25,5 +24,9 @@ export const ReportTimestamp = (props: ReportTimestampProps) => {
     setDate(timestamp ? new Date(timestamp).toLocaleDateString(undefined, options) : '');
   }, [timestamp]);
 
-  return <div className='isr-header-timestamp'>{'Run Completed: ' + date}</div>;
+  return (
+    <Text variant='small' isMuted={true}>
+      {'Run Completed: ' + date}
+    </Text>
+  );
 };

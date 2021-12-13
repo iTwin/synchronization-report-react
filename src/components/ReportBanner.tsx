@@ -1,16 +1,16 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import cx from 'classnames';
+import * as React from 'react';
+import classnames from 'classnames';
 import { FileRecord, SourceFile } from './typings';
 import './ReportBanner.scss';
 import { StatusIcon } from './StatusIcon';
 import { ReportContext } from './Report';
+import { CommonProps } from '@itwin/itwinui-react/cjs/core/utils';
 
 export type ReportBannerProps = {
   fileRecords?: FileRecord[];
   filesProcessed?: SourceFile[];
   currentTab?: 'files' | 'details';
-};
+} & CommonProps;
 
 export const ReportBanner = (props: ReportBannerProps) => {
   const context = React.useContext(ReportContext);
@@ -27,12 +27,12 @@ export const ReportBanner = (props: ReportBannerProps) => {
     return props.currentTab || context?.currentTab;
   }, [context?.currentTab, props.currentTab]);
 
-  const [errorCount, setErrorCount] = useState(0);
-  const [warningCount, setWarningCount] = useState(0);
-  const [infoCount, setInfoCount] = useState(0);
-  const [issuesCount, setIssuesCount] = useState(0);
+  const [errorCount, setErrorCount] = React.useState(0);
+  const [warningCount, setWarningCount] = React.useState(0);
+  const [infoCount, setInfoCount] = React.useState(0);
+  const [issuesCount, setIssuesCount] = React.useState(0);
 
-  useEffect(() => {
+  React.useEffect(() => {
     let error = 0,
       warning = 0,
       info = 0;
@@ -52,8 +52,8 @@ export const ReportBanner = (props: ReportBannerProps) => {
     setIssuesCount(error + warning + info);
   }, [fileRecords]);
 
-  const [failedFileCount, setFailedFileCount] = useState(0);
-  useEffect(() => {
+  const [failedFileCount, setFailedFileCount] = React.useState(0);
+  React.useEffect(() => {
     let failed = 0;
     filesProcessed?.forEach((file) => {
       if (file.state === 'Failed' || file.state === 'Missing') failed++;
@@ -65,9 +65,13 @@ export const ReportBanner = (props: ReportBannerProps) => {
     <>
       {(fileRecords || filesProcessed) && (
         <div
-          className={cx('isr-header-banner', {
-            'isr-negative': currentTab === 'files' && failedFileCount > 0,
-          })}
+          className={classnames(
+            'isr-header-banner',
+            {
+              'isr-negative': currentTab === 'files' && failedFileCount > 0,
+            },
+            props.className
+          )}
         >
           {/* Todo: Make files table filter by status when clicking on '1 file failed'*/}
           {currentTab === 'files' && filesProcessed && (
