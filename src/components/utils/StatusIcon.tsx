@@ -15,8 +15,12 @@ const StatusIconMap = {
 
 export const StatusIcon = ({
   status,
-  ...args
-}: { status: keyof typeof StatusIconMap } & React.ComponentPropsWithoutRef<'svg'>) => {
+  className,
+  ...rest
+}: {
+  status: keyof typeof StatusIconMap;
+  className?: string;
+}) => {
   const Element = StatusIconMap[status];
-  return <Element {...args} className={classnames('isr-status-icon', `isr-status-icon-${status}`, args.className)} />;
+  return <Element className={classnames('isr-status-icon', `isr-status-icon-${status}`, className)} {...rest} />;
 };

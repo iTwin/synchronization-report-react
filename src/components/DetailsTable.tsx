@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { Table, tableFilters, TablePaginator, TableProps, Tooltip } from '@itwin/itwinui-react';
+import { Table, tableFilters, TablePaginator, TableProps } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
-import { StatusIcon } from './StatusIcon';
+import { ClampWithTooltip, StatusIcon } from './utils';
 import type { FileRecord, SourceFilesInfo } from './typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import classnames from 'classnames';
 import './DetailsTable.scss';
-import SvgInfoCircular from '@itwin/itwinui-icons-react/esm/icons/InfoCircular';
 
 const displayStrings = {
   Fatal: 'Fatal Error',
@@ -15,32 +14,6 @@ const displayStrings = {
   Warning: 'Warning',
   Info: 'Info',
 } as const;
-
-const ClampWithTooltip = ({ children }: { children: React.ReactNode }) => {
-  const [isOverflowing, setIsOverflowing] = React.useState(false);
-
-  return (
-    <>
-      <span
-        className='isr-line-clamp'
-        ref={(el) => {
-          if (el) {
-            setIsOverflowing(el.scrollHeight > el.offsetHeight);
-          }
-        }}
-      >
-        {children}
-      </span>
-      {isOverflowing && (
-        <Tooltip content={children}>
-          <span aria-hidden className='isr-tooltip-icon'>
-            <SvgInfoCircular />
-          </span>
-        </Tooltip>
-      )}
-    </>
-  );
-};
 
 export const DetailsTable = ({
   fileRecords,

@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { FileRecord, SourceFile } from './typings';
 import './ReportBanner.scss';
-import { StatusIcon } from './StatusIcon';
+import { StatusIcon } from './utils';
 import { ReportContext } from './Report';
 
 export type ReportBannerProps = {

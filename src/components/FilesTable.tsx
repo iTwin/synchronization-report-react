@@ -11,7 +11,7 @@ import {
 } from '@itwin/itwinui-react';
 import { SourceFilesInfo, SourceFile } from './typings';
 import { CellProps } from 'react-table';
-import { StatusIcon } from './StatusIcon';
+import { StatusIcon } from './utils';
 import { ReportContext } from './Report';
 import './FilesTable.scss';
 
