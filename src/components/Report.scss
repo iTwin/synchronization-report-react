@@ -8,10 +8,7 @@
   min-height: 0; // allow scrolling if total height overflows
 }
 
-.isr-report-tabs-wrapper {
-  min-height: 0;
-}
-
+.isr-report-tabs-wrapper,
 .isr-report-tabs-content {
   min-height: 0;
   flex: 1;
