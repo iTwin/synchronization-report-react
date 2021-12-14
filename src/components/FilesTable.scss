@@ -38,3 +38,11 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+.isr-file-name {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: $iui-s;
+  flex-wrap: wrap;
+}

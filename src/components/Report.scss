@@ -1,5 +1,8 @@
+@import '@itwin/itwinui-css/scss/variables';
+
 .isr-report-main {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   width: 100%;
   min-height: 0; // allow scrolling if total height overflows
