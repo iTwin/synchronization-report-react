@@ -36,6 +36,7 @@ export const Report = ({ data }: { data: ReportData }) => {
           labels={[<Tab key='files' label='Files' />, <Tab key='details' label='Details' />]}
           type='borderless'
           contentClassName='isr-report-tabs-content'
+          wrapperClassName='isr-report-tabs-wrapper'
         >
           {selectedTab === 'files' ? (
             <FilesTable className='isr-report-table' />

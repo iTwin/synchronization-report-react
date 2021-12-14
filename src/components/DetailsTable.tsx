@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Table, tableFilters, TablePaginator, TableProps } from '@itwin/itwinui-react';
+import { Table, tableFilters, TablePaginator, TableProps, Tooltip } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
 import { StatusIcon } from './StatusIcon';
 import type { FileRecord, SourceFilesInfo } from './typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import classnames from 'classnames';
 import './DetailsTable.scss';
+import SvgInfoCircular from '@itwin/itwinui-icons-react/esm/icons/InfoCircular';
 
 const displayStrings = {
   Fatal: 'Fatal Error',
@@ -14,6 +15,32 @@ const displayStrings = {
   Warning: 'Warning',
   Info: 'Info',
 } as const;
+
+const ClampWithTooltip = ({ children }: { children: React.ReactNode }) => {
+  const [isOverflowing, setIsOverflowing] = React.useState(false);
+
+  return (
+    <>
+      <span
+        className='isr-line-clamp'
+        ref={(el) => {
+          if (el) {
+            setIsOverflowing(el.scrollHeight > el.offsetHeight);
+          }
+        }}
+      >
+        {children}
+      </span>
+      {isOverflowing && (
+        <Tooltip content={children}>
+          <span aria-hidden className='isr-tooltip-icon'>
+            <SvgInfoCircular />
+          </span>
+        </Tooltip>
+      )}
+    </>
+  );
+};
 
 export const DetailsTable = ({
   fileRecords,
@@ -85,14 +112,19 @@ export const DetailsTable = ({
                       {
                         'isr-status-fatal': level === 'Fatal',
                         'isr-status-negative': level === 'Error',
-                        'isr-status-warning': level === 'Critical' || level === 'Warning',
+                        'isr-status-critical': level === 'Critical',
+                        'isr-status-warning': level === 'Warning',
                         'isr-status-primary': level === 'Info',
                       },
                       cellElementProps.className
                     )}
                   >
-                    <StatusIcon status={_isError ? 'error' : _isWarning ? 'warning' : 'informational'} />
-                    {level && level in displayStrings ? displayStrings[level] : level}
+                    {level && (
+                      <>
+                        <StatusIcon status={_isError ? 'error' : _isWarning ? 'warning' : 'informational'} />
+                        {level in displayStrings ? displayStrings[level] : level}
+                      </>
+                    )}
                   </div>
                 );
               },
@@ -118,7 +150,8 @@ export const DetailsTable = ({
               accessor: 'message',
               Header: 'Message',
               Filter: tableFilters.TextFilter(),
-              Cell: ({ value }: CellProps<TableRow>) => <span className='isr-details-message'>{value}</span>,
+              cellClassName: 'isr-details-message',
+              Cell: ({ value }: CellProps<TableRow>) => <ClampWithTooltip>{value}</ClampWithTooltip>,
             },
           ],
         },

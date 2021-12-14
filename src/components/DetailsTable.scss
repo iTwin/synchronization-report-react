@@ -21,8 +21,24 @@
 }
 
 .isr-details-message {
+  gap: $iui-xs;
+  justify-content: space-between;
+}
+
+.isr-line-clamp {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+}
+
+.isr-tooltip-icon {
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: $iui-m;
+    height: $iui-m;
+    fill: var(--iui-icons-color);
+  }
 }
