@@ -4,13 +4,13 @@ import { FileRecord, SourceFile } from './typings';
 import './ReportBanner.scss';
 import { StatusIcon } from './StatusIcon';
 import { ReportContext } from './Report';
-import { CommonProps } from '@itwin/itwinui-react/cjs/core/utils';
 
 export type ReportBannerProps = {
   fileRecords?: FileRecord[];
   filesProcessed?: SourceFile[];
   currentTab?: 'files' | 'details';
-} & CommonProps;
+  className?: string;
+};
 
 export const ReportBanner = (props: ReportBannerProps) => {
   const context = React.useContext(ReportContext);
