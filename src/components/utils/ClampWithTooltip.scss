@@ -1,0 +1,19 @@
+@import '@itwin/itwinui-css/scss/icon/variables';
+
+.isr-line-clamp {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.isr-tooltip-icon {
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: $iui-icons-default;
+    height: $iui-icons-default;
+    fill: var(--iui-icons-color);
+  }
+}
