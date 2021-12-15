@@ -1,5 +1,9 @@
 @import '@itwin/itwinui-css/scss/variables';
 
+.isr-files-table {
+  height: 100%;
+}
+
 .isr-status-message {
   padding: $iui-s $iui-xs;
   display: grid;

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classnames from 'classnames';
 import {
   Table,
   tableFilters,
@@ -17,6 +18,7 @@ import './FilesTable.scss';
 
 export const FilesTable = ({
   sourceFilesInfo,
+  className,
   ...rest
 }: { sourceFilesInfo?: SourceFilesInfo } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
@@ -112,6 +114,7 @@ export const FilesTable = ({
   return (
     <>
       <Table
+        className={classnames('isr-files-table', className)}
         columns={columns}
         data={data}
         emptyTableContent='No data.'

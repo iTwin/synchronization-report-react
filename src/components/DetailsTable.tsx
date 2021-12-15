@@ -18,6 +18,7 @@ const displayStrings = {
 export const DetailsTable = ({
   fileRecords,
   sourceFilesInfo,
+  className,
   ...rest
 }: {
   fileRecords?: FileRecord[];
@@ -135,6 +136,7 @@ export const DetailsTable = ({
   return (
     <>
       <Table
+        className={classnames('isr-details-table', className)}
         columns={columns}
         data={data}
         emptyTableContent='No data.'
