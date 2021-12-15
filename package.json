@@ -14,6 +14,7 @@
     },
     "./style.css": "./dist/style.css"
   },
+  "typings": "./dist/types.d.ts",
   "dependencies": {
     "@itwin/itwinui-css": "^0.41.1",
     "@itwin/itwinui-icons-react": "^1.3.0",
@@ -31,6 +32,7 @@
     "@vitejs/plugin-react": "^1.0.0",
     "beautiful-react-hooks": "^1.0.2",
     "cypress": "^9.1.0",
+    "dts-bundle-generator": "^6.2.0",
     "eslint": "^8.3.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
@@ -47,7 +49,8 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build:types": "dts-bundle-generator -o dist/types.d.ts src/components/index.tsx --no-banner",
+    "build": "tsc && vite build && yarn build:types",
     "serve": "vite preview",
     "test": "cypress open-ct",
     "test:ci": "cypress run-ct --quiet",

@@ -1,17 +1,9 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import {
-  Table,
-  tableFilters,
-  TableProps,
-  Text,
-  Small,
-  Tooltip,
-  MiddleTextTruncation,
-  Badge,
-} from '@itwin/itwinui-react';
-import { SourceFilesInfo, SourceFile } from './typings';
-import { CellProps } from 'react-table';
+import { Table, tableFilters, Text, Small, Tooltip, MiddleTextTruncation, Badge } from '@itwin/itwinui-react';
+import type { TableProps } from '@itwin/itwinui-react';
+import type { SourceFilesInfo, SourceFile } from './typings';
+import type { CellProps } from 'react-table';
 import { StatusIcon } from './utils';
 import { ReportContext } from './Report';
 import './FilesTable.scss';

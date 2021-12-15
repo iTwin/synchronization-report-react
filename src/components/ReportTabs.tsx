@@ -16,7 +16,7 @@ export const ReportTabs = ({
   className,
   ...rest
 }: {
-  displayStrings?: typeof defaultDisplayStrings;
+  displayStrings?: Record<keyof typeof defaultDisplayStrings, string>;
   filesTable: React.ReactNode;
   detailsTable: React.ReactNode;
   className?: string;
