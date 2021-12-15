@@ -5,6 +5,7 @@ import { ReportData } from './typings';
 import { ReportTitle } from './ReportTitle';
 import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';
+import { ReportServiceRequestSupport } from './ReportServiceRequestSupport';
 import { ReportTabs } from './ReportTabs';
 import './Report.scss';
 
@@ -28,8 +29,7 @@ export const Report = ({ data, children }: { data: ReportData; children?: React.
             <ReportTitle />
             <ReportTimestamp />
             <ReportBanner />
-            {/* Todo: Add ReportDebugIds */}
-
+            <ReportServiceRequestSupport />
             <ReportTabs filesTable={<FilesTable />} detailsTable={<DetailsTable />} />
           </>
         )}
