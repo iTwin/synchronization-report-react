@@ -5,13 +5,9 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/itwin-synchronization-report-ui.umd.js",
-  "module": "./dist/itwin-synchronization-report-ui.es.js",
+  "module": "./dist/index.js",
   "exports": {
-    ".": {
-      "import": "./dist/itwin-synchronization-report-ui.es.js",
-      "require": "./dist/itwin-synchronization-report-ui.umd.js"
-    },
+    ".": "./dist/index.js",
     "./style.css": "./dist/style.css"
   },
   "typings": "./dist/types.d.ts",
