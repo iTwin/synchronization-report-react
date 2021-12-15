@@ -24,7 +24,7 @@ export const ReportTabs = ({
   const context = React.useContext(ReportContext);
 
   if (!context) {
-    throw 'ReportTabs must be used inside the Report component';
+    throw new Error('ReportTabs must be used inside the Report component');
   }
 
   const { currentTab, setCurrentTab } = context;
