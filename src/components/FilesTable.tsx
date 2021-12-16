@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Table, tableFilters, TableProps, Text, Small, Tooltip, Badge } from '@itwin/itwinui-react';
+import { Table, tableFilters, Text, Small, Tooltip, Badge } from '@itwin/itwinui-react';
+import type { TableProps } from '@itwin/itwinui-react';
 import type { SourceFilesInfo, SourceFile } from './typings';
 import type { CellProps, Row } from 'react-table';
 import { StatusIcon } from './utils';
