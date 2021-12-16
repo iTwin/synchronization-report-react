@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { Table, tableFilters, TableProps, Text, Small, Tooltip, Badge } from '@itwin/itwinui-react';
 import type { SourceFilesInfo, SourceFile } from './typings';
-import type { CellProps, Row, Column } from 'react-table';
+import type { CellProps, Row } from 'react-table';
 import { StatusIcon } from './utils';
 import { ReportContext } from './Report';
 import './FilesTable.scss';
