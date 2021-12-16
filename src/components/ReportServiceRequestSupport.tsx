@@ -5,6 +5,7 @@ import { ReportContext } from './Report';
 import { Button, IconButton, Tooltip } from '@itwin/itwinui-react';
 import { SvgCopy } from '@itwin/itwinui-icons-react/cjs/icons';
 import { ReportDataContext } from './typings';
+import Tippy from '@tippyjs/react';
 
 export type ReportServiceRequestSupportProps = {
   data?: ReportDataContext;
@@ -27,7 +28,6 @@ export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportPr
 
   const context = React.useContext(ReportContext);
   const data = props.data || context?.reportData.context;
-  const [showDebugIDs, setShowDebugIDs] = React.useState(false);
 
   const activityID = data?.activityid ?? 'No Activity ID';
   const briefcaseID = data?.briefcaseid ?? 'No Briefcase ID';
@@ -70,33 +70,10 @@ export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportPr
     }
   }, [serviceReportUrl, onCreateServiceRequestClick]);
 
-  const supportInfo = React.useRef<HTMLDivElement>(null);
-
-  const handleClickOutside = (e: { target: any }) => {
-    if (supportInfo?.current?.contains(e.target)) {
-      return;
-    }
-    setShowDebugIDs(false);
-  };
-
-  React.useEffect(() => {
-    if (showDebugIDs) {
-      document.addEventListener('pointerdown', handleClickOutside);
-    } else {
-      document.removeEventListener('pointerdown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('pointerdown', handleClickOutside);
-    };
-  }, [handleClickOutside, showDebugIDs]);
-
   return (
-    <>
-      <div className={classnames('isr-report-service-request-support', props.className)} ref={supportInfo}>
-        <div className='isr-support-open' onClick={() => setShowDebugIDs(!showDebugIDs)}>
-          {'IDs for Tech Support'}
-        </div>
-        {showDebugIDs && (
+    <div className={classnames('isr-report-service-request-support', props.className)}>
+      <Tippy
+        content={
           <div className='isr-support-debugIDWrapper'>
             <div className='isr-support-debugID'>
               <div className='isr-support-debugID-title'>Activity ID:</div>
@@ -153,8 +130,15 @@ export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportPr
               </Button>
             </div>
           </div>
-        )}
-      </div>
-    </>
+        }
+        trigger='click'
+        interactive={true}
+        placement='left-end'
+      >
+        <Button className='isr-support-open' styleType='borderless'>
+          {'IDs for Tech Support'}{' '}
+        </Button>
+      </Tippy>
+    </div>
   );
 };

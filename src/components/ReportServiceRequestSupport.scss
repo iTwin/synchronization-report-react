@@ -3,29 +3,16 @@
 
 .isr-report-service-request-support {
   margin-left: auto;
-  position: relative;
 }
 
 .isr-support-open {
   color: var(--iui-icons-color-primary);
-  cursor: pointer;
-  user-select: none;
-
-  &:hover {
-    color: var(--iui-color-foreground-primary-overlay);
-    text-decoration: underline;
-  }
 }
 
 .isr-support-debugIDWrapper {
   @include iui-dropdown;
-  position: absolute;
-  z-index: 1;
-  right: 50%;
-  overflow: visible;
-  line-height: 1.5em;
   padding: $iui-s;
-  min-width: max-content;
+  width: max-content;
 }
 
 .isr-support-debugID {
@@ -44,7 +31,7 @@
     display: inline-block;
     overflow: hidden;
     overflow-wrap: break-word;
-    max-width: 1000px;
+    max-width: 300px;
   }
 }
 
