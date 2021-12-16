@@ -1,17 +1,8 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import {
-  Table,
-  tableFilters,
-  TableProps,
-  Text,
-  Small,
-  Tooltip,
-  MiddleTextTruncation,
-  Badge,
-} from '@itwin/itwinui-react';
-import { SourceFilesInfo, SourceFile } from './typings';
-import { CellProps } from 'react-table';
+import { Table, tableFilters, TableProps, Text, Small, Tooltip, Badge } from '@itwin/itwinui-react';
+import type { SourceFilesInfo, SourceFile } from './typings';
+import type { CellProps, Row, Column } from 'react-table';
 import { StatusIcon } from './utils';
 import { ReportContext } from './Report';
 import './FilesTable.scss';
@@ -22,6 +13,7 @@ export const FilesTable = ({
   ...rest
 }: { sourceFilesInfo?: SourceFilesInfo } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
+
   const data = React.useMemo(() => {
     const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
     return [{ ...filesInfo, mainFile: true }, ...(filesInfo?.Files ?? [])];
@@ -76,7 +68,7 @@ export const FilesTable = ({
                 props.row.original.path && (
                   <Tooltip content={props.row.original.path}>
                     <div className='isr-tooltip-block'>
-                      <MiddleTextTruncation className='isr-data-text' text={props.row.original.path} />
+                      <Text className='isr-data-text'>{props.row.original.path}</Text>
                     </div>
                   </Tooltip>
                 )
@@ -119,7 +111,12 @@ export const FilesTable = ({
         data={data}
         emptyTableContent='No data.'
         isSortable
-        initialState={{ sortBy: [{ id: 'status' }] }}
+        rowProps={({ original: { fileExists, bimFileExists } }: Row<SourceFile>) => ({
+          // classnames for adding status styling to row (e.g. stripe at the beginning of the row)
+          className: classnames({
+            'iui-negative': !fileExists && !bimFileExists,
+          }),
+        })}
         {...rest}
       />
     </>
