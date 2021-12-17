@@ -69,7 +69,14 @@ export const FilesTable = ({
                 props.row.original.path && (
                   <Tooltip content={props.row.original.path}>
                     <div className='isr-tooltip-block'>
-                      <Text className='isr-data-text'>{props.row.original.path}</Text>
+                      <a
+                        className='isr-data-text'
+                        href={props.row.original.path}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        {props.row.original.path}
+                      </a>
                     </div>
                   </Tooltip>
                 )

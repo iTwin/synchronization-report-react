@@ -38,7 +38,8 @@
   width: 100%;
 }
 .isr-data-text {
-  font-family: ui-monospace, Menlo, 'Segoe UI Mono', Consolas, 'Roboto Mono', 'Courier New', monospace;
+  display: block;
+  font-family: $iui-monospace;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
