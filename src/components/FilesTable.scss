@@ -2,57 +2,56 @@
 
 .isr-files-table {
   height: 100%;
+}
 
-  .isr-files-status-message {
-    padding: $iui-s $iui-xs;
-    display: grid;
-    grid-template-areas: 'icon text';
-    grid-template-columns: $iui-m auto;
-    grid-row-gap: $iui-xxs;
-    grid-column-gap: $iui-s;
-    width: 100%;
-    align-items: center;
+.isr-files-status-message {
+  padding: $iui-s $iui-xs;
+  display: grid;
+  grid-template-areas: 'icon text';
+  grid-template-columns: $iui-m auto;
+  grid-row-gap: $iui-xxs;
+  grid-column-gap: $iui-s;
+  width: 100%;
+  align-items: center;
 
-    &.isr-status-positive {
-      color: var(--iui-color-foreground-positive);
-    }
-    &.isr-status-negative {
-      color: var(--iui-color-foreground-negative);
-    }
-
-    .isr-grid-icon {
-      grid-area: icon;
-    }
-    .isr-grid-text {
-      grid-area: text;
-    }
+  &.isr-status-positive {
+    color: var(--iui-color-foreground-positive);
+  }
+  &.isr-status-negative {
+    color: var(--iui-color-foreground-negative);
   }
 
-  .isr-files-data-text {
-    display: block;
-    font-family: $iui-monospace;
-
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+  .isr-grid-icon {
+    grid-area: icon;
   }
-
-  .isr-files-link {
-    text-decoration: none;
-    cursor: pointer;
-    color: var(--iui-color-foreground-primary);
-
-    &:hover {
-      text-decoration: underline;
-      color: var(--iui-color-foreground-primary-overlay);
-    }
+  .isr-grid-text {
+    grid-area: text;
   }
+}
 
-  .isr-file-name {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    gap: $iui-s;
-    flex-wrap: wrap;
+.isr-files-data-text {
+  display: block;
+  font-family: $iui-monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.isr-files-link {
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--iui-color-foreground-primary);
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--iui-color-foreground-primary-overlay);
   }
+}
+
+.isr-file-name {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: $iui-s;
+  flex-wrap: wrap;
 }

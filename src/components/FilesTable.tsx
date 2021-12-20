@@ -66,16 +66,14 @@ export const FilesTable = ({
             Cell: (props: CellProps<SourceFile>) => {
               return (
                 props.row.original.path && (
-                  <ClampWithTooltip>
-                    <a
-                      className='isr-files-data-text isr-files-link'
-                      href={props.row.original.path}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    >
-                      {props.row.original.path}
-                    </a>
-                  </ClampWithTooltip>
+                  <a
+                    className='isr-files-data-text isr-files-link'
+                    href={props.row.original.path}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    {props.row.original.path}
+                  </a>
                 )
               );
             },
