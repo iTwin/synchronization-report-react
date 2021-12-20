@@ -9,15 +9,15 @@ import { ReportContext } from './Report';
 import './FilesTable.scss';
 
 const defaultDisplayStrings = {
-  Failed: 'Failed',
-  Processed: 'Processed',
-  FileName: 'File name',
-  Status: 'Status',
-  Path: 'Path',
-  FileID: 'File ID',
-  DataSource: 'Data Source',
+  failed: 'Failed',
+  processed: 'Processed',
+  fileName: 'File name',
+  status: 'Status',
+  path: 'Path',
+  fileID: 'File ID',
+  dataSource: 'Data Source',
   mainFile: 'master',
-} as const;
+};
 
 /** Table to display Files in Report. */
 export const FilesTable = ({
@@ -27,7 +27,7 @@ export const FilesTable = ({
   ...rest
 }: {
   sourceFilesInfo?: SourceFilesInfo;
-  displayStrings?: Record<keyof typeof defaultDisplayStrings, string>;
+  displayStrings?: typeof defaultDisplayStrings;
 } & Partial<TableProps>) => {
   const displayStrings = { ...defaultDisplayStrings, ...userDisplayStrings };
 
@@ -47,7 +47,7 @@ export const FilesTable = ({
             id: 'fileName',
             accessor: 'fileName',
             minWidth: 220,
-            Header: displayStrings['FileName'],
+            Header: displayStrings['fileName'],
             Filter: tableFilters.TextFilter(),
             Cell: (props: CellProps<SourceFile>) => {
               return (
@@ -60,7 +60,7 @@ export const FilesTable = ({
           },
           {
             id: 'status',
-            Header: displayStrings['Status'],
+            Header: displayStrings['status'],
             Filter: tableFilters.TextFilter(),
             minWidth: 120,
             maxWidth: 250,
@@ -69,12 +69,12 @@ export const FilesTable = ({
               return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
                 <div className='isr-files-status-message isr-status-negative'>
                   <StatusIcon status='error' className='isr-grid-icon' />
-                  <Text className='isr-grid-text'>{displayStrings['Failed']}</Text>
+                  <Text className='isr-grid-text'>{displayStrings['failed']}</Text>
                 </div>
               ) : (
                 <div className='isr-files-status-message isr-status-positive'>
                   <StatusIcon status='success' className='isr-grid-icon' />
-                  <Text className='isr-grid-text'>{displayStrings['Processed']}</Text>
+                  <Text className='isr-grid-text'>{displayStrings['processed']}</Text>
                 </div>
               );
             },
@@ -83,7 +83,7 @@ export const FilesTable = ({
             id: 'path',
             accessor: 'path',
             minWidth: 150,
-            Header: displayStrings['Path'],
+            Header: displayStrings['path'],
             Filter: tableFilters.TextFilter(),
             Cell: (props: CellProps<SourceFile>) => {
               return (
@@ -104,7 +104,7 @@ export const FilesTable = ({
             id: 'fileId',
             accessor: 'fileId',
             minWidth: 150,
-            Header: displayStrings['FileID'],
+            Header: displayStrings['fileID'],
             Filter: tableFilters.TextFilter(),
             Cell: (props: CellProps<SourceFile>) => {
               return <ClampWithTooltip className='isr-files-data-text'>{props.row.original.fileId}</ClampWithTooltip>;
@@ -115,7 +115,7 @@ export const FilesTable = ({
             accessor: 'dataSource',
             maxWidth: 300,
             minWidth: 200,
-            Header: displayStrings['DataSource'],
+            Header: displayStrings['dataSource'],
             Filter: tableFilters.TextFilter(),
           },
         ],
