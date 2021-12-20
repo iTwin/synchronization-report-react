@@ -11,7 +11,7 @@ import './FilesTable.scss';
 const defaultDisplayStrings = {
   failed: 'Failed',
   processed: 'Processed',
-  fileName: 'File name',
+  fileName: 'File Name',
   status: 'Status',
   path: 'Path',
   fileID: 'File ID',
