@@ -11,11 +11,11 @@ import './FilesTable.scss';
 const defaultDisplayStrings = {
   failed: 'Failed',
   processed: 'Processed',
-  fileName: 'File Name',
+  fileName: 'File name',
   status: 'Status',
   path: 'Path',
   fileID: 'File ID',
-  dataSource: 'Data Source',
+  dataSource: 'Datasource',
   mainFile: 'master',
 };
 
