@@ -2,23 +2,42 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { HorizontalTabs, Tab } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
+import { DetailsTable } from './DetailsTable';
+import { FilesTable } from './FilesTable';
 import './ReportTabs.scss';
 
 const defaultDisplayStrings = {
   files: 'Files',
   details: 'Details',
-} as const;
+};
 
+/**
+ * `ReportTabs` component has the main parts of the report, and must be used as a child of `Report`.
+ * It includes the tabs as well as the `FilesTable` and `DetailsTable` shown in those tabs.
+ *
+ * Two `children` can be specified to override/add content shown in the tabs.
+ * The first child is shown when files tab is active, and second child is shown when details tab is active.
+ * @example
+ * <Report>
+ *   <ReportTabs />
+ * <Report>
+ *
+ * @example
+ * <Report>
+ *   <ReportTabs>
+ *     <FilesTable className='custom-filestable-overrides' />
+ *     <DetailsTable className='custom-detailstable-overrides' />
+ *   </ReportTabs>
+ * </Report>
+ */
 export const ReportTabs = ({
   displayStrings: userDisplayStrings,
-  filesTable,
-  detailsTable,
+  children,
   className,
   ...rest
 }: {
-  displayStrings?: Record<keyof typeof defaultDisplayStrings, string>;
-  filesTable: React.ReactNode;
-  detailsTable: React.ReactNode;
+  displayStrings?: typeof defaultDisplayStrings;
+  children?: [React.ReactNode, React.ReactNode];
   className?: string;
 }) => {
   const context = React.useContext(ReportContext);
@@ -30,6 +49,9 @@ export const ReportTabs = ({
   const { currentTab, setCurrentTab } = context;
 
   const displayStrings = { ...defaultDisplayStrings, ...userDisplayStrings };
+
+  const filesTable = children?.[0] ?? <FilesTable />;
+  const detailsTable = children?.[1] ?? <DetailsTable />;
 
   return (
     <HorizontalTabs

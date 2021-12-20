@@ -30,7 +30,10 @@ export const Report = ({ data, children }: { data: ReportData; children?: React.
             <ReportBanner />
             {/* Todo: Add ReportDebugIds */}
 
-            <ReportTabs filesTable={<FilesTable />} detailsTable={<DetailsTable />} />
+            <ReportTabs>
+              <FilesTable />
+              <DetailsTable />
+            </ReportTabs>
           </>
         )}
       </div>
