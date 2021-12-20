@@ -5,7 +5,8 @@ import { ReportData } from './typings';
 import { ReportTitle } from './ReportTitle';
 import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';
-import { ReportTabs } from './ReportTabs';
+import { ReportTablist } from './ReportTablist';
+import { ReportTabpanel } from './ReportTabpanel';
 import './Report.scss';
 
 export const ReportContext = React.createContext<
@@ -30,10 +31,11 @@ export const Report = ({ data, children }: { data: ReportData; children?: React.
             <ReportBanner />
             {/* Todo: Add ReportDebugIds */}
 
-            <ReportTabs>
+            <ReportTablist />
+            <ReportTabpanel>
               <FilesTable />
               <DetailsTable />
-            </ReportTabs>
+            </ReportTabpanel>
           </>
         )}
       </div>
