@@ -1,11 +1,13 @@
 import * as React from 'react';
+import classnames from 'classnames';
 import { Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
-import { ClampWithTooltip, StatusIcon } from './utils';
+import { ClampWithTooltip, StatusIcon, TextWithIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
 import type { FileRecord, SourceFilesInfo } from './typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
-import classnames from 'classnames';
+import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
+import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
 import './DetailsTable.scss';
 
 const displayStrings = {
@@ -16,15 +18,27 @@ const displayStrings = {
   Info: 'Info',
 } as const;
 
+const defaultFileTypeIcons = {
+  dgn: <SvgFiletypeMicrostation />,
+  dgnlib: <SvgFiletypeMicrostation />,
+};
+
 export const DetailsTable = ({
   fileRecords,
   sourceFilesInfo,
+  fileTypeIcons: userFileTypeIcons,
   className,
   ...rest
 }: {
   fileRecords?: FileRecord[];
   sourceFilesInfo?: SourceFilesInfo;
+  fileTypeIcons?: Record<string, JSX.Element>;
 } & Partial<TableProps>) => {
+  const filetypeIcons = React.useMemo(
+    () => ({ ...defaultFileTypeIcons, ...userFileTypeIcons } as Record<string, JSX.Element>),
+    [userFileTypeIcons]
+  );
+
   const context = React.useContext(ReportContext);
   const data = React.useMemo(() => {
     const files = fileRecords || context?.reportData.filerecords || [];
@@ -66,13 +80,25 @@ export const DetailsTable = ({
               Header: 'File name',
               Filter: tableFilters.TextFilter(),
               cellClassName: 'iui-main',
+              minWidth: 200,
+              Cell: ({ value }: CellProps<TableRow>) => {
+                const extension = value?.substring(value.lastIndexOf('.') + 1);
+                return (
+                  <TextWithIcon
+                    icon={extension && extension in filetypeIcons ? filetypeIcons[extension] : <SvgFiletypeDocument />}
+                  >
+                    {value}
+                  </TextWithIcon>
+                );
+              },
             },
             {
               id: 'level',
               accessor: 'level',
               Header: 'Severity',
               Filter: tableFilters.TextFilter(),
-              maxWidth: 180,
+              minWidth: 100,
+              maxWidth: 250,
               sortType: sortByLevel,
               cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
                 const level = cellProps.row.original.level;
@@ -83,22 +109,22 @@ export const DetailsTable = ({
                   <div
                     {...cellElementProps}
                     className={classnames(
-                      'isr-details-status',
                       {
-                        'isr-status-fatal': level === 'Fatal',
-                        'isr-status-negative': level === 'Error',
-                        'isr-status-critical': level === 'Critical',
-                        'isr-status-warning': level === 'Warning',
-                        'isr-status-primary': level === 'Info',
+                        'isr-details-status-fatal': level === 'Fatal',
+                        'isr-details-status-negative': level === 'Error',
+                        'isr-details-status-critical': level === 'Critical',
+                        'isr-details-status-warning': level === 'Warning',
+                        'isr-details-status-primary': level === 'Info',
                       },
                       cellElementProps.className
                     )}
                   >
                     {level && (
-                      <>
-                        <StatusIcon status={_isError ? 'error' : _isWarning ? 'warning' : 'informational'} />
+                      <TextWithIcon
+                        icon={<StatusIcon status={_isError ? 'error' : _isWarning ? 'warning' : 'informational'} />}
+                      >
                         {level in displayStrings ? displayStrings[level] : level}
-                      </>
+                      </TextWithIcon>
                     )}
                   </div>
                 );
@@ -109,7 +135,8 @@ export const DetailsTable = ({
               accessor: 'category',
               Header: 'Category',
               Filter: tableFilters.TextFilter(),
-              maxWidth: 200,
+              minWidth: 100,
+              maxWidth: 250,
               Cell: ({ value }: CellProps<TableRow>) => value.replace(/([A-Z])/g, ' $1'), // add spaces between words
             },
             {
@@ -117,7 +144,8 @@ export const DetailsTable = ({
               accessor: 'type',
               Header: 'Type',
               Filter: tableFilters.TextFilter(),
-              maxWidth: 200,
+              minWidth: 100,
+              maxWidth: 250,
               Cell: ({ value }: CellProps<TableRow>) => value.replace(/([A-Z])/g, ' $1'), // add spaces between words
             },
             {
@@ -125,13 +153,14 @@ export const DetailsTable = ({
               accessor: 'message',
               Header: 'Message',
               Filter: tableFilters.TextFilter(),
+              minWidth: 200,
               cellClassName: 'isr-details-message',
               Cell: ({ value }: CellProps<TableRow>) => <ClampWithTooltip>{value}</ClampWithTooltip>,
             },
           ],
         },
       ] as Column<TableRow>[],
-    [getFileNameFromId, sortByLevel]
+    [filetypeIcons, getFileNameFromId, sortByLevel]
   );
 
   return (
