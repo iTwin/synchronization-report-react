@@ -4,7 +4,7 @@ import { Table, tableFilters, Text, Small, Tooltip, Badge } from '@itwin/itwinui
 import type { TableProps } from '@itwin/itwinui-react';
 import type { SourceFilesInfo, SourceFile } from './typings';
 import type { CellProps, Row } from 'react-table';
-import { StatusIcon } from './utils';
+import { StatusIcon, ClampWithTooltip } from './utils';
 import { ReportContext } from './Report';
 import './FilesTable.scss';
 
@@ -46,13 +46,12 @@ export const FilesTable = ({
             maxWidth: 250,
             Cell: (props: CellProps<SourceFile>) => {
               return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
-                <div className='isr-status-message isr-status-negative'>
+                <div className='isr-files-status-message isr-status-negative'>
                   <StatusIcon status='error' className='isr-grid-icon' />
                   <Text className='isr-grid-text'>Failed</Text>
-                  <Small className='isr-grid-subText'>File by that name not found at this datasource/path.</Small>
                 </div>
               ) : (
-                <div className='isr-status-message isr-status-positive'>
+                <div className='isr-files-status-message isr-status-positive'>
                   <StatusIcon status='success' className='isr-grid-icon' />
                   <Text className='isr-grid-text'>Processed</Text>
                 </div>
@@ -67,18 +66,16 @@ export const FilesTable = ({
             Cell: (props: CellProps<SourceFile>) => {
               return (
                 props.row.original.path && (
-                  <Tooltip content={props.row.original.path}>
-                    <div className='isr-tooltip-block'>
-                      <a
-                        className='isr-data-text'
-                        href={props.row.original.path}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                      >
-                        {props.row.original.path}
-                      </a>
-                    </div>
-                  </Tooltip>
+                  <ClampWithTooltip>
+                    <a
+                      className='isr-files-data-text isr-files-link'
+                      href={props.row.original.path}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      {props.row.original.path}
+                    </a>
+                  </ClampWithTooltip>
                 )
               );
             },
@@ -90,13 +87,7 @@ export const FilesTable = ({
             Filter: tableFilters.TextFilter(),
             maxWidth: 320,
             Cell: (props: CellProps<SourceFile>) => {
-              return (
-                <Tooltip content={props.row.original.fileId}>
-                  <div className='isr-tooltip-block'>
-                    <Text className='isr-data-text'>{props.row.original.fileId}</Text>
-                  </div>
-                </Tooltip>
-              );
+              return <ClampWithTooltip className='isr-files-data-text'>{props.row.original.fileId}</ClampWithTooltip>;
             },
           },
           {
