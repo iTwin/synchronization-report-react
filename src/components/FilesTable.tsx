@@ -1,27 +1,38 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import {
-  Table,
-  tableFilters,
-  TableProps,
-  Text,
-  Small,
-  Tooltip,
-  MiddleTextTruncation,
-  Badge,
-} from '@itwin/itwinui-react';
-import { SourceFilesInfo, SourceFile } from './typings';
-import { CellProps } from 'react-table';
-import { StatusIcon } from './utils';
+import { StatusIcon, ClampWithTooltip } from './utils';
+import { Table, tableFilters, Text, Badge } from '@itwin/itwinui-react';
+import type { TableProps } from '@itwin/itwinui-react';
+import type { SourceFilesInfo, SourceFile } from './typings';
+import type { CellProps, Row } from 'react-table';
 import { ReportContext } from './Report';
 import './FilesTable.scss';
 
+const defaultDisplayStrings = {
+  failed: 'Failed',
+  processed: 'Processed',
+  fileName: 'File name',
+  status: 'Status',
+  path: 'Path',
+  fileID: 'File ID',
+  datasource: 'Datasource',
+  mainFile: 'master',
+};
+
+/** Table to display Files in Report. */
 export const FilesTable = ({
+  displayStrings: userDisplayStrings,
   sourceFilesInfo,
   className,
   ...rest
-}: { sourceFilesInfo?: SourceFilesInfo } & Partial<TableProps>) => {
+}: {
+  sourceFilesInfo?: SourceFilesInfo;
+  displayStrings?: typeof defaultDisplayStrings;
+} & Partial<TableProps>) => {
+  const displayStrings = { ...defaultDisplayStrings, ...userDisplayStrings };
+
   const context = React.useContext(ReportContext);
+
   const data = React.useMemo(() => {
     const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
     return [{ ...filesInfo, mainFile: true }, ...(filesInfo?.Files ?? [])];
@@ -35,33 +46,35 @@ export const FilesTable = ({
           {
             id: 'fileName',
             accessor: 'fileName',
-            Header: 'File name',
+            minWidth: 220,
+            Header: displayStrings['fileName'],
             Filter: tableFilters.TextFilter(),
             Cell: (props: CellProps<SourceFile>) => {
               return (
                 <div className='isr-file-name'>
                   <Text>{props.row.original.fileName}</Text>
-                  {props.row.original.mainFile && <Badge backgroundColor='primary'>master</Badge>}
+                  {props.row.original.mainFile && <Badge backgroundColor='primary'>{displayStrings['mainFile']}</Badge>}
                 </div>
               );
             },
           },
           {
             id: 'status',
-            Header: 'Status',
+            Header: displayStrings['status'],
             Filter: tableFilters.TextFilter(),
+            minWidth: 120,
             maxWidth: 250,
             Cell: (props: CellProps<SourceFile>) => {
+              /* Note: This field can be changed to `State` value from row props. */
               return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
-                <div className='isr-status-message isr-status-negative'>
+                <div className='isr-files-status-message isr-status-negative'>
                   <StatusIcon status='error' className='isr-grid-icon' />
-                  <Text className='isr-grid-text'>Failed</Text>
-                  <Small className='isr-grid-subText'>File by that name not found at this datasource/path.</Small>
+                  <Text className='isr-grid-text'>{displayStrings['failed']}</Text>
                 </div>
               ) : (
-                <div className='isr-status-message isr-status-positive'>
+                <div className='isr-files-status-message isr-status-positive'>
                   <StatusIcon status='success' className='isr-grid-icon' />
-                  <Text className='isr-grid-text'>Processed</Text>
+                  <Text className='isr-grid-text'>{displayStrings['processed']}</Text>
                 </div>
               );
             },
@@ -69,16 +82,20 @@ export const FilesTable = ({
           {
             id: 'path',
             accessor: 'path',
-            Header: 'Path',
+            minWidth: 150,
+            Header: displayStrings['path'],
             Filter: tableFilters.TextFilter(),
             Cell: (props: CellProps<SourceFile>) => {
               return (
                 props.row.original.path && (
-                  <Tooltip content={props.row.original.path}>
-                    <div className='isr-tooltip-block'>
-                      <MiddleTextTruncation className='isr-data-text' text={props.row.original.path} />
-                    </div>
-                  </Tooltip>
+                  <a
+                    className='isr-files-data-text isr-files-link'
+                    href={props.row.original.path}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    {props.row.original.path}
+                  </a>
                 )
               );
             },
@@ -86,23 +103,19 @@ export const FilesTable = ({
           {
             id: 'fileId',
             accessor: 'fileId',
-            Header: 'File ID',
+            minWidth: 150,
+            Header: displayStrings['fileID'],
             Filter: tableFilters.TextFilter(),
-            maxWidth: 320,
             Cell: (props: CellProps<SourceFile>) => {
-              return (
-                <Tooltip content={props.row.original.fileId}>
-                  <div className='isr-tooltip-block'>
-                    <Text className='isr-data-text'>{props.row.original.fileId}</Text>
-                  </div>
-                </Tooltip>
-              );
+              return <ClampWithTooltip className='isr-files-data-text'>{props.row.original.fileId}</ClampWithTooltip>;
             },
           },
           {
             id: 'dataSource',
             accessor: 'dataSource',
-            Header: 'Data Source',
+            maxWidth: 300,
+            minWidth: 200,
+            Header: displayStrings['datasource'],
             Filter: tableFilters.TextFilter(),
           },
         ],
@@ -119,7 +132,13 @@ export const FilesTable = ({
         data={data}
         emptyTableContent='No data.'
         isSortable
-        initialState={{ sortBy: [{ id: 'status' }] }}
+        isResizable
+        rowProps={({ original: { fileExists, bimFileExists } }: Row<SourceFile>) => ({
+          // classnames for adding status styling to row (e.g. stripe at the beginning of the row)
+          className: classnames({
+            'iui-negative': !fileExists && !bimFileExists,
+          }),
+        })}
         {...rest}
       />
     </>

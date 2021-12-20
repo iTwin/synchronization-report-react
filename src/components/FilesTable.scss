@@ -4,12 +4,10 @@
   height: 100%;
 }
 
-.isr-status-message {
+.isr-files-status-message {
   padding: $iui-s $iui-xs;
   display: grid;
-  grid-template-areas:
-    'icon text'
-    '- subText';
+  grid-template-areas: 'icon text';
   grid-template-columns: $iui-m auto;
   grid-row-gap: $iui-xxs;
   grid-column-gap: $iui-s;
@@ -29,18 +27,25 @@
   .isr-grid-text {
     grid-area: text;
   }
-  .isr-grid-subText {
-    grid-area: subText;
-    color: var(--iui-color-foreground-body);
-  }
 }
-.isr-tooltip-block {
-  width: 100%;
-}
-.isr-data-text {
+
+.isr-files-data-text {
+  display: block;
+  font-family: $iui-monospace;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.isr-files-link {
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--iui-color-foreground-primary);
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--iui-color-foreground-primary-overlay);
+  }
 }
 
 .isr-file-name {

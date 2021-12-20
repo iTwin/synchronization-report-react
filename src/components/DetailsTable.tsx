@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Table, tableFilters, TablePaginator, TableProps } from '@itwin/itwinui-react';
+import { Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
 import { ClampWithTooltip, StatusIcon } from './utils';
+import type { TableProps } from '@itwin/itwinui-react';
 import type { FileRecord, SourceFilesInfo } from './typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import classnames from 'classnames';

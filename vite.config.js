@@ -10,6 +10,8 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/components/index.tsx'),
       name: '@itwin/itwin-synchronization-report-ui',
+      formats: ['es'],
+      fileName: () => 'index.js',
     },
     rollupOptions: {
       external: ['react', '@itwin/itwinui-react', '@itwin/itwinui-css'],
