@@ -7,6 +7,20 @@ import SvgCopy from '@itwin/itwinui-icons-react/cjs/icons/Copy';
 import { ReportDataContext } from './typings';
 import Tippy from '@tippyjs/react';
 
+const defaultDisplayStrings = {
+  activityid: 'Activity ID',
+  briefcaseid: 'Briefcase ID',
+  contextid: 'Context ID',
+  contextName: 'Ctx. Name',
+  jobDefID: 'Job Def. ID',
+  jobid: 'Job ID',
+  jobRunID: 'Job Run ID',
+  modelid: 'Model ID',
+  modelName: 'Model Name',
+  organizationName: 'Org. Name',
+  userEmail: 'User Email',
+};
+
 export type ReportServiceRequestSupportProps = {
   data?: ReportDataContext;
   currentTab?: 'files' | 'details';
@@ -17,12 +31,17 @@ export type ReportServiceRequestSupportProps = {
   modelName?: string;
   organizationName?: string;
   userEmail?: string;
+  userDisplayStrings?: typeof defaultDisplayStrings;
   children?: React.ReactNode;
 };
 
 export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportProps) => {
   const context = React.useContext(ReportContext);
   const data = props.data || context?.reportData.context;
+  const displayStrings = React.useMemo(
+    () => ({ ...defaultDisplayStrings, ...props.userDisplayStrings }),
+    [props.userDisplayStrings]
+  );
 
   const debugIDs = {
     'Activity ID': data?.activityid ?? 'No Activity ID',
@@ -53,47 +72,47 @@ export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportPr
         content={
           <div className='isr-support-debugIDWrapper'>
             <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>Activity ID:</div>
+              <div className='isr-support-debugID-title'>{`${displayStrings.activityid}:`}</div>
               <div className='isr-support-debugID-id'>{debugIDs['Activity ID']}</div>
             </div>
             <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>Briefcase ID:</div>
+              <div className='isr-support-debugID-title'>{`${displayStrings.briefcaseid}:`}</div>
               <div className='isr-support-debugID-id'>{debugIDs['Briefcase ID']}</div>
             </div>
             <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>Context ID:</div>
+              <div className='isr-support-debugID-title'>{`${displayStrings.contextid}:`}</div>
               <div className='isr-support-debugID-id'>{debugIDs['Context ID']}</div>
             </div>
             <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>Ctx. Name:</div>
+              <div className='isr-support-debugID-title'>{`${displayStrings.contextName}:`}</div>
               <div className='isr-support-debugID-id'>{debugIDs['Ctx. Name']}</div>
             </div>
             <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>Job Def. ID:</div>
+              <div className='isr-support-debugID-title'>{`${displayStrings.jobDefID}:`}</div>
               <div className='isr-support-debugID-id'>{debugIDs['Job Def. ID']}</div>
             </div>
             <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>Job ID:</div>
+              <div className='isr-support-debugID-title'>{`${displayStrings.jobid}:`}</div>
               <div className='isr-support-debugID-id'>{debugIDs['Job ID']}</div>
             </div>
             <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>Job Run ID:</div>
+              <div className='isr-support-debugID-title'>{`${displayStrings.jobRunID}:`}</div>
               <div className='isr-support-debugID-id'>{debugIDs['Job Run ID']}</div>
             </div>
             <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>Model ID:</div>
+              <div className='isr-support-debugID-title'>{`${displayStrings.modelid}:`}</div>
               <div className='isr-support-debugID-id'>{debugIDs['iModel ID']}</div>
             </div>
             <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>Model Name:</div>
+              <div className='isr-support-debugID-title'>{`${displayStrings.modelName}:`}</div>
               <div className='isr-support-debugID-id'>{debugIDs['iModel Name']}</div>
             </div>
             <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>Org. Name:</div>
+              <div className='isr-support-debugID-title'>{`${displayStrings.organizationName}:`}</div>
               <div className='isr-support-debugID-id'>{debugIDs['Org. Name']}</div>
             </div>
             <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>User Email:</div>
+              <div className='isr-support-debugID-title'>{`${displayStrings.userEmail}:`}</div>
               <div className='isr-support-debugID-id'>{debugIDs['User Email']}</div>
             </div>
             <div className='isr-support-service-request-buttons'>
