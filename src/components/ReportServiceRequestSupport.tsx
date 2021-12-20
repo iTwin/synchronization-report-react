@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import './ReportServiceRequestSupport.scss';
 import { ReportContext } from './Report';
 import { Button, IconButton, Tooltip } from '@itwin/itwinui-react';
-import { SvgCopy } from '@itwin/itwinui-icons-react/cjs/icons';
+import SvgCopy from '@itwin/itwinui-icons-react/cjs/icons/Copy';
 import { ReportDataContext } from './typings';
 import Tippy from '@tippyjs/react';
 
@@ -17,58 +17,35 @@ export type ReportServiceRequestSupportProps = {
   modelName?: string;
   organizationName?: string;
   userEmail?: string;
-  /// If defined and `onCreateServiceRequestClick` is not defined, this url will be opened in a new tab when creating a new service request
-  serviceReportUrl?: string;
-  /// If defined, clicking on the button to create a service request will call this function.
-  onCreateServiceRequestClick?: () => void;
+  children?: React.ReactNode;
 };
 
 export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportProps) => {
-  const { serviceReportUrl, onCreateServiceRequestClick } = props;
-
   const context = React.useContext(ReportContext);
   const data = props.data || context?.reportData.context;
 
-  const activityID = data?.activityid ?? 'No Activity ID';
-  const briefcaseID = data?.briefcaseid ?? 'No Briefcase ID';
-  const contextId = data?.contextid ?? 'No Context ID';
-  const contextName = props.contextName ?? 'No Context Name';
-  const jobDefID = props.jobDefID ?? 'No Job Definition ID';
-  const jobID = data?.jobid ?? 'No Job ID';
-  const jobRunID = props.jobRunID ?? 'No Job Run ID';
-  const modelID = data?.imodelid ?? 'No iModel ID';
-  const modelName = props.modelName ?? 'No Model Name';
-  const organizationName = props.organizationName ?? 'No Organization Name';
-  const userEmail = props.userEmail ?? 'No User Email';
+  const debugIDs = {
+    'Activity ID': data?.activityid ?? 'No Activity ID',
+    'Briefcase ID': data?.briefcaseid ?? 'No Briefcase ID',
+    'Context ID': data?.contextid ?? 'No Context ID',
+    'Ctx. Name': props.contextName ?? 'No Context Name',
+    'Job Def. ID': props.jobDefID ?? 'No Job Definition ID',
+    'Job ID': data?.jobid ?? 'No Job ID',
+    'Job Run ID': props.jobRunID ?? 'No Job Run ID',
+    'iModel ID': data?.imodelid ?? 'No iModel ID',
+    'iModel Name': props.modelName ?? 'No Model Name',
+    'Org. Name': props.organizationName ?? 'No Organization Name',
+    'User Email': props.userEmail ?? 'No User Email',
+  };
 
   const handleCopyTextClicked = () => {
     // DO NOT LOCALIZE!!! This is used for pasting into the service request form in English.
-    const debugString = `
-      Activity ID: ${activityID}
-      Briefcase ID: ${briefcaseID}
-      Context ID: ${contextId}
-      Ctx. Name: ${contextName}
-      Job Def. ID: ${jobDefID}
-      Job ID: ${jobID}
-      Job Run ID: ${jobRunID}
-      iModel ID: ${modelID}
-      iModel Name: ${modelName}
-      Org. Name: ${organizationName}
-      User Email: ${userEmail}`;
-
+    let debugString = '';
+    Object.entries(debugIDs).map((id) => {
+      debugString = debugString + `${id[0]}: ${id[1]} \n`;
+    });
     navigator.clipboard.writeText(debugString);
   };
-
-  const onCreateSrClick = React.useCallback(() => {
-    if (onCreateServiceRequestClick) {
-      onCreateServiceRequestClick();
-      return;
-    }
-
-    if (serviceReportUrl) {
-      window.open(serviceReportUrl, '_blank');
-    }
-  }, [serviceReportUrl, onCreateServiceRequestClick]);
 
   return (
     <div className={classnames('isr-report-service-request-support', props.className)}>
@@ -77,47 +54,47 @@ export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportPr
           <div className='isr-support-debugIDWrapper'>
             <div className='isr-support-debugID'>
               <div className='isr-support-debugID-title'>Activity ID:</div>
-              <div className='isr-support-debugID-id'>{activityID}</div>
+              <div className='isr-support-debugID-id'>{debugIDs['Activity ID']}</div>
             </div>
             <div className='isr-support-debugID'>
               <div className='isr-support-debugID-title'>Briefcase ID:</div>
-              <div className='isr-support-debugID-id'>{briefcaseID}</div>
+              <div className='isr-support-debugID-id'>{debugIDs['Briefcase ID']}</div>
             </div>
             <div className='isr-support-debugID'>
               <div className='isr-support-debugID-title'>Context ID:</div>
-              <div className='isr-support-debugID-id'>{contextId}</div>
+              <div className='isr-support-debugID-id'>{debugIDs['Context ID']}</div>
             </div>
             <div className='isr-support-debugID'>
               <div className='isr-support-debugID-title'>Ctx. Name:</div>
-              <div className='isr-support-debugID-id'>{contextName}</div>
+              <div className='isr-support-debugID-id'>{debugIDs['Ctx. Name']}</div>
             </div>
             <div className='isr-support-debugID'>
               <div className='isr-support-debugID-title'>Job Def. ID:</div>
-              <div className='isr-support-debugID-id'>{jobDefID}</div>
+              <div className='isr-support-debugID-id'>{debugIDs['Job Def. ID']}</div>
             </div>
             <div className='isr-support-debugID'>
               <div className='isr-support-debugID-title'>Job ID:</div>
-              <div className='isr-support-debugID-id'>{jobID}</div>
+              <div className='isr-support-debugID-id'>{debugIDs['Job ID']}</div>
             </div>
             <div className='isr-support-debugID'>
               <div className='isr-support-debugID-title'>Job Run ID:</div>
-              <div className='isr-support-debugID-id'>{jobRunID}</div>
+              <div className='isr-support-debugID-id'>{debugIDs['Job Run ID']}</div>
             </div>
             <div className='isr-support-debugID'>
               <div className='isr-support-debugID-title'>Model ID:</div>
-              <div className='isr-support-debugID-id'>{modelID}</div>
+              <div className='isr-support-debugID-id'>{debugIDs['iModel ID']}</div>
             </div>
             <div className='isr-support-debugID'>
               <div className='isr-support-debugID-title'>Model Name:</div>
-              <div className='isr-support-debugID-id'>{modelName}</div>
+              <div className='isr-support-debugID-id'>{debugIDs['iModel Name']}</div>
             </div>
             <div className='isr-support-debugID'>
               <div className='isr-support-debugID-title'>Org. Name:</div>
-              <div className='isr-support-debugID-id'>{organizationName}</div>
+              <div className='isr-support-debugID-id'>{debugIDs['Org. Name']}</div>
             </div>
             <div className='isr-support-debugID'>
               <div className='isr-support-debugID-title'>User Email:</div>
-              <div className='isr-support-debugID-id'>{userEmail}</div>
+              <div className='isr-support-debugID-id'>{debugIDs['User Email']}</div>
             </div>
             <div className='isr-support-service-request-buttons'>
               <Tooltip content={'Copy to clipboard and paste in service request'} placement='bottom'>
@@ -125,9 +102,7 @@ export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportPr
                   <SvgCopy />
                 </IconButton>
               </Tooltip>
-              <Button styleType='cta' onClick={onCreateSrClick}>
-                {'Create Service Request'}
-              </Button>
+              {props.children}
             </div>
           </div>
         }
@@ -136,7 +111,7 @@ export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportPr
         placement='left-end'
       >
         <Button className='isr-support-open' styleType='borderless'>
-          {'IDs for Tech Support'}{' '}
+          {'IDs for Tech Support'}
         </Button>
       </Tippy>
     </div>
