@@ -15,7 +15,7 @@ const defaultDisplayStrings = {
   status: 'Status',
   path: 'Path',
   fileID: 'File ID',
-  dataSource: 'Datasource',
+  datasource: 'Datasource',
   mainFile: 'master',
 };
 
@@ -115,7 +115,7 @@ export const FilesTable = ({
             accessor: 'dataSource',
             maxWidth: 300,
             minWidth: 200,
-            Header: displayStrings['dataSource'],
+            Header: displayStrings['datasource'],
             Filter: tableFilters.TextFilter(),
           },
         ],
