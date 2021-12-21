@@ -15,7 +15,7 @@ const Main = () => {
 };
 
 export const App = () => {
-  const [isDark, setIsDark] = React.useState(useMediaQuery('(prefers-color-scheme: dark'));
+  const [isDark, setIsDark] = React.useState(useMediaQuery('(prefers-color-scheme: dark)'));
   useTheme(isDark ? 'dark' : 'light');
 
   return (

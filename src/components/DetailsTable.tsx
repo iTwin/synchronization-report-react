@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
+import { DropdownMenu, IconButton, MenuItem, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
 import { ClampWithTooltip, StatusIcon, TextWithIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
@@ -8,6 +8,7 @@ import type { FileRecord, SourceFilesInfo } from './typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
+import SvgMore from '@itwin/itwinui-icons-react/esm/icons/More';
 import './DetailsTable.scss';
 
 const defaultDisplayStrings = {
@@ -21,6 +22,7 @@ const defaultDisplayStrings = {
   category: 'Category',
   type: 'Type',
   message: 'Message',
+  copyRow: 'Copy row',
 };
 
 const defaultFileTypeIcons = {
@@ -168,6 +170,33 @@ export const DetailsTable = ({
               minWidth: 200,
               cellClassName: 'isr-details-message',
               Cell: ({ value }: CellProps<TableRow>) => <ClampWithTooltip>{value}</ClampWithTooltip>,
+            },
+            {
+              id: 'more',
+              Header: '',
+              minWidth: 48,
+              width: 48,
+              maxWidth: 48,
+              columnClassName: 'iui-slot',
+              cellClassName: 'iui-slot',
+              Cell: ({ row: { original } }: CellProps<TableRow>) => (
+                <DropdownMenu
+                  menuItems={() => [
+                    <MenuItem
+                      key='copy'
+                      onClick={async () => {
+                        await window.navigator.clipboard.writeText(JSON.stringify(original));
+                      }}
+                    >
+                      {displayStrings.copyRow}
+                    </MenuItem>,
+                  ]}
+                >
+                  <IconButton styleType='borderless'>
+                    <SvgMore />
+                  </IconButton>
+                </DropdownMenu>
+              ),
             },
           ],
         },
