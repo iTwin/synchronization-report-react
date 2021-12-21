@@ -66,7 +66,7 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
   };
 
   return (
-    <div className={classnames('isr-report-service-request-support', props.className)}>
+    <div className={classnames('isr-support', props.className)}>
       <Tippy
         content={
           <div className='isr-support-debugIDWrapper'>
