@@ -2,8 +2,13 @@ import * as React from 'react';
 import { ReportContext } from './Report';
 import { Text } from '@itwin/itwinui-react';
 
+const defaultDisplayStrings = {
+  synchronizationReport: 'Synchronization Report',
+};
+
 export type ReportTitleProps = {
   fileName?: string;
+  userDisplayStrings?: typeof defaultDisplayStrings;
 };
 
 export const ReportTitle = (props: ReportTitleProps) => {
@@ -12,5 +17,10 @@ export const ReportTitle = (props: ReportTitleProps) => {
     return props.fileName || context?.reportData.sourceFilesInfo?.fileName;
   }, [context?.reportData.sourceFilesInfo?.fileName, props.fileName]);
 
-  return <Text variant={'title'}>{'Synchronization Report | ' + fileName ?? 'unknown'}</Text>;
+  const displayStrings = React.useMemo(
+    () => ({ ...defaultDisplayStrings, ...props.userDisplayStrings }),
+    [props.userDisplayStrings]
+  );
+
+  return <Text variant={'title'}>{`${displayStrings.synchronizationReport} | ${fileName ?? 'unknown'}`}</Text>;
 };
