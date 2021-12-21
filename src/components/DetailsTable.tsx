@@ -92,7 +92,7 @@ export const DetailsTable = ({
               Header: displayStrings.fileName,
               Filter: tableFilters.TextFilter(),
               cellClassName: 'iui-main',
-              minWidth: 200,
+              minWidth: 150,
               Cell: ({ value }: CellProps<TableRow>) => {
                 const extension = value?.substring(value.lastIndexOf('.') + 1);
                 return (
@@ -109,7 +109,7 @@ export const DetailsTable = ({
               accessor: 'level',
               Header: displayStrings.level,
               Filter: tableFilters.TextFilter(),
-              minWidth: 100,
+              minWidth: 75,
               maxWidth: 250,
               sortType: sortByLevel,
               cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
@@ -147,7 +147,7 @@ export const DetailsTable = ({
               accessor: 'category',
               Header: displayStrings.category,
               Filter: tableFilters.TextFilter(),
-              minWidth: 100,
+              minWidth: 75,
               maxWidth: 250,
               Cell: ({ value }: CellProps<TableRow>) => value.replace(/([A-Z])/g, ' $1'), // add spaces between words
             },
@@ -156,7 +156,7 @@ export const DetailsTable = ({
               accessor: 'type',
               Header: displayStrings.type,
               Filter: tableFilters.TextFilter(),
-              minWidth: 100,
+              minWidth: 50,
               maxWidth: 250,
               Cell: ({ value }: CellProps<TableRow>) => value.replace(/([A-Z])/g, ' $1'), // add spaces between words
             },
@@ -191,7 +191,7 @@ export const DetailsTable = ({
             'iui-warning': level === 'Critical' || level === 'Warning',
           }),
         })}
-        paginatorRenderer={(props) => <TablePaginator {...props} />}
+        paginatorRenderer={(props) => <TablePaginator pageSizeList={[10, 25, 50]} {...props} />}
         {...rest}
       />
     </>

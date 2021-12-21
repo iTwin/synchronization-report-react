@@ -65,7 +65,7 @@ export const FilesTable = ({
           {
             id: 'fileName',
             accessor: 'fileName',
-            minWidth: 200,
+            minWidth: 125,
             Header: displayStrings['fileName'],
             Filter: tableFilters.TextFilter(),
             Cell: ({ row: { original } }: CellProps<SourceFile>) => {
@@ -86,7 +86,7 @@ export const FilesTable = ({
             id: 'status',
             Header: displayStrings['status'],
             Filter: tableFilters.TextFilter(),
-            minWidth: 100,
+            minWidth: 75,
             maxWidth: 250,
             Cell: (props: CellProps<SourceFile>) => {
               /* Note: This field can be changed to `State` value from row props. */
@@ -125,7 +125,7 @@ export const FilesTable = ({
           {
             id: 'fileId',
             accessor: 'fileId',
-            minWidth: 150,
+            minWidth: 100,
             Header: displayStrings['fileID'],
             Filter: tableFilters.TextFilter(),
             Cell: (props: CellProps<SourceFile>) => {
@@ -135,7 +135,7 @@ export const FilesTable = ({
           {
             id: 'dataSource',
             accessor: 'dataSource',
-            minWidth: 150,
+            minWidth: 100,
             Header: displayStrings['datasource'],
             Filter: tableFilters.TextFilter(),
             Cell: ({ value }: CellProps<SourceFile>) => {
