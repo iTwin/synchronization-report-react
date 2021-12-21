@@ -12,10 +12,9 @@
   },
   "typings": "./dist/types.d.ts",
   "dependencies": {
-    "@itwin/itwinui-css": "^0.41.1",
     "@itwin/itwinui-icons-color-react": "^1.0.1",
     "@itwin/itwinui-icons-react": "^1.3.0",
-    "@itwin/itwinui-react": "^1.27.0",
+    "@itwin/itwinui-react": "^1.28.0",
     "classnames": "^2.3.1"
   },
   "devDependencies": {
