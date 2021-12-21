@@ -10,13 +10,18 @@ import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
 import './DetailsTable.scss';
 
-const displayStrings = {
+const defaultDisplayStrings = {
   Fatal: 'Fatal Error',
   Error: 'Error',
   Critical: 'Critical Warning',
   Warning: 'Warning',
   Info: 'Info',
-} as const;
+  fileName: 'File name',
+  level: 'Severity',
+  category: 'Category',
+  type: 'Type',
+  message: 'Message',
+};
 
 const defaultFileTypeIcons = {
   dgn: <SvgFiletypeMicrostation />,
@@ -27,12 +32,14 @@ export const DetailsTable = ({
   fileRecords,
   sourceFilesInfo,
   fileTypeIcons: userFileTypeIcons,
+  displayStrings: userDisplayStrings,
   className,
   ...rest
 }: {
   fileRecords?: FileRecord[];
   sourceFilesInfo?: SourceFilesInfo;
   fileTypeIcons?: Record<string, JSX.Element>;
+  displayStrings?: typeof defaultDisplayStrings;
 } & Partial<TableProps>) => {
   const filetypeIcons = React.useMemo(
     () => ({ ...defaultFileTypeIcons, ...userFileTypeIcons } as Record<string, JSX.Element>),
@@ -48,6 +55,11 @@ export const DetailsTable = ({
       )
       .flat();
   }, [fileRecords, context?.reportData.filerecords]);
+
+  const displayStrings = React.useMemo(
+    () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),
+    [userDisplayStrings]
+  );
 
   const getFileNameFromId = React.useCallback(
     (id?: string) => {
@@ -77,7 +89,7 @@ export const DetailsTable = ({
             {
               id: 'fileName',
               accessor: ({ fileName, fileId }) => fileName ?? getFileNameFromId(fileId),
-              Header: 'File name',
+              Header: displayStrings.fileName,
               Filter: tableFilters.TextFilter(),
               cellClassName: 'iui-main',
               minWidth: 200,
@@ -95,7 +107,7 @@ export const DetailsTable = ({
             {
               id: 'level',
               accessor: 'level',
-              Header: 'Severity',
+              Header: displayStrings.level,
               Filter: tableFilters.TextFilter(),
               minWidth: 100,
               maxWidth: 250,
@@ -133,7 +145,7 @@ export const DetailsTable = ({
             {
               id: 'category',
               accessor: 'category',
-              Header: 'Category',
+              Header: displayStrings.category,
               Filter: tableFilters.TextFilter(),
               minWidth: 100,
               maxWidth: 250,
@@ -142,7 +154,7 @@ export const DetailsTable = ({
             {
               id: 'type',
               accessor: 'type',
-              Header: 'Type',
+              Header: displayStrings.type,
               Filter: tableFilters.TextFilter(),
               minWidth: 100,
               maxWidth: 250,
@@ -151,7 +163,7 @@ export const DetailsTable = ({
             {
               id: 'message',
               accessor: 'message',
-              Header: 'Message',
+              Header: displayStrings.message,
               Filter: tableFilters.TextFilter(),
               minWidth: 200,
               cellClassName: 'isr-details-message',
@@ -160,7 +172,7 @@ export const DetailsTable = ({
           ],
         },
       ] as Column<TableRow>[],
-    [filetypeIcons, getFileNameFromId, sortByLevel]
+    [displayStrings, filetypeIcons, getFileNameFromId, sortByLevel]
   );
 
   return (
