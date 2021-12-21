@@ -1,11 +1,13 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { StatusIcon, ClampWithTooltip } from './utils';
+import { StatusIcon, ClampWithTooltip, TextWithIcon } from './utils';
 import { Table, tableFilters, Text, Badge } from '@itwin/itwinui-react';
 import type { TableProps } from '@itwin/itwinui-react';
 import type { SourceFilesInfo, SourceFile } from './typings';
 import type { CellProps, Row } from 'react-table';
 import { ReportContext } from './Report';
+import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
+import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
 import './FilesTable.scss';
 
 const defaultDisplayStrings = {
@@ -19,17 +21,34 @@ const defaultDisplayStrings = {
   mainFile: 'master',
 };
 
+const defaultFileTypeIcons = {
+  dgn: <SvgFiletypeMicrostation />,
+  dgnlib: <SvgFiletypeMicrostation />,
+};
+
 /** Table to display Files in Report. */
 export const FilesTable = ({
   displayStrings: userDisplayStrings,
   sourceFilesInfo,
+  fileTypeIcons: userFileTypeIcons,
+  datasourceIcons,
   className,
   ...rest
 }: {
   sourceFilesInfo?: SourceFilesInfo;
   displayStrings?: typeof defaultDisplayStrings;
+  fileTypeIcons?: Record<string, JSX.Element>;
+  datasourceIcons?: Record<string, JSX.Element>;
 } & Partial<TableProps>) => {
-  const displayStrings = { ...defaultDisplayStrings, ...userDisplayStrings };
+  const filetypeIcons = React.useMemo(
+    () => ({ ...defaultFileTypeIcons, ...userFileTypeIcons } as Record<string, JSX.Element>),
+    [userFileTypeIcons]
+  );
+
+  const displayStrings = React.useMemo(
+    () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),
+    [userDisplayStrings]
+  );
 
   const context = React.useContext(ReportContext);
 
@@ -46,14 +65,19 @@ export const FilesTable = ({
           {
             id: 'fileName',
             accessor: 'fileName',
-            minWidth: 220,
+            minWidth: 200,
             Header: displayStrings['fileName'],
             Filter: tableFilters.TextFilter(),
-            Cell: (props: CellProps<SourceFile>) => {
+            Cell: ({ row: { original } }: CellProps<SourceFile>) => {
+              const extension = original.fileName?.substring(original.fileName.lastIndexOf('.') + 1);
               return (
                 <div className='isr-file-name'>
-                  <Text>{props.row.original.fileName}</Text>
-                  {props.row.original.mainFile && <Badge backgroundColor='primary'>{displayStrings['mainFile']}</Badge>}
+                  <TextWithIcon
+                    icon={extension && extension in filetypeIcons ? filetypeIcons[extension] : <SvgFiletypeDocument />}
+                  >
+                    {original.fileName}
+                  </TextWithIcon>
+                  {original.mainFile && <Badge backgroundColor='primary'>{displayStrings['mainFile']}</Badge>}
                 </div>
               );
             },
@@ -62,20 +86,18 @@ export const FilesTable = ({
             id: 'status',
             Header: displayStrings['status'],
             Filter: tableFilters.TextFilter(),
-            minWidth: 120,
+            minWidth: 100,
             maxWidth: 250,
             Cell: (props: CellProps<SourceFile>) => {
               /* Note: This field can be changed to `State` value from row props. */
               return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
-                <div className='isr-files-status-message isr-status-negative'>
-                  <StatusIcon status='error' className='isr-grid-icon' />
-                  <Text className='isr-grid-text'>{displayStrings['failed']}</Text>
-                </div>
+                <TextWithIcon icon={<StatusIcon status='error' />} className='isr-files-status-negative'>
+                  <Text>{displayStrings['failed']}</Text>
+                </TextWithIcon>
               ) : (
-                <div className='isr-files-status-message isr-status-positive'>
-                  <StatusIcon status='success' className='isr-grid-icon' />
-                  <Text className='isr-grid-text'>{displayStrings['processed']}</Text>
-                </div>
+                <TextWithIcon icon={<StatusIcon status='success' />} className='isr-files-status-positive'>
+                  <Text>{displayStrings['processed']}</Text>
+                </TextWithIcon>
               );
             },
           },
@@ -89,7 +111,7 @@ export const FilesTable = ({
               return (
                 props.row.original.path && (
                   <a
-                    className='isr-files-data-text isr-files-link'
+                    className='isr-files-data-text isr-files-link isr-line-clamp'
                     href={props.row.original.path}
                     target='_blank'
                     rel='noopener noreferrer'
@@ -113,15 +135,21 @@ export const FilesTable = ({
           {
             id: 'dataSource',
             accessor: 'dataSource',
-            maxWidth: 300,
-            minWidth: 200,
+            minWidth: 150,
             Header: displayStrings['datasource'],
             Filter: tableFilters.TextFilter(),
+            Cell: ({ value }: CellProps<SourceFile>) => {
+              return (
+                <TextWithIcon icon={datasourceIcons && value in datasourceIcons && datasourceIcons[value]}>
+                  {value}
+                </TextWithIcon>
+              );
+            },
           },
         ],
       },
     ],
-    []
+    [displayStrings, filetypeIcons, datasourceIcons]
   );
 
   return (
@@ -132,7 +160,6 @@ export const FilesTable = ({
         data={data}
         emptyTableContent='No data.'
         isSortable
-        isResizable
         rowProps={({ original: { fileExists, bimFileExists } }: Row<SourceFile>) => ({
           // classnames for adding status styling to row (e.g. stripe at the beginning of the row)
           className: classnames({
