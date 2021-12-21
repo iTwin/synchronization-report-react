@@ -2,8 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import './ReportServiceRequestSupport.scss';
 import { ReportContext } from './Report';
-import { Button, IconButton, Tooltip } from '@itwin/itwinui-react';
-import SvgCopy from '@itwin/itwinui-icons-react/cjs/icons/Copy';
+import { Button } from '@itwin/itwinui-react';
 import { ReportDataContext } from './typings';
 import Tippy from '@tippyjs/react';
 
@@ -19,9 +18,10 @@ const defaultDisplayStrings = {
   modelName: 'Model Name',
   organizationName: 'Org. Name',
   userEmail: 'User Email',
+  idsForTechSupport: 'IDs for Tech Support',
 };
 
-export type ReportServiceRequestSupportProps = {
+export type ReportDebugIdsProps = {
   data?: ReportDataContext;
   currentTab?: 'files' | 'details';
   className?: string;
@@ -35,7 +35,10 @@ export type ReportServiceRequestSupportProps = {
   children?: React.ReactNode;
 };
 
-export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportProps) => {
+/**
+ * Context menu to display debug ids for creating a service request
+ */
+export const ReportDebugIds = (props: ReportDebugIdsProps) => {
   const context = React.useContext(ReportContext);
   const data = props.data || context?.reportData.context;
   const displayStrings = React.useMemo(
@@ -55,15 +58,6 @@ export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportPr
     'iModel Name': props.modelName ?? 'No Model Name',
     'Org. Name': props.organizationName ?? 'No Organization Name',
     'User Email': props.userEmail ?? 'No User Email',
-  };
-
-  const handleCopyTextClicked = () => {
-    // DO NOT LOCALIZE!!! This is used for pasting into the service request form in English.
-    let debugString = '';
-    Object.entries(debugIDs).map((id) => {
-      debugString = debugString + `${id[0]}: ${id[1]} \n`;
-    });
-    navigator.clipboard.writeText(debugString);
   };
 
   return (
@@ -115,14 +109,7 @@ export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportPr
               <div className='isr-support-debugID-title'>{`${displayStrings.userEmail}:`}</div>
               <div className='isr-support-debugID-id'>{debugIDs['User Email']}</div>
             </div>
-            <div className='isr-support-service-request-buttons'>
-              <Tooltip content={'Copy to clipboard and paste in service request'} placement='bottom'>
-                <IconButton onClick={handleCopyTextClicked}>
-                  <SvgCopy />
-                </IconButton>
-              </Tooltip>
-              {props.children}
-            </div>
+            {props.children}
           </div>
         }
         trigger='click'
@@ -130,9 +117,11 @@ export const ReportServiceRequestSupport = (props: ReportServiceRequestSupportPr
         placement='left-end'
       >
         <Button className='isr-support-open' styleType='borderless'>
-          {'IDs for Tech Support'}
+          {displayStrings.idsForTechSupport}
         </Button>
       </Tippy>
     </div>
   );
 };
+
+export default ReportDebugIds;
