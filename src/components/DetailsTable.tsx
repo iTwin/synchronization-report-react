@@ -8,22 +8,29 @@ import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import classnames from 'classnames';
 import './DetailsTable.scss';
 
-const displayStrings = {
+const defaultDisplayStrings = {
   Fatal: 'Fatal Error',
   Error: 'Error',
   Critical: 'Critical Warning',
   Warning: 'Warning',
   Info: 'Info',
-} as const;
+  fileName: 'File name',
+  level: 'Severity',
+  category: 'Category',
+  type: 'Type',
+  message: 'Message',
+};
 
 export const DetailsTable = ({
   fileRecords,
   sourceFilesInfo,
   className,
+  displayStrings: userDisplayStrings,
   ...rest
 }: {
   fileRecords?: FileRecord[];
   sourceFilesInfo?: SourceFilesInfo;
+  displayStrings?: typeof defaultDisplayStrings;
 } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
   const data = React.useMemo(() => {
@@ -34,6 +41,11 @@ export const DetailsTable = ({
       )
       .flat();
   }, [fileRecords, context?.reportData.filerecords]);
+
+  const displayStrings = React.useMemo(
+    () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),
+    [userDisplayStrings]
+  );
 
   const getFileNameFromId = React.useCallback(
     (id?: string) => {
@@ -63,14 +75,14 @@ export const DetailsTable = ({
             {
               id: 'fileName',
               accessor: ({ fileName, fileId }) => fileName ?? getFileNameFromId(fileId),
-              Header: 'File name',
+              Header: displayStrings.fileName,
               Filter: tableFilters.TextFilter(),
               cellClassName: 'iui-main',
             },
             {
               id: 'level',
               accessor: 'level',
-              Header: 'Severity',
+              Header: displayStrings.level,
               Filter: tableFilters.TextFilter(),
               maxWidth: 180,
               sortType: sortByLevel,
@@ -107,7 +119,7 @@ export const DetailsTable = ({
             {
               id: 'category',
               accessor: 'category',
-              Header: 'Category',
+              Header: displayStrings.category,
               Filter: tableFilters.TextFilter(),
               maxWidth: 200,
               Cell: ({ value }: CellProps<TableRow>) => value.replace(/([A-Z])/g, ' $1'), // add spaces between words
@@ -115,7 +127,7 @@ export const DetailsTable = ({
             {
               id: 'type',
               accessor: 'type',
-              Header: 'Type',
+              Header: displayStrings.type,
               Filter: tableFilters.TextFilter(),
               maxWidth: 200,
               Cell: ({ value }: CellProps<TableRow>) => value.replace(/([A-Z])/g, ' $1'), // add spaces between words
@@ -123,7 +135,7 @@ export const DetailsTable = ({
             {
               id: 'message',
               accessor: 'message',
-              Header: 'Message',
+              Header: displayStrings.message,
               Filter: tableFilters.TextFilter(),
               cellClassName: 'isr-details-message',
               Cell: ({ value }: CellProps<TableRow>) => <ClampWithTooltip>{value}</ClampWithTooltip>,
@@ -131,7 +143,7 @@ export const DetailsTable = ({
           ],
         },
       ] as Column<TableRow>[],
-    [getFileNameFromId, sortByLevel]
+    [displayStrings, getFileNameFromId, sortByLevel]
   );
 
   return (
