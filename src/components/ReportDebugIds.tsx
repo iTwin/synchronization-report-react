@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import './ReportServiceRequestSupport.scss';
+import './ReportDebugIds.scss';
 import { ReportContext } from './Report';
 import { Button } from '@itwin/itwinui-react';
 import { ReportDataContext } from './typings';
@@ -21,16 +21,20 @@ const defaultDisplayStrings = {
   idsForTechSupport: 'IDs for Tech Support',
 };
 
-export type ReportDebugIdsProps = {
-  data?: ReportDataContext;
-  currentTab?: 'files' | 'details';
-  className?: string;
+export type debugIdData = {
+  reportData?: ReportDataContext;
   contextName?: string;
   jobDefID?: string;
   jobRunID?: string;
   modelName?: string;
   organizationName?: string;
   userEmail?: string;
+};
+
+export type ReportDebugIdsProps = {
+  data?: debugIdData;
+  currentTab?: 'files' | 'details';
+  className?: string;
   userDisplayStrings?: typeof defaultDisplayStrings;
   children?: React.ReactNode;
 };
@@ -40,24 +44,25 @@ export type ReportDebugIdsProps = {
  */
 export const ReportDebugIds = (props: ReportDebugIdsProps) => {
   const context = React.useContext(ReportContext);
-  const data = props.data || context?.reportData.context;
+  const reportData = props.data?.reportData || context?.reportData.context;
+  const data = props.data;
   const displayStrings = React.useMemo(
     () => ({ ...defaultDisplayStrings, ...props.userDisplayStrings }),
     [props.userDisplayStrings]
   );
 
   const debugIDs = {
-    'Activity ID': data?.activityid ?? 'No Activity ID',
-    'Briefcase ID': data?.briefcaseid ?? 'No Briefcase ID',
-    'Context ID': data?.contextid ?? 'No Context ID',
-    'Ctx. Name': props.contextName ?? 'No Context Name',
-    'Job Def. ID': props.jobDefID ?? 'No Job Definition ID',
-    'Job ID': data?.jobid ?? 'No Job ID',
-    'Job Run ID': props.jobRunID ?? 'No Job Run ID',
-    'iModel ID': data?.imodelid ?? 'No iModel ID',
-    'iModel Name': props.modelName ?? 'No Model Name',
-    'Org. Name': props.organizationName ?? 'No Organization Name',
-    'User Email': props.userEmail ?? 'No User Email',
+    'Activity ID': reportData?.activityid ?? 'No Activity ID',
+    'Briefcase ID': reportData?.briefcaseid ?? 'No Briefcase ID',
+    'Context ID': reportData?.contextid ?? 'No Context ID',
+    'Ctx. Name': data?.contextName ?? 'No Context Name',
+    'Job Def. ID': data?.jobDefID ?? 'No Job Definition ID',
+    'Job ID': reportData?.jobid ?? 'No Job ID',
+    'Job Run ID': data?.jobRunID ?? 'No Job Run ID',
+    'iModel ID': reportData?.imodelid ?? 'No iModel ID',
+    'iModel Name': data?.modelName ?? 'No Model Name',
+    'Org. Name': data?.organizationName ?? 'No Organization Name',
+    'User Email': data?.userEmail ?? 'No User Email',
   };
 
   return (
