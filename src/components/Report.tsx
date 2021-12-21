@@ -29,8 +29,6 @@ export const Report = ({ data, children }: { data: ReportData; children?: React.
             <ReportTitle />
             <ReportTimestamp />
             <ReportBanner />
-            {/* Todo: Add ReportDebugIds */}
-
             <ReportTablist />
             <ReportTabpanel>
               <FilesTable />
