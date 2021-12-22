@@ -1,0 +1,12 @@
+.isr-tablist-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.isr-tablist-wrapper-left {
+  justify-content: flex-start;
+}
+.isr-tablist-wrapper-right {
+  justify-content: flex-end;
+}

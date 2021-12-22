@@ -7,7 +7,10 @@ import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';
 import { ReportTablist } from './ReportTablist';
 import { ReportTabpanel } from './ReportTabpanel';
+import { ReportTablistWrapper } from './index';
+import { ReportSearchbar } from './ReportSearchbar';
 import './Report.scss';
+import { TablistLeftside, TablistRightside } from './ReportTablistWrapper';
 
 export const ReportContext = React.createContext<
   | {
@@ -29,7 +32,16 @@ export const Report = ({ data, children }: { data: ReportData; children?: React.
             <ReportTitle />
             <ReportTimestamp />
             <ReportBanner />
-            <ReportTablist />
+            <ReportTablistWrapper>
+              <TablistLeftside>
+                <ReportTablist />
+              </TablistLeftside>
+              {selectedTab === 'details' && (
+                <TablistRightside>
+                  <ReportSearchbar />
+                </TablistRightside>
+              )}
+            </ReportTablistWrapper>
             <ReportTabpanel>
               <FilesTable />
               <DetailsTable />
