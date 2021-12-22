@@ -6,10 +6,9 @@ import { StatusIcon } from './utils';
 import { ReportContext } from './Report';
 
 const defaultDisplayStrings = {
-  filesProcessed: 'File(s) processed',
-  filesFailedToSynchronize: 'File(s) failed to synchronize',
-  synchronizationIssuesFound: 'Synchronization issues found',
-  synchronizationIssues: 'Synchronization issues',
+  filesProcessed: 'file(s) processed',
+  filesFailedToSynchronize: 'file(s) failed to synchronize',
+  synchronizationIssuesFound: 'synchronization issues found',
   errors: 'Errors',
   warnings: 'Warnings',
   otherIssues: 'Other issues',
