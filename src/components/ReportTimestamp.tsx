@@ -3,7 +3,7 @@ import { ReportContext } from './Report';
 import { Text } from '@itwin/itwinui-react';
 
 const defaultDisplayStrings = {
-  runCompleted: 'Run Completed',
+  runCompleted: 'Run completed',
 };
 
 export type ReportTimestampProps = {
