@@ -1,10 +1,11 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { StatusIcon, ClampWithTooltip, TextWithIcon } from './utils';
-import { Table, tableFilters, Text, Badge } from '@itwin/itwinui-react';
+import { Table, tableFilters, Text, Badge, IconButton, Tooltip } from '@itwin/itwinui-react';
 import type { TableProps } from '@itwin/itwinui-react';
 import type { SourceFilesInfo, SourceFile } from './typings';
 import type { CellProps, Row } from 'react-table';
+import SvgCopy from '@itwin/itwinui-icons-react/esm/icons/Copy';
 import { ReportContext } from './Report';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
@@ -19,6 +20,7 @@ const defaultDisplayStrings = {
   fileID: 'File ID',
   datasource: 'Datasource',
   mainFile: 'master',
+  copyRow: 'Copy row',
 };
 
 const defaultFileTypeIcons = {
@@ -51,6 +53,7 @@ export const FilesTable = ({
   );
 
   const context = React.useContext(ReportContext);
+  type TableRow = Partial<typeof data[number]>;
 
   const data = React.useMemo(() => {
     const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
@@ -66,7 +69,7 @@ export const FilesTable = ({
             id: 'fileName',
             accessor: 'fileName',
             minWidth: 125,
-            Header: displayStrings['fileName'],
+            Header: displayStrings.fileName,
             Filter: tableFilters.TextFilter(),
             Cell: ({ row: { original } }: CellProps<SourceFile>) => {
               const extension = original.fileName?.substring(original.fileName.lastIndexOf('.') + 1);
@@ -77,14 +80,14 @@ export const FilesTable = ({
                   >
                     {original.fileName}
                   </TextWithIcon>
-                  {original.mainFile && <Badge backgroundColor='primary'>{displayStrings['mainFile']}</Badge>}
+                  {original.mainFile && <Badge backgroundColor='primary'>{displayStrings.mainFile}</Badge>}
                 </div>
               );
             },
           },
           {
             id: 'status',
-            Header: displayStrings['status'],
+            Header: displayStrings.status,
             Filter: tableFilters.TextFilter(),
             minWidth: 75,
             maxWidth: 250,
@@ -92,11 +95,11 @@ export const FilesTable = ({
               /* Note: This field can be changed to `State` value from row props. */
               return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
                 <TextWithIcon icon={<StatusIcon status='error' />} className='isr-files-status-negative'>
-                  <Text>{displayStrings['failed']}</Text>
+                  <Text>{displayStrings.failed}</Text>
                 </TextWithIcon>
               ) : (
                 <TextWithIcon icon={<StatusIcon status='success' />} className='isr-files-status-positive'>
-                  <Text>{displayStrings['processed']}</Text>
+                  <Text>{displayStrings.processed}</Text>
                 </TextWithIcon>
               );
             },
@@ -105,7 +108,7 @@ export const FilesTable = ({
             id: 'path',
             accessor: 'path',
             minWidth: 150,
-            Header: displayStrings['path'],
+            Header: displayStrings.path,
             Filter: tableFilters.TextFilter(),
             Cell: (props: CellProps<SourceFile>) => {
               return (
@@ -126,7 +129,7 @@ export const FilesTable = ({
             id: 'fileId',
             accessor: 'fileId',
             minWidth: 100,
-            Header: displayStrings['fileID'],
+            Header: displayStrings.fileID,
             Filter: tableFilters.TextFilter(),
             Cell: (props: CellProps<SourceFile>) => {
               return <ClampWithTooltip className='isr-files-data-text'>{props.row.original.fileId}</ClampWithTooltip>;
@@ -136,7 +139,7 @@ export const FilesTable = ({
             id: 'dataSource',
             accessor: 'dataSource',
             minWidth: 100,
-            Header: displayStrings['datasource'],
+            Header: displayStrings.datasource,
             Filter: tableFilters.TextFilter(),
             Cell: ({ value }: CellProps<SourceFile>) => {
               return (
@@ -145,6 +148,27 @@ export const FilesTable = ({
                 </TextWithIcon>
               );
             },
+          },
+          {
+            id: 'more',
+            Header: '',
+            minWidth: 48,
+            width: 48,
+            maxWidth: 48,
+            columnClassName: 'iui-slot',
+            cellClassName: 'iui-slot',
+            Cell: ({ row: { original } }: CellProps<TableRow>) => (
+              <Tooltip content={displayStrings.copyRow}>
+                <IconButton
+                  styleType='borderless'
+                  onClick={async () => {
+                    await window.navigator.clipboard.writeText(JSON.stringify(original));
+                  }}
+                >
+                  <SvgCopy />
+                </IconButton>
+              </Tooltip>
+            ),
           },
         ],
       },
