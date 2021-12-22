@@ -6,14 +6,14 @@ import { StatusIcon } from './utils';
 import { ReportContext } from './Report';
 
 const defaultDisplayStrings = {
-  filesProcessed: 'File(s) Processed',
+  filesProcessed: 'File(s) processed',
   filesFailedToSynchronize: 'File(s) failed to synchronize',
-  synchronizationIssuesFound: 'Synchronization Issues Found',
-  synchronizationIssues: 'Synchronization Issues',
+  synchronizationIssuesFound: 'Synchronization issues found',
+  synchronizationIssues: 'Synchronization issues',
   errors: 'Errors',
   warnings: 'Warnings',
-  otherIssues: 'Other Issues',
-  noSynchronizationIssuesFound: 'No Synchronization Issues Found',
+  otherIssues: 'Other issues',
+  noSynchronizationIssuesFound: 'No synchronization issues found',
 };
 
 export type ReportBannerProps = {
