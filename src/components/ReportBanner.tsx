@@ -13,6 +13,7 @@ const defaultDisplayStrings = {
   warnings: 'Warnings',
   otherIssues: 'Other issues',
   noSynchronizationIssuesFound: 'No synchronization issues found',
+  seeDetails: 'See details',
 };
 
 export type ReportBannerProps = {
@@ -120,7 +121,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
                     tabIndex={0}
                     onClick={() => context?.setCurrentTab('details')}
                   >
-                    {'See details'}
+                    {displayStrings.seeDetails}
                   </span>
                 </span>
               ) : (
