@@ -73,7 +73,6 @@ export const ReportBanner = (props: ReportBannerProps) => {
             props.className
           )}
         >
-          {/* Todo: Make files table filter by status when clicking on '1 file failed'*/}
           {currentTab === 'files' && filesProcessed && (
             <div className='isr-header-banner-message'>
               <span className='isr-header-banner-section'>
@@ -84,7 +83,13 @@ export const ReportBanner = (props: ReportBannerProps) => {
               {failedFileCount > 0 && (
                 <span className='isr-header-banner-section'>
                   <StatusIcon status='error' />
-                  <span className='isr-header-banner-section-message'>
+                  <span
+                    className='isr-header-banner-section-error'
+                    tabIndex={0}
+                    onClick={() => {
+                      /* Todo: Filter Files table by Failed Files */
+                    }}
+                  >
                     {failedFileCount + ' file(s) failed to synchronize'}
                   </span>
                 </span>
@@ -93,6 +98,13 @@ export const ReportBanner = (props: ReportBannerProps) => {
                 <span className='isr-header-banner-section'>
                   <span className='isr-header-banner-section-message'>
                     {issuesCount + ' Synchronization Issues Found'}
+                  </span>
+                  <span
+                    className='isr-header-banner-section-info'
+                    tabIndex={0}
+                    onClick={() => context?.setCurrentTab('details')}
+                  >
+                    {'See details'}
                   </span>
                 </span>
               ) : (
@@ -104,7 +116,6 @@ export const ReportBanner = (props: ReportBannerProps) => {
             </div>
           )}
 
-          {/* Todo: Make details table filter by issue type when clicking on issue*/}
           {currentTab === 'details' && fileRecords && (
             <div className='isr-header-banner-message'>
               {issuesCount > 0 ? (
@@ -115,19 +126,43 @@ export const ReportBanner = (props: ReportBannerProps) => {
                   {errorCount > 0 && (
                     <span className='isr-header-banner-section'>
                       <StatusIcon status='error' />
-                      <span className='isr-header-banner-section-message'>{'Errors: ' + errorCount}</span>
+                      <span
+                        className='isr-header-banner-section-error'
+                        tabIndex={0}
+                        onClick={() => {
+                          /*Filter Details table by Error */
+                        }}
+                      >
+                        {'Errors: ' + errorCount}
+                      </span>
                     </span>
                   )}
                   {warningCount > 0 && (
                     <span className='isr-header-banner-section'>
                       <StatusIcon status='warning' />
-                      <span className='isr-header-banner-section-message'>{'Warnings: ' + warningCount}</span>
+                      <span
+                        className='isr-header-banner-section-warning'
+                        tabIndex={0}
+                        onClick={() => {
+                          /*Filter Details table by Warning */
+                        }}
+                      >
+                        {'Warnings: ' + warningCount}
+                      </span>
                     </span>
                   )}
                   {infoCount > 0 && (
                     <span className='isr-header-banner-section'>
                       <StatusIcon status='informational' />
-                      <span className='isr-header-banner-section-message'>{'Other Issues: ' + infoCount}</span>
+                      <span
+                        className='isr-header-banner-section-info'
+                        tabIndex={0}
+                        onClick={() => {
+                          /*Filter Details table by Info */
+                        }}
+                      >
+                        {'Other Issues: ' + infoCount}
+                      </span>
                     </span>
                   )}
                 </>

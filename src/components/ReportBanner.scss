@@ -23,6 +23,39 @@
       height: 1em;
       background-color: var(--iui-text-color);
     }
+
+    &-error {
+      cursor: pointer;
+      @include iui-focus;
+      color: var(--iui-color-foreground-negative);
+
+      &:hover {
+        color: var(--iui-color-foreground-negative-overlay);
+        text-decoration: underline;
+      }
+    }
+
+    &-warning {
+      cursor: pointer;
+      @include iui-focus;
+      color: var(--iui-color-foreground-warning);
+
+      &:hover {
+        color: var(--iui-color-foreground-warning-overlay);
+        text-decoration: underline;
+      }
+    }
+
+    &-info {
+      cursor: pointer;
+      @include iui-focus;
+      color: var(--iui-color-foreground-primary);
+
+      &:hover {
+        color: var(--iui-color-foreground-primary-overlay);
+        text-decoration: underline;
+      }
+    }
   }
 
   &.isr-negative {
