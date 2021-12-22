@@ -35,7 +35,7 @@ export type ReportDebugIdsProps = {
   data?: debugIdData;
   currentTab?: 'files' | 'details';
   className?: string;
-  userDisplayStrings?: typeof defaultDisplayStrings;
+  displayStrings?: typeof defaultDisplayStrings;
   children?: React.ReactNode;
 };
 
@@ -49,8 +49,8 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
   const reportData = props.data?.reportData || context?.reportData.context;
   const data = props.data;
   const displayStrings = React.useMemo(
-    () => ({ ...defaultDisplayStrings, ...props.userDisplayStrings }),
-    [props.userDisplayStrings]
+    () => ({ ...defaultDisplayStrings, ...props.displayStrings }),
+    [props.displayStrings]
   );
 
   const debugIDs = {
