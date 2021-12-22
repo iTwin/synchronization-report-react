@@ -2,7 +2,7 @@
 
 ## Usage
 
-### Installation
+### 1. Installation
 
 ```
 npm i @itwin/itwin-synchronization-report-ui
@@ -17,7 +17,7 @@ yarn add @itwin/itwin-synchronization-report-ui
 
 </details>
 
-### Imports
+### 2. Imports
 
 Import the component and styles.
 
@@ -37,7 +37,7 @@ import '@itwin/itwin-synchronization-report-ui/dist/style.css';
 
 </details>
 
-### Basic usage
+### 3. Basic usage
 
 Simply pass your report data into the `Report` component.
 
@@ -53,7 +53,7 @@ export const App = () => {
 };
 ```
 
-### Advanced usage
+### 4. Advanced usage
 
 This package uses a composition approach to provide extreme flexibility. Smaller components are exported and can be passed as `children` of `Report`, which
 makes the report data available through the context API without prop drilling. However, most of the smaller components do accept props to allow using out `Report`.
