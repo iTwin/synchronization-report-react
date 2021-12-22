@@ -2,7 +2,7 @@
 
 ## Usage
 
-0. Install the package:
+**0. Install the package:**
 
 ```
 npm i @itwin/itwin-synchronization-report-ui
@@ -17,7 +17,7 @@ yarn add @itwin/itwin-synchronization-report-ui
 
 </details>
 
-1. Import the components and styles.
+**1. Import the components and styles.**
 
 ```tsx
 import { Report } from '@itwin/itwin-synchronization-report-ui';
@@ -35,7 +35,7 @@ import '@itwin/itwin-synchronization-report-ui/dist/style.css';
 
 </details>
 
-2. Use the component with your report data!
+**2. Use the component with your report data.**
 
 Basic usage:
 
