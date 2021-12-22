@@ -1,24 +1,26 @@
 import * as React from 'react';
-import classnames from 'classnames';
 import { HorizontalTabs, Tab } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
-import './ReportTabs.scss';
 
 const defaultDisplayStrings = {
   files: 'Files',
   details: 'Details',
-} as const;
+};
 
-export const ReportTabs = ({
+/**
+ * `ReportTablist` shows the files and details tabs (only the tab selectors, not the panel content).
+ * It should be used as a child of `Report`.
+ *
+ * Two `children` can be specified to show custom tab components.
+ */
+export const ReportTablist = ({
   displayStrings: userDisplayStrings,
-  filesTable,
-  detailsTable,
+  children,
   className,
   ...rest
 }: {
   displayStrings?: typeof defaultDisplayStrings;
-  filesTable: React.ReactNode;
-  detailsTable: React.ReactNode;
+  children?: [React.ReactNode, React.ReactNode];
   className?: string;
 }) => {
   const context = React.useContext(ReportContext);
@@ -35,16 +37,15 @@ export const ReportTabs = ({
     <HorizontalTabs
       activeIndex={currentTab === 'files' ? 0 : 1}
       onTabSelected={(index) => setCurrentTab(index === 0 ? 'files' : 'details')}
-      labels={[
-        <Tab key='files' label={displayStrings['files']} />,
-        <Tab key='details' label={displayStrings['details']} />,
-      ]}
+      labels={
+        children ?? [
+          <Tab key='files' label={displayStrings['files']} />,
+          <Tab key='details' label={displayStrings['details']} />,
+        ]
+      }
       type='borderless'
-      contentClassName='isr-report-tabs-content'
-      wrapperClassName={classnames('isr-report-tabs-wrapper', className)}
+      wrapperClassName={className}
       {...rest}
-    >
-      {currentTab === 'files' ? filesTable : detailsTable}
-    </HorizontalTabs>
+    />
   );
 };

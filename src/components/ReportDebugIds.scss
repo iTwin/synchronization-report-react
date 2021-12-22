@@ -1,0 +1,36 @@
+@import '@itwin/itwinui-css/scss/menu/menu.scss';
+@import '@itwin/itwinui-css/scss/variables';
+
+.isr-support {
+  margin-left: auto;
+}
+
+.isr-support-open {
+  color: var(--iui-icons-color-primary);
+}
+
+.isr-support-debugIDWrapper {
+  @include iui-dropdown;
+  padding: $iui-s;
+  width: max-content;
+}
+
+.isr-support-debugID {
+  &-title {
+    font-weight: bold;
+    width: 100px;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-right: $iui-s;
+    text-align: right;
+  }
+
+  &-id {
+    display: inline-block;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    max-width: 300px;
+  }
+}

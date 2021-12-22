@@ -2,8 +2,13 @@ import * as React from 'react';
 import { ReportContext } from './Report';
 import { Text } from '@itwin/itwinui-react';
 
+const defaultDisplayStrings = {
+  runCompleted: 'Run completed',
+};
+
 export type ReportTimestampProps = {
   timestamp?: string;
+  userDisplayStrings?: typeof defaultDisplayStrings;
 };
 
 export const ReportTimestamp = (props: ReportTimestampProps) => {
@@ -11,6 +16,11 @@ export const ReportTimestamp = (props: ReportTimestampProps) => {
   const timestamp = React.useMemo(() => {
     return props.timestamp || context?.reportData.context?.timestamp;
   }, [context?.reportData.context?.timestamp, props.timestamp]);
+
+  const displayStrings = React.useMemo(
+    () => ({ ...defaultDisplayStrings, ...props.userDisplayStrings }),
+    [props.userDisplayStrings]
+  );
 
   const [date, setDate] = React.useState<string>('');
   React.useEffect(() => {
@@ -26,7 +36,7 @@ export const ReportTimestamp = (props: ReportTimestampProps) => {
 
   return (
     <Text variant='small' isMuted={true}>
-      {'Run Completed: ' + date}
+      {`${displayStrings.runCompleted}: ${date}`}
     </Text>
   );
 };

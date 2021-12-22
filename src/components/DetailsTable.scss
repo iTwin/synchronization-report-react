@@ -5,26 +5,24 @@
 }
 
 .isr-details-status {
-  gap: $iui-xs;
-
   @each $status in positive, negative, warning, primary {
-    &.isr-status-#{$status} {
+    &-#{$status} {
       color: var(--iui-color-foreground-#{$status});
     }
   }
 
-  &.isr-status-fatal {
+  &-fatal {
     color: var(--iui-color-foreground-negative);
     background: rgba(var(--iui-color-foreground-negative-rgb), var(--iui-opacity-6));
   }
 
-  &.isr-status-critical {
+  &-critical {
     color: var(--iui-color-foreground-warning);
     background: rgba(var(--iui-color-foreground-warning-rgb), var(--iui-opacity-6));
   }
 }
 
 .isr-details-message {
-  gap: $iui-xs;
+  gap: $iui-s;
   justify-content: space-between;
 }
