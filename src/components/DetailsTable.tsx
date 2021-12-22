@@ -185,7 +185,11 @@ export const DetailsTable = ({
                     <MenuItem
                       key='copy'
                       onClick={async () => {
-                        await window.navigator.clipboard.writeText(JSON.stringify(original));
+                        try {
+                          await window.navigator.clipboard.writeText(JSON.stringify(original));
+                        } catch (_) {
+                          console.error('Cannot write to clipboard');
+                        }
                       }}
                     >
                       {displayStrings.copyRow}
