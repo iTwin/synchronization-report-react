@@ -2,7 +2,7 @@
 
 ## Usage
 
-**0. Install the package:**
+### Installation
 
 ```
 npm i @itwin/itwin-synchronization-report-ui
@@ -17,7 +17,9 @@ yarn add @itwin/itwin-synchronization-report-ui
 
 </details>
 
-**1. Import the components and styles.**
+### Imports
+
+Import the component and styles.
 
 ```tsx
 import { Report } from '@itwin/itwin-synchronization-report-ui';
@@ -35,9 +37,9 @@ import '@itwin/itwin-synchronization-report-ui/dist/style.css';
 
 </details>
 
-**2. Use the component with your report data.**
+### Basic usage
 
-Basic usage:
+Simply pass your report data into the `Report` component.
 
 ```tsx
 export const App = () => {
@@ -51,7 +53,16 @@ export const App = () => {
 };
 ```
 
-Advanced usage (allows passing extra props, localization, etc):
+### Advanced usage
+
+This package uses a composition approach to provide extreme flexibility. Smaller components are exported and can be passed as `children` of `Report`, which
+makes the report data available through the context API without prop drilling. However, most of the smaller components do accept props to allow using out `Report`.
+
+Additionally, all the smaller components also support these props:
+
+- `displayStrings` for localization and for modifying verbiage.
+- `className` for specifying custom styles.
+- `rest` props for specifying any delegated props (e.g. `data` or `aria` attributes).
 
 ```tsx
 export const App = () => {
