@@ -16,7 +16,7 @@ export const ReportTimestamp = ({
   ...rest
 }: {
   timestamp?: string;
-  displayStrings?: typeof defaultDisplayStrings;
+  displayStrings?: Partial<typeof defaultDisplayStrings>;
   className?: string;
 }) => {
   const context = React.useContext(ReportContext);

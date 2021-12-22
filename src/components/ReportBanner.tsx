@@ -20,7 +20,7 @@ export type ReportBannerProps = {
   filesProcessed?: SourceFile[];
   currentTab?: 'files' | 'details';
   className?: string;
-  userDisplayStrings?: typeof defaultDisplayStrings;
+  displayStrings?: Partial<typeof defaultDisplayStrings>;
 };
 
 /**
@@ -31,8 +31,8 @@ export const ReportBanner = (props: ReportBannerProps) => {
   const context = React.useContext(ReportContext);
 
   const displayStrings = React.useMemo(
-    () => ({ ...defaultDisplayStrings, ...props.userDisplayStrings }),
-    [props.userDisplayStrings]
+    () => ({ ...defaultDisplayStrings, ...props.displayStrings }),
+    [props.displayStrings]
   );
 
   const fileRecords = React.useMemo(() => {

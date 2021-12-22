@@ -19,7 +19,7 @@ export const ReportTablist = ({
   className,
   ...rest
 }: {
-  displayStrings?: typeof defaultDisplayStrings;
+  displayStrings?: Partial<typeof defaultDisplayStrings>;
   children?: [React.ReactNode, React.ReactNode];
   className?: string;
 }) => {

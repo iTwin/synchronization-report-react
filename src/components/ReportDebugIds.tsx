@@ -35,7 +35,7 @@ export type ReportDebugIdsProps = {
   data?: debugIdData;
   currentTab?: 'files' | 'details';
   className?: string;
-  displayStrings?: typeof defaultDisplayStrings;
+  displayStrings?: Partial<typeof defaultDisplayStrings>;
   children?: React.ReactNode;
 };
 

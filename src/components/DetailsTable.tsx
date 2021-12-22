@@ -46,7 +46,7 @@ export const DetailsTable = ({
   sourceFilesInfo?: SourceFilesInfo;
   /** Icons to show before the file names. */
   fileTypeIcons?: Record<string, JSX.Element>;
-  displayStrings?: typeof defaultDisplayStrings;
+  displayStrings?: Partial<typeof defaultDisplayStrings>;
 } & Partial<TableProps>) => {
   const filetypeIcons = React.useMemo(
     () => ({ ...defaultFileTypeIcons, ...userFileTypeIcons } as Record<string, JSX.Element>),

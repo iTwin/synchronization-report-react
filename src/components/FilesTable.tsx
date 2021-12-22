@@ -41,7 +41,7 @@ export const FilesTable = ({
   ...rest
 }: {
   sourceFilesInfo?: SourceFilesInfo;
-  displayStrings?: typeof defaultDisplayStrings;
+  displayStrings?: Partial<typeof defaultDisplayStrings>;
   /** Icons to show before the file names. */
   fileTypeIcons?: Record<string, JSX.Element>;
   /**
