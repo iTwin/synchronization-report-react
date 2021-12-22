@@ -5,15 +5,31 @@ import './ReportBanner.scss';
 import { StatusIcon } from './utils';
 import { ReportContext } from './Report';
 
+const defaultDisplayStrings = {
+  filesProcessed: 'file(s) processed',
+  filesFailedToSynchronize: 'file(s) failed to synchronize',
+  synchronizationIssuesFound: 'synchronization issues found',
+  errors: 'Errors',
+  warnings: 'Warnings',
+  otherIssues: 'Other issues',
+  noSynchronizationIssuesFound: 'No synchronization issues found',
+};
+
 export type ReportBannerProps = {
   fileRecords?: FileRecord[];
   filesProcessed?: SourceFile[];
   currentTab?: 'files' | 'details';
   className?: string;
+  userDisplayStrings?: typeof defaultDisplayStrings;
 };
 
 export const ReportBanner = (props: ReportBannerProps) => {
   const context = React.useContext(ReportContext);
+
+  const displayStrings = React.useMemo(
+    () => ({ ...defaultDisplayStrings, ...props.userDisplayStrings }),
+    [props.userDisplayStrings]
+  );
 
   const fileRecords = React.useMemo(() => {
     return props.fileRecords || context?.reportData.filerecords || [];
@@ -78,27 +94,29 @@ export const ReportBanner = (props: ReportBannerProps) => {
             <div className='isr-header-banner-message'>
               <span className='isr-header-banner-section'>
                 <span className='isr-header-banner-section-message'>
-                  {filesProcessed.length + ' File(s) Processed'}
+                  {`${filesProcessed.length} ${displayStrings.filesProcessed}`}
                 </span>
               </span>
               {failedFileCount > 0 && (
                 <span className='isr-header-banner-section'>
                   <StatusIcon status='error' />
                   <span className='isr-header-banner-section-message'>
-                    {failedFileCount + ' file(s) failed to synchronize'}
+                    {`${failedFileCount} ${displayStrings.filesFailedToSynchronize}`}
                   </span>
                 </span>
               )}
               {issuesCount > 0 ? (
                 <span className='isr-header-banner-section'>
                   <span className='isr-header-banner-section-message'>
-                    {issuesCount + ' Synchronization Issues Found'}
+                    {`${issuesCount} ${displayStrings.synchronizationIssuesFound}`}
                   </span>
                 </span>
               ) : (
                 <span className='isr-header-banner-section'>
                   <StatusIcon status='success' />
-                  <span className='isr-header-banner-section-message'>{'No Synchronization Issues Found'}</span>
+                  <span className='isr-header-banner-section-message'>
+                    {displayStrings.noSynchronizationIssuesFound}
+                  </span>
                 </span>
               )}
             </div>
@@ -110,31 +128,35 @@ export const ReportBanner = (props: ReportBannerProps) => {
               {issuesCount > 0 ? (
                 <>
                   <span className='isr-header-banner-section'>
-                    <span className='isr-header-banner-section-message'>{issuesCount + ' Synchronization Issues'}</span>
+                    <span className='isr-header-banner-section-message'>
+                      {`${issuesCount} ${displayStrings.synchronizationIssuesFound}`}
+                    </span>
                   </span>
                   {errorCount > 0 && (
                     <span className='isr-header-banner-section'>
                       <StatusIcon status='error' />
-                      <span className='isr-header-banner-section-message'>{'Errors: ' + errorCount}</span>
+                      <span className='isr-header-banner-section-message'>{`${displayStrings.errors}: ${errorCount}`}</span>
                     </span>
                   )}
                   {warningCount > 0 && (
                     <span className='isr-header-banner-section'>
                       <StatusIcon status='warning' />
-                      <span className='isr-header-banner-section-message'>{'Warnings: ' + warningCount}</span>
+                      <span className='isr-header-banner-section-message'>{`${displayStrings.warnings}: ${warningCount}`}</span>
                     </span>
                   )}
                   {infoCount > 0 && (
                     <span className='isr-header-banner-section'>
                       <StatusIcon status='informational' />
-                      <span className='isr-header-banner-section-message'>{'Other Issues: ' + infoCount}</span>
+                      <span className='isr-header-banner-section-message'>{`${displayStrings.otherIssues}: ${infoCount}`}</span>
                     </span>
                   )}
                 </>
               ) : (
                 <span className='isr-header-banner-section'>
                   <StatusIcon status='success' />
-                  <span className='isr-header-banner-section-message'>{'No Synchronization Issues Found'}</span>
+                  <span className='isr-header-banner-section-message'>
+                    {displayStrings.noSynchronizationIssuesFound}
+                  </span>
                 </span>
               )}
             </div>
