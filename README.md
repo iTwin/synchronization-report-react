@@ -1,23 +1,45 @@
 # @itwin/itwin-synchronization-report-ui
 
-## Installation
+## Usage
+
+0. Install the package:
 
 ```
 npm i @itwin/itwin-synchronization-report-ui
 ```
 
+<details>
+<summary>Yarn</summary>
+
 ```
 yarn add @itwin/itwin-synchronization-report-ui
 ```
 
-## Usage
+</details>
 
-Import the components and styles and start using them with your report!
+1. Import the components and styles.
 
 ```tsx
 import { Report } from '@itwin/itwin-synchronization-report-ui';
 import '@itwin/itwin-synchronization-report-ui/style.css';
+```
 
+<details>
+<summary>Export maps</summary>
+
+If you get an error that `style.css` can not be found, it might be because your project cannot handle export maps correctly. You can work around this by importing from the actual path (i.e. `dist` folder):
+
+```tsx
+import '@itwin/itwin-synchronization-report-ui/dist/style.css';
+```
+
+</details>
+
+2. Use the component with your report data!
+
+Basic usage:
+
+```tsx
 export const App = () => {
   // ... load report data
 
@@ -25,6 +47,32 @@ export const App = () => {
     <>
       <Report data={report} />
     </>
+  );
+};
+```
+
+Advanced usage (allows passing extra props, localization, etc):
+
+```tsx
+export const App = () => {
+  // ... load report data
+
+  return (
+    <Report data={reportData}>
+      <ReportTitle />
+      <ReportTimestamp />
+      <ReportBanner />
+
+      <div style={{ display: 'flex' }}>
+        <ReportTablist />
+        <ReportDebugIds />
+      </div>
+
+      <ReportTabpanel>
+        <FilesTable />
+        <DetailsTable />
+      </ReportTabpanel>
+    </Report>
   );
 };
 ```

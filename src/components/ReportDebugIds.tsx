@@ -40,7 +40,9 @@ export type ReportDebugIdsProps = {
 };
 
 /**
- * Context menu to display debug ids for creating a service request
+ * Button that opens a menu to display debug ids for creating a service request.
+ *
+ * `children` can be specified to add more content in the menu.
  */
 export const ReportDebugIds = (props: ReportDebugIdsProps) => {
   const context = React.useContext(ReportContext);

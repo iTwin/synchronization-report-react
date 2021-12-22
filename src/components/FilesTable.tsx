@@ -26,7 +26,12 @@ const defaultFileTypeIcons = {
   dgnlib: <SvgFiletypeMicrostation />,
 };
 
-/** Table to display Files in Report. */
+/**
+ * FilesTable should be shown when the files tab is active. It contains information about the processing and source of files.
+ *
+ * Localization is supported using the `displayStrings` prop, and custom icons can be specified using `fileTypeIcons` and `datasourceIcons`.
+ * All of `Table` props from iTwinUI-react are also supported.
+ */
 export const FilesTable = ({
   displayStrings: userDisplayStrings,
   sourceFilesInfo,
@@ -37,7 +42,13 @@ export const FilesTable = ({
 }: {
   sourceFilesInfo?: SourceFilesInfo;
   displayStrings?: typeof defaultDisplayStrings;
+  /** Icons to show before the file names. */
   fileTypeIcons?: Record<string, JSX.Element>;
+  /**
+   * Custom icons to show in the dataSource column.
+   * @example
+   * datasourceIcons={{ 'iTwin File Service': <Svg>...</Svg> }}
+   */
   datasourceIcons?: Record<string, JSX.Element>;
 } & Partial<TableProps>) => {
   const filetypeIcons = React.useMemo(

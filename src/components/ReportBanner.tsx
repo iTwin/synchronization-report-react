@@ -23,6 +23,10 @@ export type ReportBannerProps = {
   userDisplayStrings?: typeof defaultDisplayStrings;
 };
 
+/**
+ * Shows an alert that should be located above the files and details tabs.
+ * The alert shows counts for files processed as well as the issues and errors.
+ */
 export const ReportBanner = (props: ReportBannerProps) => {
   const context = React.useContext(ReportContext);
 

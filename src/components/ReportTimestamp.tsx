@@ -6,20 +6,30 @@ const defaultDisplayStrings = {
   runCompleted: 'Run completed',
 };
 
-export type ReportTimestampProps = {
+/**
+ * `ReportTimestamp` simply displays a muted string containing the timestamp when the synchronization run was completed.
+ * If used outside `Report`, `timestamp` will need to be specified manually.
+ */
+export const ReportTimestamp = ({
+  timestamp,
+  displayStrings: userDisplayStrings,
+  ...rest
+}: {
   timestamp?: string;
-  userDisplayStrings?: typeof defaultDisplayStrings;
-};
-
-export const ReportTimestamp = (props: ReportTimestampProps) => {
+  displayStrings?: typeof defaultDisplayStrings;
+}) => {
   const context = React.useContext(ReportContext);
-  const timestamp = React.useMemo(() => {
-    return props.timestamp || context?.reportData.context?.timestamp;
-  }, [context?.reportData.context?.timestamp, props.timestamp]);
+
+  if (!timestamp) {
+    if (!context) {
+      throw new Error('timestamp must be specified or ReportTimestamp must be used inside Report');
+    }
+    timestamp = context.reportData.context?.timestamp;
+  }
 
   const displayStrings = React.useMemo(
-    () => ({ ...defaultDisplayStrings, ...props.userDisplayStrings }),
-    [props.userDisplayStrings]
+    () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),
+    [userDisplayStrings]
   );
 
   const [date, setDate] = React.useState<string>('');
@@ -35,7 +45,7 @@ export const ReportTimestamp = (props: ReportTimestampProps) => {
   }, [timestamp]);
 
   return (
-    <Text variant='small' isMuted={true}>
+    <Text variant='small' isMuted={true} {...rest}>
       {`${displayStrings.runCompleted}: ${date}`}
     </Text>
   );
