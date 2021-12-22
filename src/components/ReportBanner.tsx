@@ -20,15 +20,19 @@ export type ReportBannerProps = {
   filesProcessed?: SourceFile[];
   currentTab?: 'files' | 'details';
   className?: string;
-  userDisplayStrings?: typeof defaultDisplayStrings;
+  displayStrings?: Partial<typeof defaultDisplayStrings>;
 };
 
+/**
+ * Shows an alert that should be located above the files and details tabs.
+ * The alert shows counts for files processed as well as the issues and errors.
+ */
 export const ReportBanner = (props: ReportBannerProps) => {
   const context = React.useContext(ReportContext);
 
   const displayStrings = React.useMemo(
-    () => ({ ...defaultDisplayStrings, ...props.userDisplayStrings }),
-    [props.userDisplayStrings]
+    () => ({ ...defaultDisplayStrings, ...props.displayStrings }),
+    [props.displayStrings]
   );
 
   const fileRecords = React.useMemo(() => {
