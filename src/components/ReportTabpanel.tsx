@@ -7,6 +7,14 @@ import './ReportTabpanel.scss';
 
 /**
  * `ReportTabpanel` shows the `FilesTable` or `DetailsTable` depending on the active tab.
+ *
+ * The `FilesTable` and `DetailsTable` can be passed as children with custom props (e.g. localization, custom icons).
+ *
+ * @example
+ * <ReportTabpanel>
+ *   <FilesTable displayStrings={{ ... }} />
+ *   <DetailsTable displayStrings={{ ... }} />
+ * </ReportTabpanel>
  */
 export const ReportTabpanel = ({
   currentTab,

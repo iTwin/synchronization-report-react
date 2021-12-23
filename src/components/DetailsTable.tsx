@@ -4,7 +4,7 @@ import { Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
 import { ClampWithTooltip, StatusIcon, TextWithIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
-import type { AuditInfo, AuditRecord, FileRecord, SourceFilesInfo } from './typings';
+import type { AuditInfo, FileRecord, SourceFilesInfo } from './typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
@@ -29,6 +29,12 @@ const defaultFileTypeIcons = {
   dgnlib: <SvgFiletypeMicrostation />,
 };
 
+/**
+ * DetailsTable should be shown when the details tab is active. It contains details about the synchronization issues.
+ *
+ * Localization is supported using the `displayStrings` prop, and custom icons can be specified using `fileTypeIcons`.
+ * All of `Table` props from iTwinUI-react are also supported.
+ */
 export const DetailsTable = ({
   fileRecords,
   sourceFilesInfo,
@@ -39,8 +45,9 @@ export const DetailsTable = ({
 }: {
   fileRecords?: FileRecord[];
   sourceFilesInfo?: SourceFilesInfo;
+  /** Icons to show before the file names. */
   fileTypeIcons?: Record<string, JSX.Element>;
-  displayStrings?: typeof defaultDisplayStrings;
+  displayStrings?: Partial<typeof defaultDisplayStrings>;
 } & Partial<TableProps>) => {
   const filetypeIcons = React.useMemo(
     () => ({ ...defaultFileTypeIcons, ...userFileTypeIcons } as Record<string, JSX.Element>),

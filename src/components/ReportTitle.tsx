@@ -2,15 +2,41 @@ import * as React from 'react';
 import { ReportContext } from './Report';
 import { Text } from '@itwin/itwinui-react';
 
-export type ReportTitleProps = {
-  fileName?: string;
+const defaultDisplayStrings = {
+  synchronizationReport: 'Synchronization report',
+  unknown: 'unknown',
 };
 
-export const ReportTitle = (props: ReportTitleProps) => {
+/**
+ * `ReportTitle` simply displays a title containing the name of the main file (inferred from `Report`).
+ * If used outside `Report` (e.g. passed as modal title), `fileName` will need to be specified manually.
+ */
+export const ReportTitle = ({
+  fileName,
+  displayStrings: userDisplayStrings,
+  ...rest
+}: {
+  fileName?: string;
+  displayStrings?: Partial<typeof defaultDisplayStrings>;
+  className?: string;
+}) => {
   const context = React.useContext(ReportContext);
-  const fileName = React.useMemo(() => {
-    return props.fileName || context?.reportData.sourceFilesInfo?.fileName;
-  }, [context?.reportData.sourceFilesInfo?.fileName, props.fileName]);
 
-  return <Text variant={'title'}>{'Synchronization Report | ' + fileName ?? 'unknown'}</Text>;
+  if (!fileName) {
+    if (!context) {
+      throw new Error('fileName must be specified or ReportTitle must be used inside Report');
+    }
+    fileName = context.reportData.sourceFilesInfo?.fileName;
+  }
+
+  const displayStrings = React.useMemo(
+    () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),
+    [userDisplayStrings]
+  );
+
+  return (
+    <Text variant={'title'} {...rest}>
+      {`${displayStrings.synchronizationReport} | ${fileName ?? defaultDisplayStrings.unknown}`}
+    </Text>
+  );
 };

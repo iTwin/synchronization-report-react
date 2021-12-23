@@ -4,19 +4,13 @@ import { ReportContext } from './Report';
 import { SvgSearch } from '@itwin/itwinui-icons-react';
 import './ReportSearchbar.scss';
 import classNames from 'classnames';
-import { FileRecord } from './typings';
 
 /**
-
+ * `ReportSearchbar` is component for search input. It sets searchString which later can be used to filter tables.
+ *
+ *  It should be used as a child of `ReportTablistWrapper`.
  */
-export const ReportSearchbar = ({
-  className,
-  ...rest
-}: {
-  fileRecords?: FileRecord[];
-  setFileRecords?: () => void;
-  className?: string;
-}) => {
+export const ReportSearchbar = ({ className, ...rest }: { className?: string }) => {
   const context = React.useContext(ReportContext);
 
   if (!context) {

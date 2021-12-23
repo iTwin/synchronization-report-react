@@ -1,6 +1,9 @@
 .isr-searchbar {
   height: 30px;
-  margin-left: auto;
+
+  &:nth-child(2) {
+    margin-left: auto;
+  }
 
   > input,
   > button {

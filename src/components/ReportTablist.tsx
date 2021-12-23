@@ -9,7 +9,7 @@ const defaultDisplayStrings = {
 
 /**
  * `ReportTablist` shows the files and details tabs (only the tab selectors, not the panel content).
- * It should be used as a child of `Report`.
+ * It should be used as a child of `ReportTablistWrapper`.
  *
  * Two `children` can be specified to show custom tab components.
  */
@@ -19,7 +19,7 @@ export const ReportTablist = ({
   className,
   ...rest
 }: {
-  displayStrings?: typeof defaultDisplayStrings;
+  displayStrings?: Partial<typeof defaultDisplayStrings>;
   children?: [React.ReactNode, React.ReactNode];
   className?: string;
 }) => {
