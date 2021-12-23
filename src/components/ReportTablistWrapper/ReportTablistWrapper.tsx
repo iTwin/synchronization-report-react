@@ -3,10 +3,9 @@ import classnames from 'classnames';
 import './ReportTablistWrapper.scss';
 
 /**
- * `ReportTablistWrapper` shows the files and details tabs (only the tab selectors, not the panel content).
- * It should be used as a child of `Report`.
+ * `ReportTablistWrapper` is wrapper component for Tablist, ReportSearchbar and other user defined components to be placed over tables.
  *
- * Two `children` can be specified to show custom tab components.
+ * `children` should be specified to add inner components
  */
 export const ReportTablistWrapper = ({
   children,

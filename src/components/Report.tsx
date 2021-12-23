@@ -10,22 +10,31 @@ import { ReportTabpanel } from './ReportTabpanel';
 import { ReportTablistWrapper } from './index';
 import { ReportSearchbar } from './ReportSearchbar';
 import './Report.scss';
-import { TablistLeftside, TablistRightside } from './ReportTablistWrapper';
-
 export const ReportContext = React.createContext<
   | {
       reportData: ReportData;
       currentTab: 'files' | 'details';
       setCurrentTab: (tab: 'files' | 'details' | ((prev: 'files' | 'details') => 'files' | 'details')) => void;
+      searchString: string;
+      setSearchString: (search: string) => void;
     }
   | undefined
 >(undefined);
 
 export const Report = ({ data, children }: { data: ReportData; children?: React.ReactNode }) => {
   const [selectedTab, setSelectedTab] = React.useState<'files' | 'details'>('files');
+  const [searchString, setSearchString] = React.useState<string>('');
 
   return (
-    <ReportContext.Provider value={{ reportData: data, currentTab: selectedTab, setCurrentTab: setSelectedTab }}>
+    <ReportContext.Provider
+      value={{
+        reportData: data,
+        currentTab: selectedTab,
+        setCurrentTab: setSelectedTab,
+        searchString: searchString,
+        setSearchString: setSearchString,
+      }}
+    >
       <div className='isr-report-main'>
         {children ?? (
           <>
@@ -33,14 +42,8 @@ export const Report = ({ data, children }: { data: ReportData; children?: React.
             <ReportTimestamp />
             <ReportBanner />
             <ReportTablistWrapper>
-              <TablistLeftside>
-                <ReportTablist />
-              </TablistLeftside>
-              {selectedTab === 'details' && (
-                <TablistRightside>
-                  <ReportSearchbar />
-                </TablistRightside>
-              )}
+              <ReportTablist />
+              {selectedTab === 'details' && <ReportSearchbar />}
             </ReportTablistWrapper>
             <ReportTabpanel>
               <FilesTable />
