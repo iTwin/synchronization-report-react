@@ -9,7 +9,8 @@
     display: none;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     button {
       display: inline-flex;
     }
