@@ -4,6 +4,18 @@
   height: 100%;
 }
 
+.isr-details-rows {
+  button {
+    display: none;
+  }
+
+  &:hover {
+    button {
+      display: inline-flex;
+    }
+  }
+}
+
 .isr-details-status {
   @each $status in positive, negative, warning, primary {
     &-#{$status} {
