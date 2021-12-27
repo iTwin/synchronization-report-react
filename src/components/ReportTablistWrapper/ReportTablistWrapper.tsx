@@ -5,8 +5,6 @@ import './ReportTablistWrapper.scss';
 /**
  * `ReportTablistWrapper` is wrapper component for Tablist, ReportSearchbar and other user defined components to be placed over tables.
  *  It should be used as a child of `Report`.
- *
- * `children` should be specified to add inner components
  */
 export const ReportTablistWrapper = ({
   children,

@@ -62,11 +62,20 @@ export const FilesTable = ({
   );
 
   const context = React.useContext(ReportContext);
+  const search = context?.searchString || '';
+
+  const filterFiles = React.useCallback(
+    (file: SourceFile) =>
+      Object.values(file).some(
+        (value) => value && typeof value === 'string' && value.toLowerCase().includes(search.toLowerCase())
+      ),
+    [search]
+  );
 
   const data = React.useMemo(() => {
     const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
-    return [{ ...filesInfo, mainFile: true }, ...(filesInfo?.Files ?? [])];
-  }, [sourceFilesInfo, context?.reportData.sourceFilesInfo]);
+    return [{ ...filesInfo, mainFile: true }, ...(filesInfo?.Files ?? [])].filter((file) => filterFiles(file));
+  }, [sourceFilesInfo, context?.reportData.sourceFilesInfo, filterFiles]);
 
   const columns = React.useMemo(
     () => [

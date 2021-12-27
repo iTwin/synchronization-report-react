@@ -8,7 +8,7 @@ import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';
 import { ReportTablist } from './ReportTablist';
 import { ReportTabpanel } from './ReportTabpanel';
-import { ReportTablistWrapper } from './index';
+import { ReportDebugIds, ReportTablistWrapper } from './index';
 import { ReportSearchbar } from './ReportSearchbar';
 import './Report.scss';
 export const ReportContext = React.createContext<
@@ -82,7 +82,8 @@ export const Report = ({
             <ReportBanner />
             <ReportTablistWrapper>
               <ReportTablist />
-              {selectedTab === 'details' && <ReportSearchbar />}
+              <ReportDebugIds />
+              <ReportSearchbar />
             </ReportTablistWrapper>
             <ReportTabpanel>
               <FilesTable />

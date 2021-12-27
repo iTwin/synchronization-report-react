@@ -4,7 +4,7 @@ export * from './ReportTimestamp';
 export * from './ReportBanner';
 export * from './ReportDebugIds';
 export * from './ReportTablist';
-export * from './ReportTablistWrapper/index';
+export * from './ReportTablistWrapper/ReportTablistWrapper';
 export * from './ReportSearchbar';
 export * from './ReportTabpanel';
 export * from './FilesTable';

@@ -1,11 +1,7 @@
+@import '@itwin/itwinui-css/scss/variables';
+
 .isr-tablist-wrapper {
   display: flex;
   align-items: center;
-}
-
-.isr-tablist-wrapper-left {
-  justify-content: flex-start;
-}
-.isr-tablist-wrapper-right {
-  justify-content: flex-end;
+  gap: $iui-s;
 }

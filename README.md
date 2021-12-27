@@ -77,6 +77,7 @@ export const App = () => {
       <ReportTablistWrapper>
         <ReportTablist />
         <ReportDebugIds />
+        <ReportSearchbar />
       </ReportTablistWrapper>
 
       <ReportTabpanel>

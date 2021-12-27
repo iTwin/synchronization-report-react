@@ -9,7 +9,6 @@ import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
 import './DetailsTable.scss';
-import { useCallback } from 'react';
 
 const defaultDisplayStrings = {
   Fatal: 'Fatal Error',
@@ -56,14 +55,6 @@ export const DetailsTable = ({
 
   const context = React.useContext(ReportContext);
   const search = context?.searchString || '';
-
-  const filterProp = useCallback(
-    (prop?: string) => {
-      if (!prop) return false;
-      return prop.toLowerCase().includes(search);
-    },
-    [search]
-  );
 
   const filterFile = React.useCallback(
     (file: AuditInfo) =>
