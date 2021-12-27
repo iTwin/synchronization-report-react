@@ -56,7 +56,7 @@ export const App = () => {
 ### 4. Advanced usage
 
 This package uses a composition approach to provide extreme flexibility. Smaller components are exported and can be passed as `children` of `Report`, which
-makes the report data available through the context API without prop drilling. However, most of the smaller components do accept props to allow using out `Report`.
+makes the report data available through the context API without prop drilling. However, most of the smaller components do accept props to allow using outside `Report`.
 
 Additionally, all the smaller components also support these props:
 
