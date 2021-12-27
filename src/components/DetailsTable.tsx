@@ -65,17 +65,12 @@ export const DetailsTable = ({
     [search]
   );
 
-  const filterFile = useCallback(
-    (file: AuditInfo) => {
-      return (
-        filterProp(file.fileName) ||
-        filterProp(file.level) ||
-        filterProp(file.category) ||
-        filterProp(file.type) ||
-        filterProp(file.message)
-      );
-    },
-    [filterProp]
+  const filterFile = React.useCallback(
+    (file: AuditInfo) =>
+      Object.values(file).some(
+        (value) => value && typeof value === 'string' && value.toLowerCase().includes(search.toLowerCase())
+      ),
+    [search]
   );
 
   const data = React.useMemo(() => {
