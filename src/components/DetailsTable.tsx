@@ -24,6 +24,7 @@ const defaultDisplayStrings = {
   type: 'Type',
   message: 'Message',
   copyRow: 'Copy row',
+  moreOptions: 'More options',
 };
 
 const defaultFileTypeIcons = {
@@ -208,7 +209,7 @@ export const DetailsTable = ({
                   ]}
                 >
                   <div className='isr-details-more-button'>
-                    <IconButton styleType='borderless'>
+                    <IconButton styleType='borderless' aria-label={displayStrings.moreOptions}>
                       <SvgMore />
                     </IconButton>
                   </div>
