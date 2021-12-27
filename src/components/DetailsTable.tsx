@@ -178,7 +178,7 @@ export const DetailsTable = ({
               width: 48,
               maxWidth: 48,
               columnClassName: 'iui-slot',
-              cellClassName: 'iui-slot',
+              cellClassName: classnames('iui-slot', 'isr-details-slot-cell'),
               Cell: ({ row: { original } }: CellProps<TableRow>) => (
                 <DropdownMenu
                   menuItems={() => [
@@ -196,9 +196,11 @@ export const DetailsTable = ({
                     </MenuItem>,
                   ]}
                 >
-                  <IconButton styleType='borderless'>
-                    <SvgMore />
-                  </IconButton>
+                  <div className='isr-details-more-button'>
+                    <IconButton styleType='borderless'>
+                      <SvgMore />
+                    </IconButton>
+                  </div>
                 </DropdownMenu>
               ),
             },
@@ -218,11 +220,14 @@ export const DetailsTable = ({
         isSortable
         initialState={{ sortBy: [{ id: 'level' }] }}
         rowProps={({ original: { level } }: Row<TableRow>) => ({
-          // classnames for adding status styling to row (e.g. stripe at the beginning of the row)
-          className: classnames('isr-details-rows', {
-            'iui-negative': level === 'Fatal' || level === 'Error',
-            'iui-warning': level === 'Critical' || level === 'Warning',
-          }),
+          className: classnames(
+            'isr-details-row',
+            // classnames for adding status styling to row (e.g. stripe at the beginning of the row)
+            {
+              'iui-negative': level === 'Fatal' || level === 'Error',
+              'iui-warning': level === 'Critical' || level === 'Warning',
+            }
+          ),
         })}
         paginatorRenderer={(props) => <TablePaginator pageSizeList={[10, 25, 50]} {...props} />}
         {...rest}
