@@ -31,6 +31,12 @@ const defaultFileTypeIcons = {
   dgnlib: <SvgFiletypeMicrostation />,
 };
 
+/**
+ * DetailsTable should be shown when the details tab is active. It contains details about the synchronization issues.
+ *
+ * Localization is supported using the `displayStrings` prop, and custom icons can be specified using `fileTypeIcons`.
+ * All of `Table` props from iTwinUI-react are also supported.
+ */
 export const DetailsTable = ({
   fileRecords,
   sourceFilesInfo,
@@ -41,8 +47,9 @@ export const DetailsTable = ({
 }: {
   fileRecords?: FileRecord[];
   sourceFilesInfo?: SourceFilesInfo;
+  /** Icons to show before the file names. */
   fileTypeIcons?: Record<string, JSX.Element>;
-  displayStrings?: typeof defaultDisplayStrings;
+  displayStrings?: Partial<typeof defaultDisplayStrings>;
 } & Partial<TableProps>) => {
   const filetypeIcons = React.useMemo(
     () => ({ ...defaultFileTypeIcons, ...userFileTypeIcons } as Record<string, JSX.Element>),
