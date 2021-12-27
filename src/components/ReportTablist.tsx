@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { HorizontalTabs, Tab } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
+import './ReportTablist.scss';
 
 const defaultDisplayStrings = {
   files: 'Files',
@@ -34,18 +35,20 @@ export const ReportTablist = ({
   const displayStrings = { ...defaultDisplayStrings, ...userDisplayStrings };
 
   return (
-    <HorizontalTabs
-      activeIndex={currentTab === 'files' ? 0 : 1}
-      onTabSelected={(index) => setCurrentTab(index === 0 ? 'files' : 'details')}
-      labels={
-        children ?? [
-          <Tab key='files' label={displayStrings['files']} />,
-          <Tab key='details' label={displayStrings['details']} />,
-        ]
-      }
-      type='borderless'
-      wrapperClassName={className}
-      {...rest}
-    />
+    <div className='isr-report-tablist'>
+      <HorizontalTabs
+        activeIndex={currentTab === 'files' ? 0 : 1}
+        onTabSelected={(index) => setCurrentTab(index === 0 ? 'files' : 'details')}
+        labels={
+          children ?? [
+            <Tab key='files' label={displayStrings['files']} />,
+            <Tab key='details' label={displayStrings['details']} />,
+          ]
+        }
+        type='borderless'
+        wrapperClassName={className}
+        {...rest}
+      />
+    </div>
   );
 };
