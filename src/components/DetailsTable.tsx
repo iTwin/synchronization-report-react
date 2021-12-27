@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { DropdownMenu, IconButton, MenuItem, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
-import { ClampWithTooltip, StatusIcon, TextWithIcon } from './utils';
+import { LineClamp, StatusIcon, TextWithIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
 import type { FileRecord, SourceFilesInfo } from './typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
@@ -177,8 +177,7 @@ export const DetailsTable = ({
               Header: displayStrings.message,
               Filter: tableFilters.TextFilter(),
               minWidth: 200,
-              cellClassName: 'isr-details-message',
-              Cell: ({ value }: CellProps<TableRow>) => <ClampWithTooltip>{value}</ClampWithTooltip>,
+              Cell: ({ value }: CellProps<TableRow>) => <LineClamp overflowMode='button'>{value}</LineClamp>,
             },
             {
               id: 'more',
