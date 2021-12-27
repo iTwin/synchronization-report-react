@@ -9,6 +9,7 @@ import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
 import SvgMore from '@itwin/itwinui-icons-react/esm/icons/More';
+import SvgCopy from '@itwin/itwinui-icons-react/esm/icons/Copy';
 import './DetailsTable.scss';
 
 const defaultDisplayStrings = {
@@ -184,6 +185,7 @@ export const DetailsTable = ({
                   menuItems={(close) => [
                     <MenuItem
                       key='copy'
+                      icon={<SvgCopy />}
                       onClick={async () => {
                         try {
                           await window.navigator.clipboard.writeText(JSON.stringify(original));
