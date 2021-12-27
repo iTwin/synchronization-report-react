@@ -9,7 +9,7 @@ const defaultDisplayStrings = {
 
 /**
  * `ReportTablist` shows the files and details tabs (only the tab selectors, not the panel content).
- * It should be used as a child of `ReportTablistWrapper`.
+ * It should be used as a descendant of `Report`.
  *
  * Two `children` can be specified to show custom tab components.
  */
