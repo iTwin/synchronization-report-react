@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
+import { DropdownMenu, IconButton, MenuItem, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
 import { ClampWithTooltip, StatusIcon, TextWithIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
@@ -8,6 +8,8 @@ import type { FileRecord, SourceFilesInfo } from './typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
+import SvgMore from '@itwin/itwinui-icons-react/esm/icons/More';
+import SvgCopy from '@itwin/itwinui-icons-react/esm/icons/Copy';
 import './DetailsTable.scss';
 
 const defaultDisplayStrings = {
@@ -21,6 +23,8 @@ const defaultDisplayStrings = {
   category: 'Category',
   type: 'Type',
   message: 'Message',
+  copyRow: 'Copy row',
+  moreOptions: 'More options',
 };
 
 const defaultFileTypeIcons = {
@@ -176,6 +180,42 @@ export const DetailsTable = ({
               cellClassName: 'isr-details-message',
               Cell: ({ value }: CellProps<TableRow>) => <ClampWithTooltip>{value}</ClampWithTooltip>,
             },
+            {
+              id: 'more',
+              Header: '',
+              minWidth: 48,
+              width: 48,
+              maxWidth: 48,
+              columnClassName: 'iui-slot',
+              cellClassName: classnames('iui-slot', 'isr-details-slot-cell'),
+              Cell: ({ row: { original } }: CellProps<TableRow>) => (
+                <DropdownMenu
+                  menuItems={(close) => [
+                    <MenuItem
+                      key='copy'
+                      icon={<SvgCopy />}
+                      onClick={async () => {
+                        try {
+                          await window.navigator.clipboard.writeText(JSON.stringify(original));
+                        } catch (_) {
+                          console.error('Cannot write to clipboard');
+                        } finally {
+                          close();
+                        }
+                      }}
+                    >
+                      {displayStrings.copyRow}
+                    </MenuItem>,
+                  ]}
+                >
+                  <div className='isr-details-more-button'>
+                    <IconButton styleType='borderless' aria-label={displayStrings.moreOptions}>
+                      <SvgMore />
+                    </IconButton>
+                  </div>
+                </DropdownMenu>
+              ),
+            },
           ],
         },
       ] as Column<TableRow>[],
@@ -192,11 +232,14 @@ export const DetailsTable = ({
         isSortable
         initialState={{ sortBy: [{ id: 'level' }] }}
         rowProps={({ original: { level } }: Row<TableRow>) => ({
-          // classnames for adding status styling to row (e.g. stripe at the beginning of the row)
-          className: classnames({
-            'iui-negative': level === 'Fatal' || level === 'Error',
-            'iui-warning': level === 'Critical' || level === 'Warning',
-          }),
+          className: classnames(
+            'isr-details-row',
+            // classnames for adding status styling to row (e.g. stripe at the beginning of the row)
+            {
+              'iui-negative': level === 'Fatal' || level === 'Error',
+              'iui-warning': level === 'Critical' || level === 'Warning',
+            }
+          ),
         })}
         paginatorRenderer={(props) => <TablePaginator pageSizeList={[10, 25, 50]} {...props} />}
         {...rest}

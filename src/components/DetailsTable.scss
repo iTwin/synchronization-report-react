@@ -1,4 +1,5 @@
 @import '@itwin/itwinui-css/scss/variables';
+@import './utils/index';
 
 .isr-details-table {
   height: 100%;
@@ -25,4 +26,17 @@
 .isr-details-message {
   gap: $iui-s;
   justify-content: space-between;
+}
+
+.isr-details-more-button {
+  // Hide the button by default
+  @include visually-hidden;
+
+  // Show the button when the row is hovered or when the cell has focus
+  @at-root {
+    .isr-details-row:hover &,
+    .isr-details-slot-cell:focus-within & {
+      @include not-visually-hidden;
+    }
+  }
 }
