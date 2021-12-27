@@ -14,15 +14,26 @@ export const ReportContext = React.createContext<
       reportData: ReportData;
       currentTab: 'files' | 'details';
       setCurrentTab: (tab: 'files' | 'details' | ((prev: 'files' | 'details') => 'files' | 'details')) => void;
+      severityFilter: 'error' | 'warning' | 'info' | 'failed' | undefined;
+      setSeverityFilter: (severity: 'error' | 'warning' | 'info' | 'failed' | undefined) => void;
     }
   | undefined
 >(undefined);
 
 export const Report = ({ data, children }: { data: ReportData; children?: React.ReactNode }) => {
   const [selectedTab, setSelectedTab] = React.useState<'files' | 'details'>('files');
+  const [severityFilter, setSeverityFilter] = React.useState<'error' | 'warning' | 'info' | 'failed' | undefined>();
 
   return (
-    <ReportContext.Provider value={{ reportData: data, currentTab: selectedTab, setCurrentTab: setSelectedTab }}>
+    <ReportContext.Provider
+      value={{
+        reportData: data,
+        currentTab: selectedTab,
+        setCurrentTab: setSelectedTab,
+        severityFilter: severityFilter,
+        setSeverityFilter: setSeverityFilter,
+      }}
+    >
       <div className='isr-report-main'>
         {children ?? (
           <>

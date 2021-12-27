@@ -4,7 +4,7 @@ import { Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
 import { ClampWithTooltip, StatusIcon, TextWithIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
-import type { FileRecord, SourceFilesInfo } from './typings';
+import type { AuditInfo, FileRecord, SourceFilesInfo } from './typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
@@ -47,14 +47,30 @@ export const DetailsTable = ({
   );
 
   const context = React.useContext(ReportContext);
+
+  const severityFilter = React.useCallback(
+    (file: AuditInfo) => {
+      if (context?.severityFilter === 'error') {
+        return file.level === 'Error' || file.level === 'Fatal';
+      } else if (context?.severityFilter === 'warning') {
+        return file.level === 'Warning' || file.level === 'Critical';
+      } else if (context?.severityFilter === 'info') {
+        return file.level === 'Info';
+      }
+      return true;
+    },
+    [context?.severityFilter]
+  );
+
   const data = React.useMemo(() => {
     const files = fileRecords || context?.reportData.filerecords || [];
     return files
       .map(({ file, auditrecords }) =>
         (auditrecords ?? []).map(({ auditinfo }) => ({ fileId: file?.identifier, ...auditinfo }))
       )
-      .flat();
-  }, [fileRecords, context?.reportData.filerecords]);
+      .flat()
+      .filter((file) => severityFilter(file));
+  }, [fileRecords, context?.reportData.filerecords, severityFilter]);
 
   const displayStrings = React.useMemo(
     () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),

@@ -104,7 +104,8 @@ export const ReportBanner = (props: ReportBannerProps) => {
                     className='isr-header-banner-section-error'
                     tabIndex={0}
                     onClick={() => {
-                      /* Todo: Filter Files table by Failed Files */
+                      if (context?.severityFilter === 'failed') context?.setSeverityFilter(undefined);
+                      else context?.setSeverityFilter('failed');
                     }}
                   >
                     {`${failedFileCount} ${displayStrings.filesFailedToSynchronize}`}
@@ -151,7 +152,8 @@ export const ReportBanner = (props: ReportBannerProps) => {
                         className='isr-header-banner-section-error'
                         tabIndex={0}
                         onClick={() => {
-                          /*Filter Details table by Error */
+                          if (context?.severityFilter === 'error') context?.setSeverityFilter(undefined);
+                          else context?.setSeverityFilter('error');
                         }}
                       >
                         {`${displayStrings.errors}: ${errorCount}`}
@@ -165,7 +167,8 @@ export const ReportBanner = (props: ReportBannerProps) => {
                         className='isr-header-banner-section-warning'
                         tabIndex={0}
                         onClick={() => {
-                          /*Filter Details table by Warning */
+                          if (context?.severityFilter === 'warning') context?.setSeverityFilter(undefined);
+                          else context?.setSeverityFilter('warning');
                         }}
                       >
                         {`${displayStrings.warnings}: ${warningCount}`}
@@ -179,7 +182,8 @@ export const ReportBanner = (props: ReportBannerProps) => {
                         className='isr-header-banner-section-info'
                         tabIndex={0}
                         onClick={() => {
-                          /*Filter Details table by Info */
+                          if (context?.severityFilter === 'info') context?.setSeverityFilter(undefined);
+                          else context?.setSeverityFilter('info');
                         }}
                       >
                         {`${displayStrings.otherIssues}: ${infoCount}`}

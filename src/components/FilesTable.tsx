@@ -52,10 +52,20 @@ export const FilesTable = ({
 
   const context = React.useContext(ReportContext);
 
+  const severityFilter = React.useCallback(
+    (file: SourceFile) => {
+      if (context?.severityFilter === 'failed') {
+        return file.bimFileExists === false && file.fileExists === false;
+      }
+      return true;
+    },
+    [context?.severityFilter]
+  );
+
   const data = React.useMemo(() => {
     const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
-    return [{ ...filesInfo, mainFile: true }, ...(filesInfo?.Files ?? [])];
-  }, [sourceFilesInfo, context?.reportData.sourceFilesInfo]);
+    return [{ ...filesInfo, mainFile: true }, ...(filesInfo?.Files ?? [])].filter((file) => severityFilter(file));
+  }, [sourceFilesInfo, context?.reportData.sourceFilesInfo, severityFilter]);
 
   const columns = React.useMemo(
     () => [
