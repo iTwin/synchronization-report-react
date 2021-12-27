@@ -181,7 +181,7 @@ export const DetailsTable = ({
               cellClassName: classnames('iui-slot', 'isr-details-slot-cell'),
               Cell: ({ row: { original } }: CellProps<TableRow>) => (
                 <DropdownMenu
-                  menuItems={() => [
+                  menuItems={(close) => [
                     <MenuItem
                       key='copy'
                       onClick={async () => {
@@ -189,6 +189,8 @@ export const DetailsTable = ({
                           await window.navigator.clipboard.writeText(JSON.stringify(original));
                         } catch (_) {
                           console.error('Cannot write to clipboard');
+                        } finally {
+                          close();
                         }
                       }}
                     >
