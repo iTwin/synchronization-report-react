@@ -219,7 +219,7 @@ export const DetailsTable = ({
         initialState={{ sortBy: [{ id: 'level' }] }}
         rowProps={({ original: { level } }: Row<TableRow>) => ({
           // classnames for adding status styling to row (e.g. stripe at the beginning of the row)
-          className: classnames({
+          className: classnames('isr-details-rows', {
             'iui-negative': level === 'Fatal' || level === 'Error',
             'iui-warning': level === 'Critical' || level === 'Warning',
           }),
