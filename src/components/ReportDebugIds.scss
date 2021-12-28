@@ -2,7 +2,10 @@
 @import '@itwin/itwinui-css/scss/variables';
 
 .isr-support-open {
-  color: var(--iui-icons-color-primary);
+  &,
+  &:hover {
+    color: var(--iui-icons-color-primary);
+  }
 }
 
 .isr-support-debugIDWrapper {

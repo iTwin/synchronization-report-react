@@ -10,6 +10,7 @@ import { ReportTablist } from './ReportTablist';
 import { ReportTabpanel } from './ReportTabpanel';
 import { ReportTablistWrapper } from './ReportTablistWrapper';
 import { ReportSearchbar } from './ReportSearchbar';
+import { ReportDebugIds } from './ReportDebugIds';
 import './Report.scss';
 export const ReportContext = React.createContext<
   | {
@@ -82,6 +83,7 @@ export const Report = ({
             <ReportBanner />
             <ReportTablistWrapper>
               <ReportTablist />
+              <ReportDebugIds />
               <ReportSearchbar />
             </ReportTablistWrapper>
             <ReportTabpanel>
