@@ -5,7 +5,7 @@
   align-items: center;
   gap: $iui-s;
 
-  > &:first-child {
+  > :first-child {
     margin-right: auto;
   }
 }

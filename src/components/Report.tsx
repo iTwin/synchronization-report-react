@@ -8,7 +8,7 @@ import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';
 import { ReportTablist } from './ReportTablist';
 import { ReportTabpanel } from './ReportTabpanel';
-import { ReportDebugIds, ReportTablistWrapper } from './index';
+import { ReportTablistWrapper } from './ReportTablistWrapper';
 import { ReportSearchbar } from './ReportSearchbar';
 import './Report.scss';
 export const ReportContext = React.createContext<

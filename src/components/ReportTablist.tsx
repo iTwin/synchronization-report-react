@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { HorizontalTabs, Tab } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
-import './ReportTablist.scss';
 
 const defaultDisplayStrings = {
   files: 'Files',
@@ -27,7 +26,7 @@ export const ReportTablist = ({
   const context = React.useContext(ReportContext);
 
   if (!context) {
-    throw new Error('ReportTabs must be used inside the Report component');
+    throw new Error('ReportTablist must be used inside the Report component');
   }
 
   const { currentTab, setCurrentTab } = context;

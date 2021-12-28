@@ -4,7 +4,6 @@ import './ReportTablistWrapper.scss';
 
 /**
  * `ReportTablistWrapper` is wrapper component for Tablist, ReportSearchbar and other user defined components to be placed over tables.
- *  It should be used as a child of `Report`.
  */
 export const ReportTablistWrapper = ({
   children,
@@ -21,13 +20,5 @@ export const ReportTablistWrapper = ({
   );
 };
 
-// details table - auditInfo -> move filter up or move fn inline
-// remove debug ids from report. +
 // searchbar - errors and comments
-// searchbar - placeholder +
-// icon - import from file +
-// wrapper - remove from folder +
-// wrapperclassnames - tablist component or first child in wrapper (this choice). +
 // searchstring comment improved
-// color icon to grayish - iui-icons-color +
-// sort to files table - different pr
