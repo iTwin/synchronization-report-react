@@ -4,7 +4,7 @@ import { DropdownMenu, IconButton, MenuItem, Table, tableFilters, TablePaginator
 import { ReportContext } from './Report';
 import { ClampWithTooltip, StatusIcon, TextWithIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
-import type { AuditInfo, FileRecord, SourceFilesInfo } from './typings';
+import type { FileRecord, SourceFilesInfo } from './typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
@@ -61,7 +61,7 @@ export const DetailsTable = ({
   const search = context?.searchString || '';
 
   const severityFilter = React.useCallback(
-    (file: AuditInfo) => {
+    (file: any) => {
       if (context?.severityFilter === 'error') {
         return file.level === 'Error' || file.level === 'Fatal';
       } else if (context?.severityFilter === 'warning') {

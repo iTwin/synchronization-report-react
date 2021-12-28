@@ -124,7 +124,10 @@ export const ReportBanner = (props: ReportBannerProps) => {
                   <span
                     className='isr-header-banner-section-info'
                     tabIndex={0}
-                    onClick={() => context?.setCurrentTab('details')}
+                    onClick={() => {
+                      context?.setCurrentTab('details');
+                      context?.setSeverityFilter(undefined);
+                    }}
                   >
                     {displayStrings.seeDetails}
                   </span>

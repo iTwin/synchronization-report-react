@@ -36,7 +36,10 @@ export const ReportTablist = ({
   return (
     <HorizontalTabs
       activeIndex={currentTab === 'files' ? 0 : 1}
-      onTabSelected={(index) => setCurrentTab(index === 0 ? 'files' : 'details')}
+      onTabSelected={(index) => {
+        setCurrentTab(index === 0 ? 'files' : 'details');
+        context.setSeverityFilter(undefined);
+      }}
       labels={
         children ?? [
           <Tab key='files' label={displayStrings['files']} />,
