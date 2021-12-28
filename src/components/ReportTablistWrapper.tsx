@@ -19,6 +19,3 @@ export const ReportTablistWrapper = ({
     </div>
   );
 };
-
-// searchbar - errors and comments
-// searchstring comment improved
