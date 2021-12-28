@@ -8,8 +8,9 @@ import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';
 import { ReportTablist } from './ReportTablist';
 import { ReportTabpanel } from './ReportTabpanel';
+import { ReportTablistWrapper } from './ReportTablistWrapper';
+import { ReportSearchbar } from './ReportSearchbar';
 import './Report.scss';
-
 export const ReportContext = React.createContext<
   | {
       reportData: ReportData;
@@ -17,6 +18,8 @@ export const ReportContext = React.createContext<
       setCurrentTab: (tab: 'files' | 'details' | ((prev: 'files' | 'details') => 'files' | 'details')) => void;
       severityFilter: 'error' | 'warning' | 'info' | 'failed' | undefined;
       setSeverityFilter: (severity: 'error' | 'warning' | 'info' | 'failed' | undefined) => void;
+      searchString: string;
+      setSearchString: (search: string) => void;
     }
   | undefined
 >(undefined);
@@ -62,6 +65,7 @@ export const Report = ({
 }) => {
   const [selectedTab, setSelectedTab] = React.useState<'files' | 'details'>('files');
   const [severityFilter, setSeverityFilter] = React.useState<'error' | 'warning' | 'info' | 'failed' | undefined>();
+  const [searchString, setSearchString] = React.useState<string>('');
 
   return (
     <ReportContext.Provider
@@ -71,6 +75,8 @@ export const Report = ({
         setCurrentTab: setSelectedTab,
         severityFilter: severityFilter,
         setSeverityFilter: setSeverityFilter,
+        searchString: searchString,
+        setSearchString: setSearchString,
       }}
     >
       <div className={classnames('isr-report-main', className)}>
@@ -79,7 +85,10 @@ export const Report = ({
             <ReportTitle />
             <ReportTimestamp />
             <ReportBanner />
-            <ReportTablist />
+            <ReportTablistWrapper>
+              <ReportTablist />
+              <ReportSearchbar />
+            </ReportTablistWrapper>
             <ReportTabpanel>
               <FilesTable />
               <DetailsTable />

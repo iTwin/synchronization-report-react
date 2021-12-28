@@ -58,6 +58,7 @@ export const DetailsTable = ({
   );
 
   const context = React.useContext(ReportContext);
+  const search = context?.searchString || '';
 
   const severityFilter = React.useCallback(
     (file: AuditInfo) => {
@@ -80,8 +81,14 @@ export const DetailsTable = ({
         (auditrecords ?? []).map(({ auditinfo }) => ({ fileId: file?.identifier, ...auditinfo }))
       )
       .flat()
-      .filter((file) => severityFilter(file));
-  }, [fileRecords, context?.reportData.filerecords, severityFilter]);
+      .filter(
+        (file) =>
+          severityFilter(file) &&
+          Object.values(file).some(
+            (value) => value && typeof value === 'string' && value.toLowerCase().includes(search.toLowerCase())
+          )
+      );
+  }, [fileRecords, context?.reportData.filerecords, severityFilter, search]);
 
   const displayStrings = React.useMemo(
     () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),
