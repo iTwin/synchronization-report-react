@@ -1,12 +1,9 @@
-.isr-searchbar {
-  height: 30px;
-
-  > input,
-  > button {
-    min-height: 30px;
-  }
-}
+@import './utils/index';
 
 .isr-searchbar-icon {
   color: var(--iui-icons-color);
+}
+
+.isr-search-label {
+  @include visually-hidden;
 }
