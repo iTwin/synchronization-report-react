@@ -1,0 +1,11 @@
+@import '@itwin/itwinui-css/scss/variables';
+
+.isr-tablist-wrapper {
+  display: flex;
+  align-items: center;
+  gap: $iui-s;
+
+  > :first-child {
+    margin-right: auto;
+  }
+}
