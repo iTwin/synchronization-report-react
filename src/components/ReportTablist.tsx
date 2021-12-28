@@ -35,20 +35,18 @@ export const ReportTablist = ({
   const displayStrings = { ...defaultDisplayStrings, ...userDisplayStrings };
 
   return (
-    <div className='isr-report-tablist'>
-      <HorizontalTabs
-        activeIndex={currentTab === 'files' ? 0 : 1}
-        onTabSelected={(index) => setCurrentTab(index === 0 ? 'files' : 'details')}
-        labels={
-          children ?? [
-            <Tab key='files' label={displayStrings['files']} />,
-            <Tab key='details' label={displayStrings['details']} />,
-          ]
-        }
-        type='borderless'
-        wrapperClassName={className}
-        {...rest}
-      />
-    </div>
+    <HorizontalTabs
+      activeIndex={currentTab === 'files' ? 0 : 1}
+      onTabSelected={(index) => setCurrentTab(index === 0 ? 'files' : 'details')}
+      labels={
+        children ?? [
+          <Tab key='files' label={displayStrings['files']} />,
+          <Tab key='details' label={displayStrings['details']} />,
+        ]
+      }
+      type='borderless'
+      wrapperClassName={className}
+      {...rest}
+    />
   );
 };

@@ -82,7 +82,6 @@ export const Report = ({
             <ReportBanner />
             <ReportTablistWrapper>
               <ReportTablist />
-              <ReportDebugIds />
               <ReportSearchbar />
             </ReportTablistWrapper>
             <ReportTabpanel>

@@ -4,4 +4,8 @@
   display: flex;
   align-items: center;
   gap: $iui-s;
+
+  > &:first-child {
+    margin-right: auto;
+  }
 }

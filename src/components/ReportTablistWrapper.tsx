@@ -20,3 +20,14 @@ export const ReportTablistWrapper = ({
     </div>
   );
 };
+
+// details table - auditInfo -> move filter up or move fn inline
+// remove debug ids from report. +
+// searchbar - errors and comments
+// searchbar - placeholder +
+// icon - import from file +
+// wrapper - remove from folder +
+// wrapperclassnames - tablist component or first child in wrapper (this choice). +
+// searchstring comment improved
+// color icon to grayish - iui-icons-color +
+// sort to files table - different pr

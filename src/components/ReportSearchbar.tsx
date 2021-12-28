@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IconButton, LabeledInput } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
-import { SvgSearch } from '@itwin/itwinui-icons-react';
+import SvgSearch from '@itwin/itwinui-icons-react/esm/icons/Search';
 import './ReportSearchbar.scss';
 import classNames from 'classnames';
 
@@ -27,6 +27,7 @@ export const ReportSearchbar = ({ className, ...rest }: { className?: string }) 
     <LabeledInput
       onChange={(e) => searchStringHandler(e)}
       className={classNames('isr-searchbar', className)}
+      placeholder='Search'
       svgIcon={
         <IconButton styleType='borderless'>
           <SvgSearch />
