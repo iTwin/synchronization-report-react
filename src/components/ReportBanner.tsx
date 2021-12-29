@@ -105,7 +105,9 @@ export const ReportBanner = (props: ReportBannerProps) => {
                 <span className='isr-header-banner-section'>
                   <StatusIcon status='error' />
                   <span
-                    className='isr-header-banner-section-error'
+                    className={classnames('isr-header-banner-section-error', {
+                      'isr-active': context?.severityFilter === 'failed',
+                    })}
                     tabIndex={0}
                     onClick={() => {
                       if (context?.severityFilter === 'failed') context?.setSeverityFilter(undefined);
@@ -156,7 +158,9 @@ export const ReportBanner = (props: ReportBannerProps) => {
                     <span className='isr-header-banner-section'>
                       <StatusIcon status='error' />
                       <span
-                        className='isr-header-banner-section-error'
+                        className={classnames('isr-header-banner-section-error', {
+                          'isr-active': context?.severityFilter === 'error',
+                        })}
                         tabIndex={0}
                         onClick={() => {
                           if (context?.severityFilter === 'error') context?.setSeverityFilter(undefined);
@@ -171,7 +175,9 @@ export const ReportBanner = (props: ReportBannerProps) => {
                     <span className='isr-header-banner-section'>
                       <StatusIcon status='warning' />
                       <span
-                        className='isr-header-banner-section-warning'
+                        className={classnames('isr-header-banner-section-warning', {
+                          'isr-active': context?.severityFilter === 'warning',
+                        })}
                         tabIndex={0}
                         onClick={() => {
                           if (context?.severityFilter === 'warning') context?.setSeverityFilter(undefined);
@@ -186,7 +192,9 @@ export const ReportBanner = (props: ReportBannerProps) => {
                     <span className='isr-header-banner-section'>
                       <StatusIcon status='informational' />
                       <span
-                        className='isr-header-banner-section-info'
+                        className={classnames('isr-header-banner-section-info', {
+                          'isr-active': context?.severityFilter === 'info',
+                        })}
                         tabIndex={0}
                         onClick={() => {
                           if (context?.severityFilter === 'info') context?.setSeverityFilter(undefined);
