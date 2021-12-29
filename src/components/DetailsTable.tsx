@@ -61,7 +61,7 @@ export const DetailsTable = ({
   const search = context?.searchString || '';
 
   const severityFilter = React.useCallback(
-    (file: any) => {
+    (file: { [k: string]: unknown }) => {
       if (context?.severityFilter === 'error') {
         return file.level === 'Error' || file.level === 'Fatal';
       } else if (context?.severityFilter === 'warning') {
