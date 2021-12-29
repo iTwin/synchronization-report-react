@@ -122,7 +122,7 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
         interactive={true}
         placement='left-end'
       >
-        <Button className='isr-support-open' styleType='borderless'>
+        <Button className='isr-support-open' styleType='borderless' size='small'>
           {displayStrings.idsForTechSupport}
         </Button>
       </Tippy>
