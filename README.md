@@ -74,10 +74,11 @@ export const App = () => {
       <ReportTimestamp />
       <ReportBanner />
 
-      <div style={{ display: 'flex' }}>
+      <ReportTablistWrapper>
         <ReportTablist />
         <ReportDebugIds />
-      </div>
+        <ReportSearchbar />
+      </ReportTablistWrapper>
 
       <ReportTabpanel>
         <FilesTable />

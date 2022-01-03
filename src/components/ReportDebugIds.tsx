@@ -1,5 +1,4 @@
 import * as React from 'react';
-import classnames from 'classnames';
 import './ReportDebugIds.scss';
 import { ReportContext } from './Report';
 import { Button } from '@itwin/itwinui-react';
@@ -68,7 +67,7 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
   };
 
   return (
-    <div className={classnames('isr-support', props.className)}>
+    <div className={props.className}>
       <Tippy
         content={
           <div className='isr-support-debugIDWrapper'>
@@ -123,7 +122,7 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
         interactive={true}
         placement='left-end'
       >
-        <Button className='isr-support-open' styleType='borderless'>
+        <Button className='isr-support-open' styleType='borderless' size='small'>
           {displayStrings.idsForTechSupport}
         </Button>
       </Tippy>

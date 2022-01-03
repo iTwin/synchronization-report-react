@@ -58,14 +58,21 @@ export const DetailsTable = ({
   );
 
   const context = React.useContext(ReportContext);
+  const search = context?.searchString || '';
+
   const data = React.useMemo(() => {
     const files = fileRecords || context?.reportData.filerecords || [];
     return files
       .map(({ file, auditrecords }) =>
         (auditrecords ?? []).map(({ auditinfo }) => ({ fileId: file?.identifier, ...auditinfo }))
       )
-      .flat();
-  }, [fileRecords, context?.reportData.filerecords]);
+      .flat()
+      .filter((file) =>
+        Object.values(file).some(
+          (value) => value && typeof value === 'string' && value.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+  }, [fileRecords, context?.reportData.filerecords, search]);
 
   const displayStrings = React.useMemo(
     () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),

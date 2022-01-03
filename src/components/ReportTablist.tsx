@@ -9,7 +9,7 @@ const defaultDisplayStrings = {
 
 /**
  * `ReportTablist` shows the files and details tabs (only the tab selectors, not the panel content).
- * It should be used as a child of `Report`.
+ * It should be used as a descendant of `Report`.
  *
  * Two `children` can be specified to show custom tab components.
  */
@@ -26,7 +26,7 @@ export const ReportTablist = ({
   const context = React.useContext(ReportContext);
 
   if (!context) {
-    throw new Error('ReportTabs must be used inside the Report component');
+    throw new Error('ReportTablist must be used inside the Report component');
   }
 
   const { currentTab, setCurrentTab } = context;
