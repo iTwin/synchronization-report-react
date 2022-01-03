@@ -32,7 +32,7 @@ export const LineClamp = ({
         }
         ref={(el) => {
           if (el) {
-            setIsButtonVisible(overflowMode === 'button');
+            setIsButtonVisible(overflowMode === 'button' && el.scrollHeight > el.offsetHeight);
             setIsOverflowing(el.scrollHeight > el.offsetHeight);
           }
         }}
@@ -41,7 +41,7 @@ export const LineClamp = ({
         {children}
       </span>
       {isOverflowing && overflowMode === 'tooltip' && (
-        <Tooltip content={children}>
+        <Tooltip content={children} appendTo={() => document.body}>
           <span tabIndex={0} className='isr-tooltip-icon'>
             <SvgInfoCircular />
           </span>
