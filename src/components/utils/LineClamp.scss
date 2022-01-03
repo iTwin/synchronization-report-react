@@ -1,20 +1,31 @@
+@import '@itwin/itwinui-css/scss/style/variables';
 @import '@itwin/itwinui-css/scss/icon/variables';
 
 .isr-line-clamp {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: var(--line-clamp);
   word-break: break-all;
 }
 
 .isr-tooltip-icon {
   display: flex;
   align-items: center;
+  margin-left: $iui-xs;
 
   svg {
     width: $iui-icons-default;
     height: $iui-icons-default;
     fill: var(--iui-icons-color);
+  }
+}
+
+.isr-line-clamp-button {
+  float: right;
+
+  &,
+  &:hover {
+    color: var(--iui-color-foreground-primary);
   }
 }

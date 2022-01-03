@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { StatusIcon, ClampWithTooltip, TextWithIcon } from './utils';
+import { StatusIcon, LineClamp, TextWithIcon } from './utils';
 import { Table, tableFilters, Text, Badge } from '@itwin/itwinui-react';
 import type { TableProps } from '@itwin/itwinui-react';
 import type { SourceFilesInfo, SourceFile } from './typings';
@@ -131,12 +131,12 @@ export const FilesTable = ({
               return (
                 props.row.original.path && (
                   <a
-                    className='isr-files-data-text isr-files-link isr-line-clamp'
+                    className='isr-files-data-text isr-files-link'
                     href={props.row.original.path}
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    {props.row.original.path}
+                    <LineClamp>{props.row.original.path}</LineClamp>
                   </a>
                 )
               );
@@ -149,7 +149,11 @@ export const FilesTable = ({
             Header: displayStrings['fileID'],
             Filter: tableFilters.TextFilter(),
             Cell: (props: CellProps<SourceFile>) => {
-              return <ClampWithTooltip className='isr-files-data-text'>{props.row.original.fileId}</ClampWithTooltip>;
+              return (
+                <LineClamp className='isr-files-data-text' overflowMode='tooltip'>
+                  {props.row.original.fileId}
+                </LineClamp>
+              );
             },
           },
           {

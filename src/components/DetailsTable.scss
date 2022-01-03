@@ -23,11 +23,6 @@
   }
 }
 
-.isr-details-message {
-  gap: $iui-s;
-  justify-content: space-between;
-}
-
 .isr-details-more-button {
   // Hide the button by default
   @include visually-hidden;
