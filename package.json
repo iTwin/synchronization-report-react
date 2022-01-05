@@ -1,7 +1,7 @@
 {
   "name": "@itwin/itwin-synchronization-report-ui",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "files": [
     "dist"
   ],
