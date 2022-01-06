@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { StatusIcon, ClampWithTooltip, TextWithIcon } from './utils';
 import { Table, tableFilters, Text, Badge } from '@itwin/itwinui-react';
 import type { TableProps } from '@itwin/itwinui-react';
-import type { SourceFilesInfo, SourceFile } from './typings';
+import type { SourceFilesInfo, SourceFile } from './ReportData';
 import type { CellProps, Row } from 'react-table';
 import { ReportContext } from './Report';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
