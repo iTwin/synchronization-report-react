@@ -2,7 +2,7 @@ import * as React from 'react';
 import './ReportDebugIds.scss';
 import { ReportContext } from './Report';
 import { Button } from '@itwin/itwinui-react';
-import { ReportDataContext } from './ReportData';
+import { ReportDataContext } from './report-data-typings';
 import Tippy from '@tippyjs/react';
 
 const defaultDisplayStrings = {

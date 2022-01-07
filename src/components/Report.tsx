@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { DetailsTable } from './DetailsTable';
 import { FilesTable } from './FilesTable';
-import { ReportData } from './ReportData';
+import { ReportData } from './report-data-typings';
 import { ReportTitle } from './ReportTitle';
 import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';

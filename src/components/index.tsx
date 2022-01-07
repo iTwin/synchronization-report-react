@@ -9,4 +9,4 @@ export * from './ReportSearchbar';
 export * from './ReportTabpanel';
 export * from './FilesTable';
 export * from './DetailsTable';
-export * from './ReportData';
+export * from './report-data-typings';

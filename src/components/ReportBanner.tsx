@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { FileRecord, SourceFile } from './ReportData';
+import { FileRecord, SourceFile } from './report-data-typings';
 import './ReportBanner.scss';
 import { StatusIcon } from './utils';
 import { ReportContext } from './Report';
