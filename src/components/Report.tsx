@@ -11,6 +11,7 @@ import { ReportTabpanel } from './ReportTabpanel';
 import { ReportTablistWrapper } from './ReportTablistWrapper';
 import { ReportSearchbar } from './ReportSearchbar';
 import './Report.scss';
+import FeedbackModal from './FeedbackModal';
 export const ReportContext = React.createContext<
   | {
       reportData: ReportData;
@@ -88,6 +89,7 @@ export const Report = ({
               <FilesTable />
               <DetailsTable />
             </ReportTabpanel>
+            <FeedbackModal />
           </>
         )}
       </div>
