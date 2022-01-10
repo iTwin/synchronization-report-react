@@ -63,7 +63,10 @@
     }
   },
   "lint-staged": {
-    "*.{tsx,ts,js,scss}": "prettier --write",
+    "*.{tsx,ts,js,scss}": [
+      "prettier --write",
+      "yarn lint:copyright --fix"
+    ],
     "*.{tsx,ts}": "eslint --fix"
   },
   "browserslist": {
