@@ -26,6 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: yarn install
+    - run: yarn lint:copyright ${{ github.workspace }}/*/**.{js,ts,tsx,scss}
     - run: yarn build
     # wsm_todo: add this back once we have tests
     # - run: yarn test
