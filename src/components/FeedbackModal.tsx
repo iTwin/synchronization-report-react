@@ -1,7 +1,6 @@
 import * as React from 'react';
-import classnames from 'classnames';
 import './FeedbackModal.scss';
-import { Body, Button, InputGroup, Modal, ModalButtonBar, Radio, Textarea } from '@itwin/itwinui-react';
+import { Button, InputGroup, LabeledTextarea, Modal, ModalButtonBar, Radio } from '@itwin/itwinui-react';
 
 export type Feedback = { rating: number; comment: string };
 
@@ -28,20 +27,23 @@ export const FeedbackModal = (props: FeedBackModalProps) => {
       {isModalOpen && (
         <Modal isOpen={isModalOpen} onClose={closeModal} title={'How helpful was this report?'}>
           <div className='isr-feedback-modal-body'>
-            <InputGroup label='' message='1 = Poor, 5 = Excellent'>
+            <InputGroup label='' message='1 = Poor, 5 = Excellent' className='isr-feedback-inputgroup'>
               <Radio name='choice' label='1' onChange={() => setRating(1)} />
               <Radio name='choice' label='2' onChange={() => setRating(2)} />
               <Radio name='choice' label='3' onChange={() => setRating(3)} />
               <Radio name='choice' label='4' onChange={() => setRating(4)} />
               <Radio name='choice' label='5' onChange={() => setRating(5)} />
             </InputGroup>
-            <Body className='isr-feedback-modal-question'>Why did you give us this rating?</Body>
-            <Textarea
+
+            <LabeledTextarea
+              label='Why did you give us this rating?'
               placeholder='What was helpful? How can we make the report more useful?'
               value={comment}
               onChange={(e) => {
                 setComment(e.target.value);
               }}
+              message={`${comment.length}/1000`}
+              maxLength={1000}
             />
           </div>
 
