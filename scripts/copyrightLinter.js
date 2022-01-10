@@ -8,7 +8,7 @@ const fg = require('fast-glob');
 const pattern = process.argv.slice(2).filter((x) => x !== '--fix');
 const filePaths = fg.sync(pattern, {
   dot: true,
-  ignore: ['**/node_modules/**/*', '**/coverage/**/*', '**/dist/**/*', '**/cypress/**/*'],
+  ignore: ['**/node_modules/**/*', '**/coverage/**/*', '**/dist/**/*', '**/cypress/**/*', '**/.yarn/**/*'],
 });
 
 const copyrightBanner =

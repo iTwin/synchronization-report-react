@@ -32,6 +32,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "fast-glob": "^3.2.5",
     "husky": "^4.0.0",
     "lint-staged": "^12.1.2",
     "prettier": "^2.5.0",
@@ -51,9 +52,9 @@
     "serve": "vite preview",
     "test": "cypress open-ct",
     "test:ci": "cypress run-ct --quiet",
-    "lint": "eslint --ext .tsx,.ts --fix src",
-    "lint:fix": "yarn lint --fix && yarn lint:copyright --fix */**/*.{js,ts,tsx}",
-    "lint:copyright": "node scripts/copyrightLinter.js",
+    "lint": "eslint --ext .tsx,.ts --fix src/*/**/*.{js,ts,tsx}",
+    "lint:fix": "yarn lint && yarn lint:copyright --fix */**/*.{js,ts,tsx,scss}",
+    "lint:copyright": "node ./scripts/copyrightLinter.js",
     "format": "prettier --write src"
   },
   "husky": {
