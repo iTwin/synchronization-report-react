@@ -52,6 +52,8 @@
     "test": "cypress open-ct",
     "test:ci": "cypress run-ct --quiet",
     "lint": "eslint --ext .tsx,.ts --fix src",
+    "lint:fix": "yarn lint --fix && yarn lint:copyright --fix */**/*.{js,ts,tsx}",
+    "lint:copyright": "node scripts/copyrightLinter.js",
     "format": "prettier --write src"
   },
   "husky": {
