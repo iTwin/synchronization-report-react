@@ -1,15 +1,10 @@
-.isr-feedback-modal-text-container {
-  display: flex;
-  justify-content: flex-end;
-
-  .isr-feedback-modal-text {
-    cursor: pointer;
+.isr-feedback-button {
+  &,
+  &:hover {
     color: var(--iui-icons-color-primary);
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
+
+  margin: 4px 0px 4px auto;
 }
 
 .isr-feedback-modal-body {

@@ -50,11 +50,11 @@ export const FeedbackModal = (props: FeedBackModalProps) => {
         <Modal isOpen={isModalOpen} onClose={closeModal} title={displayStrings.modalTitle}>
           <div className='isr-feedback-modal-body'>
             <InputGroup label='' message={displayStrings.inputGroupMessage} className='isr-feedback-inputgroup'>
-              <Radio name='choice' label='1' onChange={() => setRating(1)} />
-              <Radio name='choice' label='2' onChange={() => setRating(2)} />
-              <Radio name='choice' label='3' onChange={() => setRating(3)} />
-              <Radio name='choice' label='4' onChange={() => setRating(4)} />
-              <Radio name='choice' label='5' onChange={() => setRating(5)} />
+              <Radio name='rating' label='1' onChange={() => setRating(1)} />
+              <Radio name='rating' label='2' onChange={() => setRating(2)} />
+              <Radio name='rating' label='3' onChange={() => setRating(3)} />
+              <Radio name='rating' label='4' onChange={() => setRating(4)} />
+              <Radio name='rating' label='5' onChange={() => setRating(5)} />
             </InputGroup>
 
             <LabeledTextarea
@@ -85,16 +85,16 @@ export const FeedbackModal = (props: FeedBackModalProps) => {
         </Modal>
       )}
 
-      <div className='isr-feedback-modal-text-container'>
-        <a
-          className='isr-feedback-modal-text'
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-        >
-          {displayStrings.modalButtonText}
-        </a>
-      </div>
+      <Button
+        className='isr-feedback-button'
+        styleType='borderless'
+        size='small'
+        onClick={() => {
+          setIsModalOpen(true);
+        }}
+      >
+        {displayStrings.modalButtonText}
+      </Button>
     </>
   );
 };
