@@ -84,6 +84,7 @@ export const App = () => {
         <FilesTable />
         <DetailsTable />
       </ReportTabpanel>
+      <FeedbackModal onFeedbackSubmit={(feedback: Feedback) => void} />
     </Report>
   );
 };

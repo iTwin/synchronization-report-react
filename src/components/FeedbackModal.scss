@@ -1,0 +1,17 @@
+.isr-feedback-button {
+  &,
+  &:hover {
+    color: var(--iui-icons-color-primary);
+  }
+
+  margin: 4px 0px 4px auto;
+}
+
+.isr-feedback-modal-body {
+  display: flex;
+  flex-direction: column;
+
+  .isr-feedback-inputgroup {
+    margin-bottom: 16px;
+  }
+}

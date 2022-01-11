@@ -49,6 +49,7 @@ export const ReportContext = React.createContext<
  *     <FilesTable />
  *     <DetailsTable />
  *   </ReportTabpanel>
+ *   <FeedbackModal onFeedbackSubmit={(feedback: Feedback) => void} />
  * </Report>
  */
 export const Report = ({
