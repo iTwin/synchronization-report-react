@@ -89,7 +89,6 @@ export const Report = ({
               <FilesTable />
               <DetailsTable />
             </ReportTabpanel>
-            <FeedbackModal />
           </>
         )}
       </div>

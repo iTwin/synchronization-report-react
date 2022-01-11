@@ -2,14 +2,36 @@ import * as React from 'react';
 import './FeedbackModal.scss';
 import { Button, InputGroup, LabeledTextarea, Modal, ModalButtonBar, Radio } from '@itwin/itwinui-react';
 
+const defaultDisplayStrings = {
+  modalButtonText: 'Help us improve',
+  modalTitle: 'How helpful was this report?',
+  inputGroupMessage: '1 = Poor, 5 = Excellent',
+  textAreaTitle: 'Why did you give us this rating?',
+  textAreaPlaceholder: 'What was helpful? How can we make the report more useful?',
+  sendFeedbackButtonText: 'Send feedback',
+  dismissButtonText: 'Dismiss',
+};
+
 export type Feedback = { rating: number; comment: string };
 
 export type FeedBackModalProps = {
-  onFeedbackSubmit?: (feedback: Feedback) => void;
+  onFeedbackSubmit: (feedback: Feedback) => void;
+  displayStrings?: Partial<typeof defaultDisplayStrings>;
 };
 
+/**
+ * Button that opens a modal to display a form to give feedback on the generated report.
+ *
+ * 'onFeedbackSubmit' is a callback triggered when the user clicks the 'Send feedback' button.
+ */
+
 export const FeedbackModal = (props: FeedBackModalProps) => {
-  const { onFeedbackSubmit } = props;
+  const { onFeedbackSubmit, displayStrings: passedInDisplayString } = props;
+
+  const displayStrings = React.useMemo(
+    () => ({ ...defaultDisplayStrings, ...passedInDisplayString }),
+    [passedInDisplayString]
+  );
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
@@ -25,9 +47,9 @@ export const FeedbackModal = (props: FeedBackModalProps) => {
   return (
     <>
       {isModalOpen && (
-        <Modal isOpen={isModalOpen} onClose={closeModal} title={'How helpful was this report?'}>
+        <Modal isOpen={isModalOpen} onClose={closeModal} title={displayStrings.modalTitle}>
           <div className='isr-feedback-modal-body'>
-            <InputGroup label='' message='1 = Poor, 5 = Excellent' className='isr-feedback-inputgroup'>
+            <InputGroup label='' message={displayStrings.inputGroupMessage} className='isr-feedback-inputgroup'>
               <Radio name='choice' label='1' onChange={() => setRating(1)} />
               <Radio name='choice' label='2' onChange={() => setRating(2)} />
               <Radio name='choice' label='3' onChange={() => setRating(3)} />
@@ -36,8 +58,8 @@ export const FeedbackModal = (props: FeedBackModalProps) => {
             </InputGroup>
 
             <LabeledTextarea
-              label='Why did you give us this rating?'
-              placeholder='What was helpful? How can we make the report more useful?'
+              label={displayStrings.textAreaTitle}
+              placeholder={displayStrings.textAreaPlaceholder}
               value={comment}
               onChange={(e) => {
                 setComment(e.target.value);
@@ -52,13 +74,13 @@ export const FeedbackModal = (props: FeedBackModalProps) => {
               disabled={rating == 0 || comment == ''}
               styleType='high-visibility'
               onClick={() => {
-                onFeedbackSubmit && onFeedbackSubmit({ rating, comment });
+                onFeedbackSubmit({ rating, comment });
                 closeModal();
               }}
             >
-              Send feedback
+              {displayStrings.sendFeedbackButtonText}
             </Button>
-            <Button onClick={closeModal}>Dismiss</Button>
+            <Button onClick={closeModal}>{displayStrings.dismissButtonText}</Button>
           </ModalButtonBar>
         </Modal>
       )}
@@ -70,7 +92,7 @@ export const FeedbackModal = (props: FeedBackModalProps) => {
             setIsModalOpen(true);
           }}
         >
-          Help us improve
+          {displayStrings.modalButtonText}
         </a>
       </div>
     </>
