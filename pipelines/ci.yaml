@@ -1,0 +1,56 @@
+jobs:
+  - job: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - checkout: self
+        clean: all
+
+      - task: NodeTool@0
+        displayName: Use Node 12.x
+        inputs:
+          versionSpec: 12.x
+          latest: true
+
+      - task: npmAuthenticate@0
+        inputs:
+          workingFile: .npmrc
+
+      - script: yarn install
+        displayName: yarn install
+
+      - script: yarn lint:copyright ${{ Pipeline.Workspace }}/*/**.{js,ts,tsx,scss}
+        displayName: yarn lint
+
+      - script: yarn  build
+        displayName: yarn  build
+
+      - bash: |
+          pkgName=$(node -p "require('./package.json').name")
+          pkgVer=$(node -p "require('./package.json').version")
+          ver=$(npm view $pkgName version)
+          if [ -z "$ver" ]; then
+            ver=0.0.0
+            echo "\$ver is empty"
+          fi
+          echo "Server version found: $ver"
+          echo "Local version found: $pkgVer"
+          if [ "$ver" != "$pkgVer" ] && [ "$(printf '%s\n' "$ver" "$pkgVer" | sort -V | head -n1)" = "$ver" ]; then
+            newer=true
+          else
+            newer=false
+          fi
+          echo "##vso[task.setvariable variable=shouldPublish;isOutput=true]$newer"
+          echo "##vso[task.setvariable variable=version;isOutput=true]$pkgVer"
+          echo "Should publish: $newer"
+        displayName: Check if should publish
+        name: checkPublish
+
+      - bash: yarn pack
+        condition: and(succeeded(), eq(variables['checkPublish.shouldPublish'], 'true'))
+        displayName: yarn pack
+
+      - publish: itwin-synchronization-report-ui$(checkPublish.version).tgz
+        artifact: tarball
+        displayName: Publish packed file
+        condition: and(succeeded(), eq(variables['checkPublish.shouldPublish'], 'true'))
