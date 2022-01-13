@@ -22,8 +22,8 @@ jobs:
       - script: yarn lint:copyright ${{ Pipeline.Workspace }}/*/**.{js,ts,tsx,scss}
         displayName: yarn lint
 
-      - script: yarn  build
-        displayName: yarn  build
+      - script: yarn build:package
+        displayName: yarn build
 
       - bash: |
           pkgName=$(node -p "require('./package.json').name")
