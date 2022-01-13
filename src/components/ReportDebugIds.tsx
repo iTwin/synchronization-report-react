@@ -120,7 +120,7 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
         }
         trigger='click'
         interactive={true}
-        placement='left-end'
+        placement='bottom-end'
       >
         <Button className='isr-support-open' styleType='borderless' size='small'>
           {displayStrings.idsForTechSupport}
