@@ -27,3 +27,4 @@ stages:
         parameters:
           path: itwin-synchronization-report-ui$(version).tgz
           artifactName: tarball
+          dryrun: true
