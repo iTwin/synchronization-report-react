@@ -19,7 +19,7 @@ jobs:
       - script: yarn install
         displayName: yarn install
 
-      - script: yarn lint:copyright ${{ Pipeline.Workspace }}/*/**.{js,ts,tsx,scss}
+      - script: yarn lint:copyright $(Pipeline.Workspace)/*/**.{js,ts,tsx,scss}
         displayName: yarn lint
 
       - script: yarn build:package
