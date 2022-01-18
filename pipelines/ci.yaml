@@ -46,10 +46,10 @@ jobs:
         displayName: Check if should publish
         name: checkPublish
 
-      - bash: yarn pack
+      - bash: npm pack
         condition: and(succeeded(), eq(variables['checkPublish.shouldPublish'], 'true'))
-        displayName: yarn pack
-
+        displayName: npm pack
+        
       - publish: itwin-synchronization-report-ui$(checkPublish.version).tgz
         artifact: tarball
         displayName: Publish packed file
