@@ -1,18 +1,18 @@
-# @itwin/itwin-synchronization-report-ui
+# @itwin/synchronization-report-react
 
 ## Usage
 
 ### 1. Installation
 
 ```
-npm i @itwin/itwin-synchronization-report-ui
+npm i @itwin/synchronization-report-react
 ```
 
 <details>
 <summary>Yarn</summary>
 
 ```
-yarn add @itwin/itwin-synchronization-report-ui
+yarn add @itwin/synchronization-report-react
 ```
 
 </details>
@@ -22,8 +22,8 @@ yarn add @itwin/itwin-synchronization-report-ui
 Import the component and styles.
 
 ```tsx
-import { Report } from '@itwin/itwin-synchronization-report-ui';
-import '@itwin/itwin-synchronization-report-ui/style.css';
+import { Report } from '@itwin/synchronization-report-react';
+import '@itwin/synchronization-report-react/style.css';
 ```
 
 <details>
@@ -32,7 +32,7 @@ import '@itwin/itwin-synchronization-report-ui/style.css';
 If you get an error that `style.css` can not be found, it might be because your project cannot handle export maps correctly. You can work around this by importing from the actual path (i.e. `dist` folder):
 
 ```tsx
-import '@itwin/itwin-synchronization-report-ui/dist/style.css';
+import '@itwin/synchronization-report-react/dist/style.css';
 ```
 
 </details>

@@ -49,8 +49,8 @@ jobs:
       - bash: npm pack
         condition: and(succeeded(), eq(variables['checkPublish.shouldPublish'], 'true'))
         displayName: npm pack
-        
-      - publish: itwin-itwin-synchronization-report-ui-$(checkPublish.version).tgz
+
+      - publish: itwin-synchronization-report-react-$(checkPublish.version).tgz
         artifact: tarball
         displayName: Publish packed file
         condition: and(succeeded(), eq(variables['checkPublish.shouldPublish'], 'true'))
