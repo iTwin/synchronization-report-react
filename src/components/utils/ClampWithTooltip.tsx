@@ -28,7 +28,7 @@ export const ClampWithTooltip = ({
         {children}
       </span>
       {isOverflowing && (
-        <Tooltip content={children}>
+        <Tooltip content={children} appendTo={() => document.body}>
           <span aria-hidden className='isr-tooltip-icon'>
             <SvgInfoCircular />
           </span>
