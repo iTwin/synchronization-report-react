@@ -453,42 +453,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@itwin/synchronization-report-react@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@itwin/synchronization-report-react@workspace:."
-  dependencies:
-    "@cypress/react": ^5.10.3
-    "@cypress/vite-dev-server": ^2.2.1
-    "@itwin/itwinui-icons-color-react": ^1.0.1
-    "@itwin/itwinui-icons-react": ^1.3.0
-    "@itwin/itwinui-react": ^1.28.0
-    "@types/node": ^12.0.0
-    "@types/react": ^17.0.0
-    "@types/react-dom": ^17.0.0
-    "@typescript-eslint/eslint-plugin": ^5.5.0
-    "@typescript-eslint/parser": ^5.5.0
-    "@vitejs/plugin-react": ^1.0.0
-    beautiful-react-hooks: ^1.0.2
-    classnames: ^2.3.1
-    cypress: ^9.1.0
-    eslint: ^8.3.0
-    eslint-config-prettier: ^8.3.0
-    eslint-plugin-prettier: ^4.0.0
-    eslint-plugin-react: ^7.27.1
-    eslint-plugin-react-hooks: ^4.3.0
-    fast-glob: ^3.2.5
-    husky: ^4.0.0
-    lint-staged: ^12.1.2
-    prettier: ^2.5.0
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    rimraf: ^3.0.2
-    sass: ^1.43.4
-    typescript: ^4.5.2
-    vite: ^2.6.4
-  languageName: unknown
-  linkType: soft
-
 "@itwin/itwinui-css@npm:^0.43.0":
   version: 0.43.0
   resolution: "@itwin/itwinui-css@npm:0.43.0"
@@ -544,6 +508,42 @@ __metadata:
   checksum: 1afb8442838be271489c6ebb99e96e1c2d11b432cbb060330f123f0f81e00acdec02f6ed67e0450c3713097356a4f728b14e9427435162a48878931266a9de5a
   languageName: node
   linkType: hard
+
+"@itwin/synchronization-report-react@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@itwin/synchronization-report-react@workspace:."
+  dependencies:
+    "@cypress/react": ^5.10.3
+    "@cypress/vite-dev-server": ^2.2.1
+    "@itwin/itwinui-icons-color-react": ^1.0.1
+    "@itwin/itwinui-icons-react": ^1.3.0
+    "@itwin/itwinui-react": ^1.28.0
+    "@types/node": ^12.0.0
+    "@types/react": ^17.0.0
+    "@types/react-dom": ^17.0.0
+    "@typescript-eslint/eslint-plugin": ^5.5.0
+    "@typescript-eslint/parser": ^5.5.0
+    "@vitejs/plugin-react": ^1.0.0
+    beautiful-react-hooks: ^1.0.2
+    classnames: ^2.3.1
+    cypress: ^9.1.0
+    eslint: ^8.3.0
+    eslint-config-prettier: ^8.3.0
+    eslint-plugin-prettier: ^4.0.0
+    eslint-plugin-react: ^7.27.1
+    eslint-plugin-react-hooks: ^4.3.0
+    fast-glob: ^3.2.5
+    husky: ^4.0.0
+    lint-staged: ^12.1.2
+    prettier: ^2.5.0
+    react: ^17.0.2
+    react-dom: ^17.0.2
+    rimraf: ^3.0.2
+    sass: ^1.43.4
+    typescript: ^4.5.2
+    vite: ^2.6.4
+  languageName: unknown
+  linkType: soft
 
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
