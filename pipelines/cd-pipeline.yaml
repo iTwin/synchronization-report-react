@@ -25,6 +25,6 @@ stages:
     jobs:
       - template: templates/npmjs-publish-deployment.yaml@build-pipeline-scripts
         parameters:
-          path: itwin-itwin-synchronization-report-ui$(version).tgz
+          path: itwin-itwin-synchronization-report-ui-$(version).tgz
           artifactName: tarball
           dryrun: true
