@@ -1,8 +1,12 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
 import { DetailsTable } from './DetailsTable';
 import { FilesTable } from './FilesTable';
-import { ReportData } from './typings';
+import { ReportData } from './report-data-typings';
 import { ReportTitle } from './ReportTitle';
 import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';

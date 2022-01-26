@@ -1,6 +1,10 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import { FileRecord, SourceFile } from './typings';
+import { FileRecord, SourceFile } from './report-data-typings';
 import './ReportBanner.scss';
 import { StatusIcon } from './utils';
 import { ReportContext } from './Report';

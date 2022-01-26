@@ -1,8 +1,12 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import './ReportDebugIds.scss';
 import { ReportContext } from './Report';
 import { Button } from '@itwin/itwinui-react';
-import { ReportDataContext } from './typings';
+import { ReportDataContext } from './report-data-typings';
 import Tippy from '@tippyjs/react';
 
 const defaultDisplayStrings = {

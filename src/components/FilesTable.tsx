@@ -1,9 +1,13 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
 import { StatusIcon, ClampWithTooltip, TextWithIcon } from './utils';
 import { Table, tableFilters, Text, Badge } from '@itwin/itwinui-react';
 import type { TableProps } from '@itwin/itwinui-react';
-import type { SourceFilesInfo, SourceFile } from './typings';
+import type { SourceFilesInfo, SourceFile } from './report-data-typings';
 import type { CellProps, Row } from 'react-table';
 import { ReportContext } from './Report';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';

@@ -1,7 +1,6 @@
 {
-  "name": "@itwin/itwin-synchronization-report-ui",
+  "name": "@itwin/synchronization-report-react",
   "version": "0.1.0",
-  "private": true,
   "files": [
     "dist"
   ],
@@ -10,7 +9,7 @@
     ".": "./dist/index.js",
     "./style.css": "./dist/style.css"
   },
-  "typings": "./dist/types.d.ts",
+  "typings": "./dist/index.d.ts",
   "dependencies": {
     "@itwin/itwinui-icons-color-react": "^1.0.1",
     "@itwin/itwinui-icons-react": "^1.3.0",
@@ -28,29 +27,34 @@
     "@vitejs/plugin-react": "^1.0.0",
     "beautiful-react-hooks": "^1.0.2",
     "cypress": "^9.1.0",
-    "dts-bundle-generator": "^6.2.0",
     "eslint": "^8.3.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "fast-glob": "^3.2.5",
     "husky": "^4.0.0",
     "lint-staged": "^12.1.2",
     "prettier": "^2.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "rimraf": "^3.0.2",
     "sass": "^1.43.4",
     "typescript": "^4.5.2",
     "vite": "^2.6.4"
   },
   "scripts": {
     "start": "vite",
-    "build:types": "dts-bundle-generator -o dist/types.d.ts src/components/index.tsx --no-banner",
-    "build": "tsc && vite build && yarn build:types",
+    "build": "tsc --noEmit && vite build",
+    "build:types": "tsc --emitDeclarationOnly --outDir dist",
+    "build:package": "yarn clean && yarn build && yarn build:types",
+    "clean": "rimraf dist",
     "serve": "vite preview",
     "test": "cypress open-ct",
     "test:ci": "cypress run-ct --quiet",
-    "lint": "eslint --ext .tsx,.ts --fix src",
+    "lint": "eslint --ext .tsx,.ts --fix src/*/**/*.{js,ts,tsx}",
+    "lint:fix": "yarn lint && yarn lint:copyright --fix */**/*.{js,ts,tsx,scss}",
+    "lint:copyright": "node ./scripts/copyrightLinter.js",
     "format": "prettier --write src"
   },
   "husky": {
@@ -59,7 +63,10 @@
     }
   },
   "lint-staged": {
-    "*.{tsx,ts,js,scss}": "prettier --write",
+    "*.{tsx,ts,js,scss}": [
+      "prettier --write",
+      "yarn lint:copyright --fix"
+    ],
     "*.{tsx,ts}": "eslint --fix"
   },
   "browserslist": {
