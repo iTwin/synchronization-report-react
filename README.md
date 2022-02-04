@@ -23,7 +23,7 @@ Import the component and styles.
 
 ```tsx
 import { Report } from '@itwin/synchronization-report-react';
-import '@itwin/synchronization-report-react/style.css';
+import '@itwin/synchronization-report-react/dist/style.css';
 ```
 
 <details>
