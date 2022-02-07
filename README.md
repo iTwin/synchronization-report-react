@@ -23,19 +23,16 @@ Import the component and styles.
 
 ```tsx
 import { Report } from '@itwin/synchronization-report-react';
-import '@itwin/synchronization-report-react/dist/style.css';
+import '@itwin/synchronization-report-react/style.css';
 ```
 
-<details>
-<summary>Export maps</summary>
+#### Export maps
 
 If you get an error that `style.css` can not be found, it might be because your project cannot handle export maps correctly. You can work around this by importing from the actual path (i.e. `dist` folder):
 
 ```tsx
 import '@itwin/synchronization-report-react/dist/style.css';
 ```
-
-</details>
 
 ### 3. Basic usage
 
