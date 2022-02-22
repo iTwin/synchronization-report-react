@@ -40,6 +40,7 @@ export type ReportDebugIdsProps = {
   className?: string;
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   children?: React.ReactNode;
+  hideBlankValues?: boolean;
 };
 
 /**
@@ -48,9 +49,11 @@ export type ReportDebugIdsProps = {
  * `children` can be specified to add more content in the menu.
  */
 export const ReportDebugIds = (props: ReportDebugIdsProps) => {
+  const { data, hideBlankValues } = props;
+
   const context = React.useContext(ReportContext);
   const reportData = props.data?.reportData || context?.reportData.context;
-  const data = props.data;
+
   const displayStrings = React.useMemo(
     () => ({ ...defaultDisplayStrings, ...props.displayStrings }),
     [props.displayStrings]
@@ -75,50 +78,72 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
       <Tippy
         content={
           <div className='isr-support-debugIDWrapper'>
-            <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>{`${displayStrings.activityid}:`}</div>
-              <div className='isr-support-debugID-id'>{debugIDs['Activity ID']}</div>
-            </div>
-            <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>{`${displayStrings.briefcaseid}:`}</div>
-              <div className='isr-support-debugID-id'>{debugIDs['Briefcase ID']}</div>
-            </div>
-            <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>{`${displayStrings.contextid}:`}</div>
-              <div className='isr-support-debugID-id'>{debugIDs['Context ID']}</div>
-            </div>
-            <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>{`${displayStrings.contextName}:`}</div>
-              <div className='isr-support-debugID-id'>{debugIDs['Ctx. Name']}</div>
-            </div>
-            <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>{`${displayStrings.jobDefID}:`}</div>
-              <div className='isr-support-debugID-id'>{debugIDs['Job Def. ID']}</div>
-            </div>
-            <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>{`${displayStrings.jobid}:`}</div>
-              <div className='isr-support-debugID-id'>{debugIDs['Job ID']}</div>
-            </div>
-            <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>{`${displayStrings.jobRunID}:`}</div>
-              <div className='isr-support-debugID-id'>{debugIDs['Job Run ID']}</div>
-            </div>
-            <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>{`${displayStrings.modelid}:`}</div>
-              <div className='isr-support-debugID-id'>{debugIDs['iModel ID']}</div>
-            </div>
-            <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>{`${displayStrings.modelName}:`}</div>
-              <div className='isr-support-debugID-id'>{debugIDs['iModel Name']}</div>
-            </div>
-            <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>{`${displayStrings.organizationName}:`}</div>
-              <div className='isr-support-debugID-id'>{debugIDs['Org. Name']}</div>
-            </div>
-            <div className='isr-support-debugID'>
-              <div className='isr-support-debugID-title'>{`${displayStrings.userEmail}:`}</div>
-              <div className='isr-support-debugID-id'>{debugIDs['User Email']}</div>
-            </div>
+            {(!hideBlankValues || reportData?.activityid) && (
+              <div className='isr-support-debugID'>
+                <div className='isr-support-debugID-title'>{`${displayStrings.activityid}:`}</div>
+                <div className='isr-support-debugID-id'>{debugIDs['Activity ID']}</div>
+              </div>
+            )}
+            {(!hideBlankValues || reportData?.briefcaseid) && (
+              <div className='isr-support-debugID'>
+                <div className='isr-support-debugID-title'>{`${displayStrings.briefcaseid}:`}</div>
+                <div className='isr-support-debugID-id'>{debugIDs['Briefcase ID']}</div>
+              </div>
+            )}
+            {(!hideBlankValues || reportData?.contextid) && (
+              <div className='isr-support-debugID'>
+                <div className='isr-support-debugID-title'>{`${displayStrings.contextid}:`}</div>
+                <div className='isr-support-debugID-id'>{debugIDs['Context ID']}</div>
+              </div>
+            )}
+            {(!hideBlankValues || data?.contextName) && (
+              <div className='isr-support-debugID'>
+                <div className='isr-support-debugID-title'>{`${displayStrings.contextName}:`}</div>
+                <div className='isr-support-debugID-id'>{debugIDs['Ctx. Name']}</div>
+              </div>
+            )}
+            {(!hideBlankValues || data?.jobDefID) && (
+              <div className='isr-support-debugID'>
+                <div className='isr-support-debugID-title'>{`${displayStrings.jobDefID}:`}</div>
+                <div className='isr-support-debugID-id'>{debugIDs['Job Def. ID']}</div>
+              </div>
+            )}
+            {(!hideBlankValues || reportData?.jobid) && (
+              <div className='isr-support-debugID'>
+                <div className='isr-support-debugID-title'>{`${displayStrings.jobid}:`}</div>
+                <div className='isr-support-debugID-id'>{debugIDs['Job ID']}</div>
+              </div>
+            )}
+            {(!hideBlankValues || data?.jobRunID) && (
+              <div className='isr-support-debugID'>
+                <div className='isr-support-debugID-title'>{`${displayStrings.jobRunID}:`}</div>
+                <div className='isr-support-debugID-id'>{debugIDs['Job Run ID']}</div>
+              </div>
+            )}
+            {(!hideBlankValues || reportData?.imodelid) && (
+              <div className='isr-support-debugID'>
+                <div className='isr-support-debugID-title'>{`${displayStrings.modelid}:`}</div>
+                <div className='isr-support-debugID-id'>{debugIDs['iModel ID']}</div>
+              </div>
+            )}
+            {(!hideBlankValues || data?.modelName) && (
+              <div className='isr-support-debugID'>
+                <div className='isr-support-debugID-title'>{`${displayStrings.modelName}:`}</div>
+                <div className='isr-support-debugID-id'>{debugIDs['iModel Name']}</div>
+              </div>
+            )}
+            {(!hideBlankValues || data?.organizationName) && (
+              <div className='isr-support-debugID'>
+                <div className='isr-support-debugID-title'>{`${displayStrings.organizationName}:`}</div>
+                <div className='isr-support-debugID-id'>{debugIDs['Org. Name']}</div>
+              </div>
+            )}
+            {(!hideBlankValues || data?.userEmail) && (
+              <div className='isr-support-debugID'>
+                <div className='isr-support-debugID-title'>{`${displayStrings.userEmail}:`}</div>
+                <div className='isr-support-debugID-id'>{debugIDs['User Email']}</div>
+              </div>
+            )}
             {props.children}
           </div>
         }
