@@ -2,7 +2,8 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { AuditInfo, ReportData, SourceFile } from './components/typings';
+
+import { AuditInfo, ReportData, SourceFile } from './components/report-data-typings';
 
 export default {
   context: {

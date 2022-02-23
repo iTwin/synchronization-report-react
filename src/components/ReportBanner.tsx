@@ -43,9 +43,15 @@ export const ReportBanner = (props: ReportBannerProps) => {
     return props.fileRecords || context?.reportData.filerecords || [];
   }, [context?.reportData.filerecords, props.fileRecords]);
 
-  const filesProcessed = React.useMemo(() => {
-    return props.filesProcessed || context?.reportData.sourceFilesInfo?.Files || [];
-  }, [context?.reportData.sourceFilesInfo?.Files, props.filesProcessed]);
+  const filesProcessed: SourceFile[] = React.useMemo(() => {
+    if (props.filesProcessed) {
+      return [...filesProcessed];
+    } else if (context?.reportData.sourceFilesInfo?.Files) {
+      return [context.reportData.sourceFilesInfo, ...context.reportData.sourceFilesInfo.Files];
+    }
+
+    return [];
+  }, [context?.reportData.sourceFilesInfo, props.filesProcessed]);
 
   const currentTab = React.useMemo(() => {
     return props.currentTab || context?.currentTab;
