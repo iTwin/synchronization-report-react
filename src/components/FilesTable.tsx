@@ -7,16 +7,18 @@ import classnames from 'classnames';
 import { StatusIcon, ClampWithTooltip, TextWithIcon } from './utils';
 import { Table, tableFilters, Text, Badge } from '@itwin/itwinui-react';
 import type { TableProps } from '@itwin/itwinui-react';
-import type { SourceFilesInfo, SourceFile } from './report-data-typings';
+import type { SourceFilesInfo, SourceFile, FileRecord } from './report-data-typings';
 import type { CellProps, Row } from 'react-table';
 import { ReportContext } from './Report';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
 import './FilesTable.scss';
+import { AuditRecord } from '.';
 
 const defaultDisplayStrings = {
   failed: 'Failed',
   processed: 'Processed',
+  processedWithIssues: 'Processed with Issues',
   fileName: 'File name',
   status: 'Status',
   path: 'Path',
@@ -39,12 +41,14 @@ const defaultFileTypeIcons = {
 export const FilesTable = ({
   displayStrings: userDisplayStrings,
   sourceFilesInfo,
+  fileRecords,
   fileTypeIcons: userFileTypeIcons,
   datasourceIcons,
   className,
   ...rest
 }: {
   sourceFilesInfo?: SourceFilesInfo;
+  fileRecords?: FileRecord[];
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   /** Icons to show before the file names. */
   fileTypeIcons?: Record<string, JSX.Element>;
@@ -81,6 +85,38 @@ export const FilesTable = ({
     return [{ ...filesInfo, mainFile: true }, ...(filesInfo?.Files ?? [])].filter((file) => filterFiles(file));
   }, [sourceFilesInfo, context?.reportData.sourceFilesInfo, filterFiles]);
 
+  const processedWithIssues = React.useMemo(() => {
+    const fileDetails = fileRecords || context?.reportData.filerecords;
+
+    const fileStatusMap: { [fileId: string]: boolean } = {};
+    for (const dataRow of data) {
+      const fileHasIssue = fileDetails
+        ?.filter((fd) => fd.file?.identifier == dataRow.fileId)
+        .reduce((a: AuditRecord[], b) => a.concat(b.auditrecords || ({} as AuditRecord)), [])
+        .some(
+          (ar) =>
+            ar.auditinfo?.level == 'Critical' ||
+            ar.auditinfo?.level == 'Fatal' ||
+            ar.auditinfo?.level == 'Warning' ||
+            ar.auditinfo?.level == 'Error'
+        );
+
+      if (dataRow.fileId) {
+        fileStatusMap[dataRow.fileId] = fileHasIssue || false;
+      }
+    }
+
+    return fileStatusMap;
+  }, [context?.reportData.filerecords, data, fileRecords]);
+
+  type TableRow = Partial<typeof data[number]>;
+  const sortByStatus = React.useCallback((rowA: Row<TableRow>, rowB: Row<TableRow>) => {
+    const levelsOrder = ['Proccessed', 'Failed'];
+    const indexA = levelsOrder.indexOf(rowA.original.state || '');
+    const indexB = levelsOrder.indexOf(rowB.original.state || '');
+    return indexA > indexB ? 1 : -1;
+  }, []);
+
   const columns = React.useMemo(
     () => [
       {
@@ -108,15 +144,20 @@ export const FilesTable = ({
           },
           {
             id: 'status',
+            accessor: 'status',
             Header: displayStrings['status'],
-            Filter: tableFilters.TextFilter(),
             minWidth: 75,
-            maxWidth: 250,
+            maxWidth: 180,
+            sortType: sortByStatus,
             Cell: (props: CellProps<SourceFile>) => {
               /* Note: This field can be changed to `State` value from row props. */
               return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
                 <TextWithIcon icon={<StatusIcon status='error' />} className='isr-files-status-negative'>
                   <Text>{displayStrings['failed']}</Text>
+                </TextWithIcon>
+              ) : props.row.original.fileId && processedWithIssues[props.row.original.fileId] ? (
+                <TextWithIcon icon={<StatusIcon status='warning' />} className='isr-files-status-warning'>
+                  <Text>{displayStrings['processedWithIssues']}</Text>
                 </TextWithIcon>
               ) : (
                 <TextWithIcon icon={<StatusIcon status='success' />} className='isr-files-status-positive'>
