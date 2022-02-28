@@ -18,7 +18,7 @@ import { AuditRecord } from '.';
 const defaultDisplayStrings = {
   failed: 'Failed',
   processed: 'Processed',
-  processedWithIssues: 'Processed with Issues',
+  processedWithIssues: 'Processed with issues',
   fileName: 'File name',
   status: 'Status',
   path: 'Path',
@@ -109,14 +109,6 @@ export const FilesTable = ({
     return fileStatusMap;
   }, [context?.reportData.filerecords, data, fileRecords]);
 
-  type TableRow = Partial<typeof data[number]>;
-  const sortByStatus = React.useCallback((rowA: Row<TableRow>, rowB: Row<TableRow>) => {
-    const levelsOrder = ['Proccessed', 'Failed'];
-    const indexA = levelsOrder.indexOf(rowA.original.state || '');
-    const indexB = levelsOrder.indexOf(rowB.original.state || '');
-    return indexA > indexB ? 1 : -1;
-  }, []);
-
   const columns = React.useMemo(
     () => [
       {
@@ -144,11 +136,9 @@ export const FilesTable = ({
           },
           {
             id: 'status',
-            accessor: 'status',
             Header: displayStrings['status'],
             minWidth: 75,
             maxWidth: 180,
-            sortType: sortByStatus,
             Cell: (props: CellProps<SourceFile>) => {
               /* Note: This field can be changed to `State` value from row props. */
               return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
