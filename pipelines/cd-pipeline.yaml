@@ -27,4 +27,3 @@ stages:
         parameters:
           path: itwin-synchronization-report-react-$(version).tgz
           artifactName: tarball
-          dryrun: true
