@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import { StatusIcon, ClampWithTooltip, TextWithIcon } from './utils';
 import { Table, tableFilters, Text, Badge } from '@itwin/itwinui-react';
 import type { TableProps } from '@itwin/itwinui-react';
-import type { SourceFilesInfo, SourceFile } from './report-data-typings';
+import type { SourceFilesInfo, SourceFile, FileRecord } from './report-data-typings';
 import type { CellProps, Row } from 'react-table';
 import { ReportContext } from './Report';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
@@ -17,6 +17,7 @@ import './FilesTable.scss';
 const defaultDisplayStrings = {
   failed: 'Failed',
   processed: 'Processed',
+  processedWithIssues: 'Processed with issues',
   fileName: 'File name',
   status: 'Status',
   path: 'Path',
@@ -39,12 +40,14 @@ const defaultFileTypeIcons = {
 export const FilesTable = ({
   displayStrings: userDisplayStrings,
   sourceFilesInfo,
+  fileRecords,
   fileTypeIcons: userFileTypeIcons,
   datasourceIcons,
   className,
   ...rest
 }: {
   sourceFilesInfo?: SourceFilesInfo;
+  fileRecords?: FileRecord[];
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   /** Icons to show before the file names. */
   fileTypeIcons?: Record<string, JSX.Element>;
@@ -67,6 +70,7 @@ export const FilesTable = ({
 
   const context = React.useContext(ReportContext);
   const search = context?.searchString || '';
+  fileRecords ??= context?.reportData.filerecords ?? [];
 
   const filterFiles = React.useCallback(
     (file: SourceFile) =>
@@ -80,6 +84,20 @@ export const FilesTable = ({
     const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
     return [{ ...filesInfo, mainFile: true }, ...(filesInfo?.Files ?? [])].filter((file) => filterFiles(file));
   }, [sourceFilesInfo, context?.reportData.sourceFilesInfo, filterFiles]);
+
+  const processedWithIssues = React.useMemo(() => {
+    const fileStatusEntries = data
+      .filter((sourceFile) => !!sourceFile.fileId)
+      .map(({ fileId }) => {
+        const hasIssue = fileRecords
+          ?.filter(({ file }) => file?.identifier === fileId)
+          .flatMap(({ auditrecords }) => auditrecords ?? [])
+          .some(({ auditinfo }) => ['Critical', 'Fatal', 'Warning', 'Error'].includes(auditinfo?.level ?? ''));
+        return [fileId, hasIssue] as const;
+      });
+
+    return Object.fromEntries(fileStatusEntries) as Record<string, boolean>;
+  }, [data, fileRecords]);
 
   const columns = React.useMemo(
     () => [
@@ -109,14 +127,17 @@ export const FilesTable = ({
           {
             id: 'status',
             Header: displayStrings['status'],
-            Filter: tableFilters.TextFilter(),
             minWidth: 75,
-            maxWidth: 250,
+            maxWidth: 200,
             Cell: (props: CellProps<SourceFile>) => {
               /* Note: This field can be changed to `State` value from row props. */
               return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
                 <TextWithIcon icon={<StatusIcon status='error' />} className='isr-files-status-negative'>
                   <Text>{displayStrings['failed']}</Text>
+                </TextWithIcon>
+              ) : props.row.original.fileId && processedWithIssues[props.row.original.fileId] ? (
+                <TextWithIcon icon={<StatusIcon status='warning' />} className='isr-files-status-warning'>
+                  <Text>{displayStrings['processedWithIssues']}</Text>
                 </TextWithIcon>
               ) : (
                 <TextWithIcon icon={<StatusIcon status='success' />} className='isr-files-status-positive'>
@@ -173,7 +194,7 @@ export const FilesTable = ({
         ],
       },
     ],
-    [displayStrings, filetypeIcons, datasourceIcons]
+    [displayStrings, filetypeIcons, processedWithIssues, datasourceIcons]
   );
 
   return (
