@@ -13,7 +13,6 @@ import { ReportContext } from './Report';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
 import './FilesTable.scss';
-import { AuditRecord } from '.';
 
 const defaultDisplayStrings = {
   failed: 'Failed',
@@ -71,6 +70,7 @@ export const FilesTable = ({
 
   const context = React.useContext(ReportContext);
   const search = context?.searchString || '';
+  fileRecords ??= context?.reportData.filerecords ?? [];
 
   const filterFiles = React.useCallback(
     (file: SourceFile) =>
@@ -86,28 +86,18 @@ export const FilesTable = ({
   }, [sourceFilesInfo, context?.reportData.sourceFilesInfo, filterFiles]);
 
   const processedWithIssues = React.useMemo(() => {
-    const fileDetails = fileRecords || context?.reportData.filerecords;
+    const fileStatusEntries = data
+      .filter((sourceFile) => !!sourceFile.fileId)
+      .map(({ fileId }) => {
+        const hasIssue = fileRecords
+          ?.filter(({ file }) => file?.identifier === fileId)
+          .flatMap(({ auditrecords }) => auditrecords ?? [])
+          .some(({ auditinfo }) => ['Critical', 'Fatal', 'Warning', 'Error'].includes(auditinfo?.level ?? ''));
+        return [fileId, hasIssue] as const;
+      });
 
-    const fileStatusMap: { [fileId: string]: boolean } = {};
-    for (const dataRow of data) {
-      const fileHasIssue = fileDetails
-        ?.filter((fd) => fd.file?.identifier == dataRow.fileId)
-        .reduce((a: AuditRecord[], b) => a.concat(b.auditrecords || ({} as AuditRecord)), [])
-        .some(
-          (ar) =>
-            ar.auditinfo?.level == 'Critical' ||
-            ar.auditinfo?.level == 'Fatal' ||
-            ar.auditinfo?.level == 'Warning' ||
-            ar.auditinfo?.level == 'Error'
-        );
-
-      if (dataRow.fileId) {
-        fileStatusMap[dataRow.fileId] = fileHasIssue || false;
-      }
-    }
-
-    return fileStatusMap;
-  }, [context?.reportData.filerecords, data, fileRecords]);
+    return Object.fromEntries(fileStatusEntries) as Record<string, boolean>;
+  }, [data, fileRecords]);
 
   const columns = React.useMemo(
     () => [
@@ -138,7 +128,7 @@ export const FilesTable = ({
             id: 'status',
             Header: displayStrings['status'],
             minWidth: 75,
-            maxWidth: 180,
+            maxWidth: 200,
             Cell: (props: CellProps<SourceFile>) => {
               /* Note: This field can be changed to `State` value from row props. */
               return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
@@ -204,7 +194,7 @@ export const FilesTable = ({
         ],
       },
     ],
-    [displayStrings, filetypeIcons, datasourceIcons]
+    [displayStrings, filetypeIcons, processedWithIssues, datasourceIcons]
   );
 
   return (
