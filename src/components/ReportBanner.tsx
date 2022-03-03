@@ -129,12 +129,14 @@ export const ReportBanner = (props: ReportBannerProps) => {
                   </span>
                 </span>
               ) : (
-                <span className='isr-header-banner-section'>
-                  <StatusIcon status='success' />
-                  <span className='isr-header-banner-section-message'>
-                    {displayStrings.noSynchronizationIssuesFound}
+                filesProcessed.length !== failedFileCount && (
+                  <span className='isr-header-banner-section'>
+                    <StatusIcon status='success' />
+                    <span className='isr-header-banner-section-message'>
+                      {displayStrings.noSynchronizationIssuesFound}
+                    </span>
                   </span>
-                </span>
+                )
               )}
             </div>
           )}
