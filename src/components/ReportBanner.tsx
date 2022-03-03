@@ -86,8 +86,11 @@ export const ReportBanner = (props: ReportBannerProps) => {
   React.useEffect(() => {
     let failed = 0;
     filesProcessed?.forEach((file) => {
-      if (file.state === 'Failed' || file.state === 'Missing') failed++;
+      if (file.state === 'Failed' || file.state === 'Missing' || !file.bimFileExists || !file.fileExists) {
+        failed++;
+      }
     });
+
     setFailedFileCount(failed);
   }, [filesProcessed]);
 
@@ -126,12 +129,14 @@ export const ReportBanner = (props: ReportBannerProps) => {
                   </span>
                 </span>
               ) : (
-                <span className='isr-header-banner-section'>
-                  <StatusIcon status='success' />
-                  <span className='isr-header-banner-section-message'>
-                    {displayStrings.noSynchronizationIssuesFound}
+                filesProcessed.length !== failedFileCount && (
+                  <span className='isr-header-banner-section'>
+                    <StatusIcon status='success' />
+                    <span className='isr-header-banner-section-message'>
+                      {displayStrings.noSynchronizationIssuesFound}
+                    </span>
                   </span>
-                </span>
+                )
               )}
             </div>
           )}
