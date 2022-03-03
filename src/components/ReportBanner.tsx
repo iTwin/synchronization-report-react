@@ -86,8 +86,11 @@ export const ReportBanner = (props: ReportBannerProps) => {
   React.useEffect(() => {
     let failed = 0;
     filesProcessed?.forEach((file) => {
-      if (file.state === 'Failed' || file.state === 'Missing') failed++;
+      if (file.state === 'Failed' || file.state === 'Missing' || !file.bimFileExists || !file.fileExists) {
+        failed++;
+      }
     });
+
     setFailedFileCount(failed);
   }, [filesProcessed]);
 
