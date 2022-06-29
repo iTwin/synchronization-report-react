@@ -19,6 +19,7 @@
   "devDependencies": {
     "@cypress/react": "^5.10.3",
     "@cypress/vite-dev-server": "^2.2.1",
+    "@itwin/itwinui-css": "^0.51.0",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
@@ -56,6 +57,10 @@
     "lint:fix": "yarn lint && yarn lint:copyright --fix */**/*.{js,ts,tsx,scss}",
     "lint:copyright": "node ./scripts/copyrightLinter.js",
     "format": "prettier --write src"
+  },
+  "resolutions": {
+    "minimist": "1.2.6",
+    "semver-regex": "3.1.4"
   },
   "husky": {
     "hooks": {
