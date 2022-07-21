@@ -64,6 +64,20 @@ export const DetailsTable = ({
   const context = React.useContext(ReportContext);
   const search = context?.searchString || '';
 
+  const severityFilter = React.useCallback(
+    (file: { [k: string]: unknown }) => {
+      if (context?.severityFilter === 'error') {
+        return file.level === 'Error' || file.level === 'Fatal';
+      } else if (context?.severityFilter === 'warning') {
+        return file.level === 'Warning' || file.level === 'Critical';
+      } else if (context?.severityFilter === 'info') {
+        return file.level === 'Info';
+      }
+      return true;
+    },
+    [context?.severityFilter]
+  );
+
   const data = React.useMemo(() => {
     const files = fileRecords || context?.reportData.filerecords || [];
     return files
@@ -71,12 +85,14 @@ export const DetailsTable = ({
         (auditrecords ?? []).map(({ auditinfo }) => ({ fileId: file?.identifier, ...auditinfo }))
       )
       .flat()
-      .filter((file) =>
-        Object.values(file).some(
-          (value) => value && typeof value === 'string' && value.toLowerCase().includes(search.toLowerCase())
-        )
+      .filter(
+        (file) =>
+          severityFilter(file) &&
+          Object.values(file).some(
+            (value) => value && typeof value === 'string' && value.toLowerCase().includes(search.toLowerCase())
+          )
       );
-  }, [fileRecords, context?.reportData.filerecords, search]);
+  }, [fileRecords, context?.reportData.filerecords, severityFilter, search]);
 
   const displayStrings = React.useMemo(
     () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),
