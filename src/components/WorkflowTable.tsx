@@ -286,6 +286,7 @@ export const WorkflowTable = ({
   return (
     <Table
       enableVirtualization
+      autoResetExpanded={false}
       className={classnames('isr-workflow-table', className)}
       columns={columns}
       data={data}
