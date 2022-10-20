@@ -3,23 +3,19 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
+import { InformationPanelWrapper } from '@itwin/itwinui-react';
 import classnames from 'classnames';
-import './ReportTablistWrapper.scss';
+import './ReportInfoPanelWrapper.scss';
 
-/**
- * `ReportTablistWrapper` is wrapper component for Tablist, ReportSearchbar and other user defined components to be placed over tables.
- */
-export const ReportTablistWrapper = ({
-  children,
+export const ReportInfoPanelWrapper = ({
   className,
+  children,
   ...rest
 }: {
-  children?: React.ReactNode;
   className?: string;
-}) => {
-  return (
-    <div className={classnames('isr-tablist-wrapper', className)} {...rest}>
-      {children}
-    </div>
-  );
-};
+  children?: React.ReactNode;
+}) => (
+  <InformationPanelWrapper className={classnames('isr-info-panel-wrapper', className)} {...rest}>
+    {children}
+  </InformationPanelWrapper>
+);

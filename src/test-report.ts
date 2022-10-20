@@ -3,7 +3,17 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 
-import { AuditInfo, ReportData, SourceFile } from './components/report-data-typings';
+import { AuditInfo, ReportData, SourceFile, WorkflowMapping } from './components/report-data-typings';
+
+export const testSchema: WorkflowMapping = {
+  MissingData: {
+    Material: ['Reporting', 'Clash'],
+    ReferenceFile: ['Design Review', 'Construction', 'Clash'],
+  },
+  VisualFidelity: {
+    Level: ['Sync'],
+  },
+};
 
 export default {
   context: {

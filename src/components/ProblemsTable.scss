@@ -2,7 +2,13 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-.isr-report-tabpanel {
-  min-height: 0;
-  flex: 1;
+@import '@itwin/itwinui-css/scss/variables';
+
+.isr-problems-table {
+  height: 100%;
+}
+
+.isr-problems-message {
+  gap: $iui-s;
+  justify-content: space-between;
 }

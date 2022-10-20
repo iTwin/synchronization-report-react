@@ -8,6 +8,16 @@ export type ReportData = {
   filerecords?: FileRecord[];
 };
 
+export type Workflow = string;
+
+export type Type = {
+  [type: string]: Workflow[];
+};
+
+export type WorkflowMapping = {
+  [category: string]: Type;
+};
+
 export type SourceFilesInfo = {
   itemType?: string;
   dataSource?: string;

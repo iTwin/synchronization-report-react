@@ -3,26 +3,30 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
-import classnames from 'classnames';
 import { FileRecord, SourceFile } from './report-data-typings';
 import './ReportBanner.scss';
-import { StatusIcon } from './utils';
-import { ReportContext } from './Report';
+import { BannerTile } from './utils';
+import { Issues, ReportContext } from './Report';
+import { Select, Surface, Text } from '@itwin/itwinui-react';
+import SvgFlag from '@itwin/itwinui-icons-react/esm/icons/Flag';
+import SvgHierarchyTree from '@itwin/itwinui-icons-react/esm/icons/HierarchyTree';
+import SvgBentleySystems from '@itwin/itwinui-icons-react/esm/icons/BentleySystems';
+import SvgStatusError from '@itwin/itwinui-icons-color-react/esm/icons/StatusError';
+import SvgStatusWarning from '@itwin/itwinui-icons-color-react/esm/icons/StatusWarning';
+import SvgInfoHollow from '@itwin/itwinui-icons-color-react/esm/icons/InfoHollow';
 
 const defaultDisplayStrings = {
-  filesProcessed: 'file(s) processed',
-  filesFailedToSynchronize: 'file(s) failed to synchronize',
-  synchronizationIssuesFound: 'synchronization issues found',
   errors: 'Errors',
   warnings: 'Warnings',
   otherIssues: 'Other issues',
-  noSynchronizationIssuesFound: 'No synchronization issues found',
+  totalIssues: 'Total Issues',
+  workflows: 'Workflows',
 };
 
 export type ReportBannerProps = {
   fileRecords?: FileRecord[];
   filesProcessed?: SourceFile[];
-  currentTab?: 'files' | 'details';
+  currentTable?: 'files' | 'details' | 'workflow';
   className?: string;
   displayStrings?: Partial<typeof defaultDisplayStrings>;
 };
@@ -53,135 +57,117 @@ export const ReportBanner = (props: ReportBannerProps) => {
     return [];
   }, [context?.reportData.sourceFilesInfo, props.filesProcessed]);
 
-  const currentTab = React.useMemo(() => {
-    return props.currentTab || context?.currentTab;
-  }, [context?.currentTab, props.currentTab]);
-
   const [errorCount, setErrorCount] = React.useState(0);
   const [warningCount, setWarningCount] = React.useState(0);
   const [infoCount, setInfoCount] = React.useState(0);
   const [issuesCount, setIssuesCount] = React.useState(0);
+  const [summaryType, setSummaryType] = React.useState('totalIssues');
+  const [workflowIssuesCount, setWorkFlowIssuesCount] = React.useState<Map<string, number>>(new Map());
 
   React.useEffect(() => {
     let error = 0,
       warning = 0,
       info = 0;
-
+    const wCount = new Map<string, number>();
     fileRecords?.forEach((file) => {
       file.auditrecords?.forEach((record) => {
         const level = record.auditinfo?.level;
-
         if (level === 'Error' || level === 'Fatal') error++;
         else if (level === 'Warning' || level === 'Critical') warning++;
         else if (level === 'Info') info++;
+
+        if (
+          context?.workflowMapping &&
+          record.auditinfo?.category &&
+          record.auditinfo.type &&
+          Object.hasOwn(context.workflowMapping, record.auditinfo.category) &&
+          Object.hasOwn(context.workflowMapping[record.auditinfo.category], record.auditinfo.type)
+        ) {
+          const workflows = context.workflowMapping[record.auditinfo.category][record.auditinfo.type];
+          workflows.forEach((w) => {
+            const currentCount = wCount.get(w);
+            const count = currentCount ?? 0;
+            wCount.set(w, count + 1);
+          });
+        }
       });
     });
+    setWorkFlowIssuesCount(wCount);
     setErrorCount(error);
     setWarningCount(warning);
     setInfoCount(info);
     setIssuesCount(error + warning + info);
-  }, [fileRecords]);
+  }, [context?.workflowMapping, fileRecords]);
 
-  const [failedFileCount, setFailedFileCount] = React.useState(0);
-  React.useEffect(() => {
-    let failed = 0;
-    filesProcessed?.forEach((file) => {
-      if (!file.bimFileExists && !file.fileExists) {
-        failed++;
-      }
-    });
-
-    setFailedFileCount(failed);
-  }, [filesProcessed]);
+  const onClickIssue = React.useCallback(
+    (issue: Issues) =>
+      context?.setFocusedIssues((focusedIssues) =>
+        focusedIssues.some((currentIssue) => issue === currentIssue)
+          ? focusedIssues.filter((i) => i !== issue)
+          : [...focusedIssues, issue]
+      ),
+    [context]
+  );
 
   return (
-    <>
-      {(fileRecords || filesProcessed) && (
-        <div
-          className={classnames(
-            'isr-header-banner',
-            {
-              'isr-negative': currentTab === 'files' && failedFileCount > 0,
-            },
-            props.className
-          )}
-        >
-          {/* Todo: Make files table filter by status when clicking on '1 file failed'*/}
-          {currentTab === 'files' && filesProcessed && (
-            <div className='isr-header-banner-message'>
-              <span className='isr-header-banner-section'>
-                <span className='isr-header-banner-section-message'>
-                  {`${filesProcessed.length} ${displayStrings.filesProcessed}`}
-                </span>
-              </span>
-              {failedFileCount > 0 && (
-                <span className='isr-header-banner-section'>
-                  <StatusIcon status='error' />
-                  <span className='isr-header-banner-section-message'>
-                    {`${failedFileCount} ${displayStrings.filesFailedToSynchronize}`}
-                  </span>
-                </span>
-              )}
-              {issuesCount > 0 ? (
-                <span className='isr-header-banner-section'>
-                  <span className='isr-header-banner-section-message'>
-                    {`${issuesCount} ${displayStrings.synchronizationIssuesFound}`}
-                  </span>
-                </span>
-              ) : (
-                filesProcessed.length !== failedFileCount && (
-                  <span className='isr-header-banner-section'>
-                    <StatusIcon status='success' />
-                    <span className='isr-header-banner-section-message'>
-                      {displayStrings.noSynchronizationIssuesFound}
-                    </span>
-                  </span>
-                )
-              )}
-            </div>
-          )}
-
-          {/* Todo: Make details table filter by issue type when clicking on issue*/}
-          {currentTab === 'details' && fileRecords && (
-            <div className='isr-header-banner-message'>
-              {issuesCount > 0 ? (
-                <>
-                  <span className='isr-header-banner-section'>
-                    <span className='isr-header-banner-section-message'>
-                      {`${issuesCount} ${displayStrings.synchronizationIssuesFound}`}
-                    </span>
-                  </span>
-                  {errorCount > 0 && (
-                    <span className='isr-header-banner-section'>
-                      <StatusIcon status='error' />
-                      <span className='isr-header-banner-section-message'>{`${displayStrings.errors}: ${errorCount}`}</span>
-                    </span>
-                  )}
-                  {warningCount > 0 && (
-                    <span className='isr-header-banner-section'>
-                      <StatusIcon status='warning' />
-                      <span className='isr-header-banner-section-message'>{`${displayStrings.warnings}: ${warningCount}`}</span>
-                    </span>
-                  )}
-                  {infoCount > 0 && (
-                    <span className='isr-header-banner-section'>
-                      <StatusIcon status='informational' />
-                      <span className='isr-header-banner-section-message'>{`${displayStrings.otherIssues}: ${infoCount}`}</span>
-                    </span>
-                  )}
-                </>
-              ) : (
-                <span className='isr-header-banner-section'>
-                  <StatusIcon status='success' />
-                  <span className='isr-header-banner-section-message'>
-                    {displayStrings.noSynchronizationIssuesFound}
-                  </span>
-                </span>
-              )}
-            </div>
-          )}
-        </div>
+    <Surface elevation={1} className='isr-banner-container'>
+      <BannerTile icon={summaryType === 'totalIssues' ? <SvgFlag /> : <SvgHierarchyTree />}>
+        <Text variant='title' style={{ fontWeight: 'bold' }}>
+          {summaryType === 'totalIssues' ? issuesCount : workflowIssuesCount.size}
+        </Text>
+        <Select
+          options={[
+            { value: 'totalIssues', label: displayStrings.totalIssues },
+            { value: 'workflows', label: displayStrings.workflows },
+          ]}
+          onChange={setSummaryType}
+          value={summaryType}
+          size='small'
+        />
+      </BannerTile>
+      {summaryType === 'totalIssues' ? (
+        <>
+          <BannerTile
+            onClick={() => onClickIssue('Error')}
+            selected={context?.focusedIssues.some((p) => p === 'Error')}
+            icon={<SvgStatusError />}
+          >
+            <Text variant='title' style={{ fontWeight: 'bold' }}>
+              {errorCount}
+            </Text>
+            <Text variant='small'>{displayStrings.errors}</Text>
+          </BannerTile>
+          <BannerTile
+            onClick={() => onClickIssue('Warning')}
+            selected={context?.focusedIssues.some((p) => p === 'Warning')}
+            icon={<SvgStatusWarning />}
+          >
+            <Text variant='title' style={{ fontWeight: 'bold' }}>
+              {warningCount}
+            </Text>
+            <Text variant='small'>{displayStrings.warnings}</Text>
+          </BannerTile>
+          <BannerTile
+            onClick={() => onClickIssue('Info')}
+            selected={context?.focusedIssues.some((p) => p === 'Info')}
+            icon={<SvgInfoHollow />}
+          >
+            <Text variant='title' style={{ fontWeight: 'bold' }}>
+              {infoCount}
+            </Text>
+            <Text variant='small'>{displayStrings.otherIssues}</Text>
+          </BannerTile>
+        </>
+      ) : (
+        Array.from(workflowIssuesCount.keys()).map((w) => (
+          <BannerTile key={w} icon={<SvgBentleySystems />}>
+            <Text variant='title' style={{ fontWeight: 'bold' }}>
+              {workflowIssuesCount.get(w)}
+            </Text>
+            <Text variant='small'>{w}</Text>
+          </BannerTile>
+        ))
       )}
-    </>
+    </Surface>
   );
 };

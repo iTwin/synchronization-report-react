@@ -3,52 +3,55 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
-import { HorizontalTabs, Tab } from '@itwin/itwinui-react';
+import { LabeledSelect, SelectOption } from '@itwin/itwinui-react';
 import { ReportContext } from './Report';
 
 const defaultDisplayStrings = {
   files: 'Files',
-  details: 'Details',
+  problems: 'Problems',
+  workflow: 'Workflow',
 };
 
 /**
- * `ReportTablist` shows the files and details tabs (only the tab selectors, not the panel content).
+ * `ReportTableSelect` shows the selection for different tables (only the table selection, not the panel content).
  * It should be used as a descendant of `Report`.
  *
  * Two `children` can be specified to show custom tab components.
  */
-export const ReportTablist = ({
+export const ReportTableSelect = ({
   displayStrings: userDisplayStrings,
-  children,
+  options,
   className,
   ...rest
 }: {
   displayStrings?: Partial<typeof defaultDisplayStrings>;
-  children?: [React.ReactNode, React.ReactNode];
+  options?: SelectOption<string>[];
   className?: string;
 }) => {
   const context = React.useContext(ReportContext);
 
   if (!context) {
-    throw new Error('ReportTablist must be used inside the Report component');
+    throw new Error('ReportTableSelect must be used inside the Report component');
   }
 
-  const { currentTab, setCurrentTab } = context;
+  const { currentTable, setCurrentTable } = context;
 
   const displayStrings = { ...defaultDisplayStrings, ...userDisplayStrings };
 
   return (
-    <HorizontalTabs
-      activeIndex={currentTab === 'files' ? 0 : 1}
-      onTabSelected={(index) => setCurrentTab(index === 0 ? 'files' : 'details')}
-      labels={
-        children ?? [
-          <Tab key='files' label={displayStrings['files']} />,
-          <Tab key='details' label={displayStrings['details']} />,
+    <LabeledSelect
+      label='Show by'
+      displayStyle='inline'
+      options={
+        options ?? [
+          { value: 'workflow', label: displayStrings['workflow'] },
+          { value: 'problems', label: displayStrings['problems'] },
+          { value: 'files', label: displayStrings['files'] },
         ]
       }
-      type='borderless'
-      wrapperClassName={className}
+      onChange={setCurrentTable}
+      value={currentTable}
+      className={className}
       {...rest}
     />
   );

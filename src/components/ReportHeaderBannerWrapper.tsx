@@ -3,22 +3,22 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
-import './TextWithIcon.scss';
 import classnames from 'classnames';
+import './ReportHeaderBannerWrapper.scss';
 
-export const TextWithIcon = ({
-  icon,
+/**
+ * `ReportHeaderBannerWrapper` is wrapper component for ReportTimestamp, ReportBanner and other components in the header.
+ */
+export const ReportHeaderBannerWrapper = ({
   children,
   className,
   ...rest
 }: {
-  icon?: React.ReactNode;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
 }) => {
   return (
-    <div className={classnames('isr-text-with-icon', className)} {...rest}>
-      {icon && <span className='isr-icon'>{icon}</span>}
+    <div className={classnames('isr-report-header-banner', className)} {...rest}>
       {children}
     </div>
   );

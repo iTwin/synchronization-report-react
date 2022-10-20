@@ -4,14 +4,17 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import { StatusIcon, ClampWithTooltip, TextWithIcon } from './utils';
-import { Table, tableFilters, Text, Badge } from '@itwin/itwinui-react';
+import { ClampWithTooltip } from './utils';
+import { Table, tableFilters, Text, Badge, DefaultCell } from '@itwin/itwinui-react';
 import type { TableProps } from '@itwin/itwinui-react';
 import type { SourceFilesInfo, SourceFile, FileRecord } from './report-data-typings';
-import type { CellProps, Row } from 'react-table';
+import type { CellProps, Row, CellRendererProps } from 'react-table';
 import { ReportContext } from './Report';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
+import SvgStatusError from '@itwin/itwinui-icons-color-react/esm/icons/StatusError';
+import SvgStatusWarning from '@itwin/itwinui-icons-color-react/esm/icons/StatusWarning';
+import SvgStatusSuccess from '@itwin/itwinui-icons-color-react/esm/icons/StatusSuccess';
 import './FilesTable.scss';
 
 const defaultDisplayStrings = {
@@ -110,17 +113,25 @@ export const FilesTable = ({
             minWidth: 125,
             Header: displayStrings['fileName'],
             Filter: tableFilters.TextFilter(),
-            Cell: ({ row: { original } }: CellProps<SourceFile>) => {
-              const extension = original.fileName?.substring(original.fileName.lastIndexOf('.') + 1);
+            cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<SourceFile>) => {
+              const extension = cellProps.row.original.fileName?.substring(
+                cellProps.row.original.fileName.lastIndexOf('.') + 1
+              );
               return (
-                <div className='isr-file-name'>
-                  <TextWithIcon
-                    icon={extension && extension in filetypeIcons ? filetypeIcons[extension] : <SvgFiletypeDocument />}
-                  >
-                    {original.fileName}
-                  </TextWithIcon>
-                  {original.mainFile && <Badge backgroundColor='primary'>{displayStrings['mainFile']}</Badge>}
-                </div>
+                <DefaultCell
+                  cellElementProps={cellElementProps}
+                  cellProps={cellProps}
+                  startIcon={
+                    extension && extension in filetypeIcons ? filetypeIcons[extension] : <SvgFiletypeDocument />
+                  }
+                >
+                  <div className='isr-file-name'>
+                    {cellProps.row.original.fileName}
+                    {cellProps.row.original.mainFile && (
+                      <Badge backgroundColor='primary'>{displayStrings['mainFile']}</Badge>
+                    )}
+                  </div>
+                </DefaultCell>
               );
             },
           },
@@ -129,22 +140,21 @@ export const FilesTable = ({
             Header: displayStrings['status'],
             minWidth: 75,
             maxWidth: 200,
-            Cell: (props: CellProps<SourceFile>) => {
+            cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<SourceFile>) =>
               /* Note: This field can be changed to `State` value from row props. */
-              return !props.row.original.fileExists && !props.row.original.bimFileExists ? (
-                <TextWithIcon icon={<StatusIcon status='error' />} className='isr-files-status-negative'>
+              !cellProps.row.original.fileExists && !cellProps.row.original.bimFileExists ? (
+                <DefaultCell cellElementProps={cellElementProps} cellProps={cellProps} startIcon={<SvgStatusError />}>
                   <Text>{displayStrings['failed']}</Text>
-                </TextWithIcon>
-              ) : props.row.original.fileId && processedWithIssues[props.row.original.fileId] ? (
-                <TextWithIcon icon={<StatusIcon status='warning' />} className='isr-files-status-warning'>
+                </DefaultCell>
+              ) : cellProps.row.original.fileId && processedWithIssues[cellProps.row.original.fileId] ? (
+                <DefaultCell cellElementProps={cellElementProps} cellProps={cellProps} startIcon={<SvgStatusWarning />}>
                   <Text>{displayStrings['processedWithIssues']}</Text>
-                </TextWithIcon>
+                </DefaultCell>
               ) : (
-                <TextWithIcon icon={<StatusIcon status='success' />} className='isr-files-status-positive'>
+                <DefaultCell cellElementProps={cellElementProps} cellProps={cellProps} startIcon={<SvgStatusSuccess />}>
                   <Text>{displayStrings['processed']}</Text>
-                </TextWithIcon>
-              );
-            },
+                </DefaultCell>
+              ),
           },
           {
             id: 'path',
@@ -183,13 +193,17 @@ export const FilesTable = ({
             minWidth: 100,
             Header: displayStrings['datasource'],
             Filter: tableFilters.TextFilter(),
-            Cell: ({ value }: CellProps<SourceFile>) => {
-              return (
-                <TextWithIcon icon={datasourceIcons && value in datasourceIcons && datasourceIcons[value]}>
-                  {value}
-                </TextWithIcon>
-              );
-            },
+            cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<SourceFile>) => (
+              <DefaultCell
+                cellElementProps={cellElementProps}
+                cellProps={cellProps}
+                startIcon={
+                  datasourceIcons && cellProps.value in datasourceIcons ? datasourceIcons[cellProps.value] : undefined
+                }
+              >
+                {cellProps.value}
+              </DefaultCell>
+            ),
           },
         ],
       },

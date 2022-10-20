@@ -79,7 +79,7 @@ export const App = () => {
 
       <ReportTabpanel>
         <FilesTable />
-        <DetailsTable />
+        <ProblemsTable />
       </ReportTabpanel>
     </Report>
   );

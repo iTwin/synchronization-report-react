@@ -4,12 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 @import '@itwin/itwinui-css/scss/variables';
 
-.isr-tablist-wrapper {
+.isr-info-panel-body {
   display: flex;
-  align-items: center;
-  gap: $iui-s;
-
-  > :first-child {
-    margin-right: auto;
-  }
+  flex-direction: column;
+  gap: $iui-baseline;
 }
