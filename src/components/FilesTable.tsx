@@ -214,6 +214,7 @@ export const FilesTable = ({
   return (
     <>
       <Table
+        enableVirtualization
         className={classnames('isr-files-table', className)}
         columns={columns}
         data={data}
