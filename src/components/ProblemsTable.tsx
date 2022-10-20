@@ -24,7 +24,7 @@ const defaultDisplayStrings = {
   Warning: 'Warning',
   Info: 'Info',
   fileName: 'File name',
-  level: 'Severity',
+  level: 'Status',
   category: 'Issue',
   type: 'Type',
   impactedWorkflows: 'Impacted Workflows',

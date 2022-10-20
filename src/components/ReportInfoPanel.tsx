@@ -45,10 +45,10 @@ export const ReportInfoPanel = ({
             {currentAuditInfo.level}
           </span>
         )}
-        {currentAuditInfo?.category && (
+        {currentAuditInfo?.type && (
           <span>
             <Label as='span'>{displayStrings['issueType']}</Label>
-            {currentAuditInfo?.category ?? ''}
+            {currentAuditInfo?.type ?? ''}
           </span>
         )}
         {currentAuditInfo?.impactedWorkflows && (

@@ -25,7 +25,7 @@ const defaultDisplayStrings = {
   Warning: 'Warning',
   Info: 'Info',
   fileName: 'File name',
-  level: 'Severity',
+  level: 'Status',
   category: 'Issue',
   type: 'Type',
   message: 'Message',
@@ -117,7 +117,7 @@ export const WorkflowTable = ({
         Object.hasOwn(workflowMapping[r.category], r.type)
       ) {
         workflowMapping[r.category][r.type].forEach((s) => {
-          const index = reportsByWorkFlow.findIndex((tr) => tr.type === s);
+          const index = reportsByWorkFlow.findIndex((tr) => tr.category === s);
           if (index === -1) {
             reportsByWorkFlow.push({ category: s, subRows: [r] });
           } else {
