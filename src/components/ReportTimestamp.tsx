@@ -9,10 +9,11 @@ import { BannerTile } from './utils';
 import SvgClock from '@itwin/itwinui-icons-react/cjs/icons/Clock';
 import './ReportTimestamp.scss';
 import SvgDocument from '@itwin/itwinui-icons-react/cjs/icons/Document';
+import { SourceFile } from './report-data-typings';
 
 const defaultDisplayStrings = {
   syncTime: 'Sync Time',
-  files: 'Files',
+  files: 'Files Processed',
 };
 
 /**
@@ -22,9 +23,11 @@ const defaultDisplayStrings = {
 export const ReportTimestamp = ({
   timestamp,
   filesCount,
+  filesProcessed,
   displayStrings: userDisplayStrings,
 }: {
   timestamp?: Date;
+  filesProcessed?: SourceFile[];
   filesCount?: number;
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   className?: string;
@@ -60,10 +63,17 @@ export const ReportTimestamp = ({
     setTime(timestamp?.toLocaleTimeString([], options) ?? '');
   }, [timestamp]);
 
+  const allFilesProcessed: SourceFile[] = React.useMemo(() => {
+    if (filesProcessed) {
+      return [...filesProcessed];
+    } else if (context?.reportData.sourceFilesInfo?.Files) {
+      return [context.reportData.sourceFilesInfo, ...context.reportData.sourceFilesInfo.Files];
+    }
+
+    return [];
+  }, [context?.reportData.sourceFilesInfo, filesProcessed]);
+
   return (
-    // <Text variant='small' isMuted={true} {...rest}>
-    //   {`${displayStrings.syncTime}: ${date}`}
-    // </Text>
     <Surface elevation={1} className='isr-timestamp-container'>
       <BannerTile icon={<SvgClock />}>
         <span>
@@ -74,7 +84,7 @@ export const ReportTimestamp = ({
       </BannerTile>
       <BannerTile icon={<SvgDocument />}>
         <Text variant='title' style={{ fontWeight: 'bold' }}>
-          {context?.reportData.sourceFilesInfo?.Files?.length}
+          {allFilesProcessed.length}
         </Text>
         <Text variant='small'>{displayStrings.files}</Text>
       </BannerTile>

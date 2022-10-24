@@ -72,16 +72,22 @@ export const ReportBanner = (props: ReportBannerProps) => {
     fileRecords?.forEach((file) => {
       file.auditrecords?.forEach((record) => {
         const level = record.auditinfo?.level;
-        if (level === 'Error' || level === 'Fatal') error++;
-        else if (level === 'Warning' || level === 'Critical') warning++;
-        else if (level === 'Info') info++;
+        let bannerLevel: Issues = 'Info';
+        if (level === 'Error' || level === 'Fatal') {
+          error++;
+          bannerLevel = 'Error';
+        } else if (level === 'Warning' || level === 'Critical') {
+          warning++;
+          bannerLevel = 'Warning';
+        } else if (level === 'Info') info++;
 
         if (
           context?.workflowMapping &&
           record.auditinfo?.category &&
           record.auditinfo.type &&
           Object.hasOwn(context.workflowMapping, record.auditinfo.category) &&
-          Object.hasOwn(context.workflowMapping[record.auditinfo.category], record.auditinfo.type)
+          Object.hasOwn(context.workflowMapping[record.auditinfo.category], record.auditinfo.type) &&
+          context?.focusedIssues.some((issue) => bannerLevel === issue)
         ) {
           const workflows = context.workflowMapping[record.auditinfo.category][record.auditinfo.type];
           workflows.forEach((w) => {
@@ -97,7 +103,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
     setWarningCount(warning);
     setInfoCount(info);
     setIssuesCount(error + warning + info);
-  }, [context?.workflowMapping, fileRecords]);
+  }, [context?.focusedIssues, context?.workflowMapping, fileRecords]);
 
   const onClickIssue = React.useCallback(
     (issue: Issues) =>
