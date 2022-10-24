@@ -9,10 +9,12 @@ import './ReportInfoPanel.scss';
 
 const defaultDisplayStrings = {
   status: 'Status',
-  issueType: 'Issue Type',
+  issueType: 'Type',
+  category: 'Category',
   impactedWorkflows: 'Impacted Workflows',
   fileName: 'File Name',
   message: 'Message',
+  metadata: 'Metadata',
 };
 
 export const ReportInfoPanel = ({
@@ -36,9 +38,15 @@ export const ReportInfoPanel = ({
   return (
     <InformationPanel className={className} isOpen={!!currentAuditInfo} {...rest}>
       <InformationPanelHeader onClose={() => setCurrentAuditInfo(undefined)}>
-        <Text variant='subheading'>{currentAuditInfo?.category}</Text>
+        <Text variant='subheading'>{currentAuditInfo?.category ?? displayStrings['metadata']}</Text>
       </InformationPanelHeader>
       <InformationPanelBody className='isr-info-panel-body'>
+        {currentAuditInfo?.category && (
+          <span>
+            <Label as='span'>{displayStrings['category']}</Label>
+            {currentAuditInfo.category}
+          </span>
+        )}
         {currentAuditInfo?.level && (
           <span>
             <Label as='span'>{displayStrings['status']}</Label>

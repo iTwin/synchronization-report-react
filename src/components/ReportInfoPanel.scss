@@ -8,4 +8,5 @@
   display: flex;
   flex-direction: column;
   gap: $iui-baseline;
+  overflow-wrap: break-word;
 }
