@@ -4,12 +4,12 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import './ReportTableSelectWrapper.scss';
+import './ReportTitleWrapper.scss';
 
 /**
- * `ReportTableSelectWrapper` is wrapper component for Table selection.
+ * `ReportTitleWrapper` is wrapper component for ReportTitle, ReportDebugIds and other components in the title section.
  */
-export const ReportTableSelectWrapper = ({
+export const ReportTitleWrapper = ({
   children,
   className,
   ...rest
@@ -18,7 +18,7 @@ export const ReportTableSelectWrapper = ({
   className?: string;
 }) => {
   return (
-    <div className={classnames('isr-table-select-wrapper', className)} {...rest}>
+    <div className={classnames('isr-report-title-wrapper', className)} {...rest}>
       {children}
     </div>
   );

@@ -148,7 +148,7 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
         }
         trigger='click'
         interactive={true}
-        placement='bottom-end'
+        placement='auto-start'
       >
         <Button className='isr-support-open' styleType='borderless' size='small'>
           {displayStrings.idsForTechSupport}

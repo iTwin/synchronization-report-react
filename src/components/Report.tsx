@@ -19,6 +19,8 @@ import WorkflowTable from './WorkflowTable';
 import { ReportInfoPanel } from './ReportInfoPanel';
 import { ReportInfoPanelWrapper } from './ReportInfoPanelWrapper';
 import { ReportHeaderBannerWrapper } from './ReportHeaderBannerWrapper';
+import ReportDebugIds from './ReportDebugIds';
+import { ReportTitleWrapper } from './ReportTitleWrapper';
 
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info';
@@ -114,7 +116,10 @@ export const Report = ({
       <div className={classnames('isr-report-main', className)}>
         {children ?? (
           <>
-            <ReportTitle />
+            <ReportTitleWrapper>
+              <ReportTitle />
+              <ReportDebugIds />
+            </ReportTitleWrapper>
             <ReportHeaderBannerWrapper>
               <ReportTimestamp />
               <ReportBanner />
