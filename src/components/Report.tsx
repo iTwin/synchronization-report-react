@@ -120,7 +120,6 @@ export const Report = ({
               <ReportBanner />
             </ReportHeaderBannerWrapper>
             <ReportTableSelectWrapper>
-              {/* <ReportSearchbar /> */}
               <Label as='span'>Issues Found</Label>
               <ReportTableSelect />
             </ReportTableSelectWrapper>
