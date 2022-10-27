@@ -7,14 +7,13 @@ import { IconButton, Tooltip, useTheme } from '@itwin/itwinui-react';
 import { useMediaQuery } from 'beautiful-react-hooks';
 import { SvgSun, SvgMoon } from '@itwin/itwinui-icons-react';
 import { Report } from './components/Report';
-import reportData from './sampleReport.json';
+import testReport, { testMapping } from './test-report';
 import './App.scss';
-import { testSchema } from './components/Types';
 
 const Main = () => {
   return (
     <>
-      <Report data={reportData} workflowMapping={testSchema} />
+      <Report data={testReport} workflowMapping={testMapping} />
     </>
   );
 };
