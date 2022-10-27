@@ -19,21 +19,6 @@
 }
 
 .isr-support-debugID {
-  &-title {
-    font-weight: bold;
-    width: 100px;
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    padding-right: $iui-s;
-    text-align: right;
-  }
-
-  &-id {
-    display: inline-block;
-    overflow: hidden;
-    overflow-wrap: break-word;
-    max-width: 300px;
-  }
+  display: flex;
+  gap: $iui-s;
 }

@@ -5,7 +5,7 @@
 import * as React from 'react';
 import './ReportDebugIds.scss';
 import { ReportContext } from './Report';
-import { Button } from '@itwin/itwinui-react';
+import { Button, Label, Text } from '@itwin/itwinui-react';
 import { ReportDataContext } from './report-data-typings';
 import Tippy from '@tippyjs/react';
 
@@ -79,68 +79,68 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
           <div className='isr-support-debugIDWrapper'>
             {debugIds['Activity Id'] && (
               <div className='isr-support-debugID'>
-                <div className='isr-support-debugID-title'>{`${displayStrings.activityid}:`}</div>
-                <div className='isr-support-debugID-id'>{debugIds['Activity Id']}</div>
+                <Label as='span'>{`${displayStrings.activityid}:`}</Label>
+                <Text>{debugIds['Activity Id']}</Text>
               </div>
             )}
             {debugIds['Briefcase Id'] && (
               <div className='isr-support-debugID'>
-                <div className='isr-support-debugID-title'>{`${displayStrings.briefcaseid}:`}</div>
-                <div className='isr-support-debugID-id'>{debugIds['Briefcase Id']}</div>
+                <Label as='span'>{`${displayStrings.briefcaseid}:`}</Label>
+                <Text>{debugIds['Briefcase Id']}</Text>
               </div>
             )}
             {debugIds['Context Id'] && (
               <div className='isr-support-debugID'>
-                <div className='isr-support-debugID-title'>{`${displayStrings.contextid}:`}</div>
-                <div className='isr-support-debugID-id'>{debugIds['Context Id']}</div>
+                <Label as='span'>{`${displayStrings.contextid}:`}</Label>
+                <Text>{debugIds['Context Id']}</Text>
               </div>
             )}
             {debugIds['Ctx. Name'] && (
               <div className='isr-support-debugID'>
-                <div className='isr-support-debugID-title'>{`${displayStrings.contextName}:`}</div>
-                <div className='isr-support-debugID-id'>{debugIds['Ctx. Name']}</div>
+                <Label as='span'>{`${displayStrings.contextName}:`}</Label>
+                <Text>{debugIds['Ctx. Name']}</Text>
               </div>
             )}
             {debugIds['Job Def. Id'] && (
               <div className='isr-support-debugID'>
-                <div className='isr-support-debugID-title'>{`${displayStrings.jobDefID}:`}</div>
-                <div className='isr-support-debugID-id'>{debugIds['Job Def. Id']}</div>
+                <Label as='span'>{`${displayStrings.jobDefID}:`}</Label>
+                <Text>{debugIds['Job Def. Id']}</Text>
               </div>
             )}
             {debugIds['Job Id'] && (
               <div className='isr-support-debugID'>
-                <div className='isr-support-debugID-title'>{`${displayStrings.jobid}:`}</div>
-                <div className='isr-support-debugID-id'>{debugIds['Job Id']}</div>
+                <Label as='span'>{`${displayStrings.jobid}:`}</Label>
+                <Text>{debugIds['Job Id']}</Text>
               </div>
             )}
             {debugIds['Job Run Id'] && (
               <div className='isr-support-debugID'>
-                <div className='isr-support-debugID-title'>{`${displayStrings.jobRunID}:`}</div>
-                <div className='isr-support-debugID-id'>{debugIds['Job Run Id']}</div>
+                <Label as='span'>`${displayStrings.jobRunID}:`</Label>
+                <Text>{debugIds['Job Run Id']}</Text>
               </div>
             )}
             {debugIds['iModel Id'] && (
               <div className='isr-support-debugID'>
-                <div className='isr-support-debugID-title'>{`${displayStrings.modelid}:`}</div>
-                <div className='isr-support-debugID-id'>{debugIds['iModel Id']}</div>
+                <Label as='span'>{`${displayStrings.modelid}:`}</Label>
+                <Text>{debugIds['iModel Id']}</Text>
               </div>
             )}
             {debugIds['iModel Name'] && (
               <div className='isr-support-debugID'>
-                <div className='isr-support-debugID-title'>{`${displayStrings.modelName}:`}</div>
-                <div className='isr-support-debugID-id'>{debugIds['iModel Name']}</div>
+                <Label as='span'>{`${displayStrings.modelName}:`}</Label>
+                <Text>{debugIds['iModel Name']}</Text>
               </div>
             )}
             {debugIds['Org. Name'] && (
               <div className='isr-support-debugID'>
-                <div className='isr-support-debugID-title'>{`${displayStrings.organizationName}:`}</div>
-                <div className='isr-support-debugID-id'>{debugIds['Org. Name']}</div>
+                <Label as='span'>{`${displayStrings.organizationName}:`}</Label>
+                <Text>{debugIds['Org. Name']}</Text>
               </div>
             )}
             {debugIds['User Email'] && (
               <div className='isr-support-debugID'>
-                <div className='isr-support-debugID-title'>{`${displayStrings.userEmail}:`}</div>
-                <div className='isr-support-debugID-id'>{debugIds['User Email']}</div>
+                <Label as='span'>{`${displayStrings.userEmail}:`}</Label>
+                <Text>{debugIds['User Email']}</Text>
               </div>
             )}
             {props.children}
