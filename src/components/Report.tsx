@@ -43,8 +43,6 @@ export const ReportContext = React.createContext<
       workflowMapping?: WorkflowMapping;
       currentTable: Tables;
       setCurrentTable: (table: Tables | ((prev: Tables) => Tables)) => void;
-      searchString: string;
-      setSearchString: (search: string) => void;
       currentAuditInfo?: AuditInfo;
       setCurrentAuditInfo: (auditInfo?: AuditInfo) => void;
       focusedIssues: Issues[];
@@ -96,7 +94,6 @@ export const Report = ({
   children?: React.ReactNode;
 }) => {
   const [selectedTable, setSelectedTable] = React.useState<Tables>('workflow');
-  const [searchString, setSearchString] = React.useState<string>('');
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
   const [focusedIssues, setFocusedIssues] = React.useState<Issues[]>(['Error']);
 
@@ -107,8 +104,6 @@ export const Report = ({
         workflowMapping,
         currentTable: selectedTable,
         setCurrentTable: setSelectedTable,
-        searchString: searchString,
-        setSearchString: setSearchString,
         currentAuditInfo,
         setCurrentAuditInfo,
         focusedIssues: focusedIssues,
