@@ -5,13 +5,13 @@
 
 import { AuditInfo, ReportData, SourceFile, WorkflowMapping } from './components/report-data-typings';
 
-export const testSchema: WorkflowMapping = {
+export const testMapping: WorkflowMapping = {
   MissingData: {
-    Material: ['Reporting', 'Clash'],
-    ReferenceFile: ['Design Review', 'Construction', 'Clash'],
+    Material: ['Workflow1', 'Workflow2'],
+    ReferenceFile: ['Workflow3', 'Workflow4'],
   },
   VisualFidelity: {
-    Level: ['Sync'],
+    Level: ['Workflow5'],
   },
 };
 

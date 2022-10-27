@@ -6,7 +6,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { FilesTable } from './FilesTable';
 import { ProblemsTable } from './ProblemsTable';
-import { ReportContext } from './Report';
+import { ReportContext, Tables } from './Report';
 import './ReportTableView.scss';
 import WorkflowTable from './WorkflowTable';
 import ElementsTable from './ElementsTable';
@@ -32,8 +32,7 @@ export const ReportTableView = ({
   /**
    * Current table. Will be inferred from context if not specified.
    */
-  //TODO TYPE THIS TO THE TABLES TYPES
-  currentTable?: string;
+  currentTable?: Tables;
   /**
    * Four `children` can be specified to override the tables.
    * @default

@@ -25,6 +25,7 @@ import ElementsTable from './ElementsTable';
 
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info';
+export type Tables = 'files' | 'problems' | 'workflow' | 'elements';
 
 type AuditInfo = Partial<{
   level: Levels;
@@ -40,8 +41,8 @@ export const ReportContext = React.createContext<
   | {
       reportData: ReportData;
       workflowMapping?: WorkflowMapping;
-      currentTable: string;
-      setCurrentTable: (table: string | ((prev: string) => string)) => void;
+      currentTable: Tables;
+      setCurrentTable: (table: Tables | ((prev: Tables) => Tables)) => void;
       searchString: string;
       setSearchString: (search: string) => void;
       currentAuditInfo?: AuditInfo;
@@ -94,7 +95,7 @@ export const Report = ({
   className?: string;
   children?: React.ReactNode;
 }) => {
-  const [selectedTab, setSelectedTable] = React.useState<string>('workflow');
+  const [selectedTable, setSelectedTable] = React.useState<Tables>('workflow');
   const [searchString, setSearchString] = React.useState<string>('');
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
   const [focusedIssues, setFocusedIssues] = React.useState<Issues[]>(['Error']);
@@ -104,7 +105,7 @@ export const Report = ({
       value={{
         reportData: data,
         workflowMapping,
-        currentTable: selectedTab,
+        currentTable: selectedTable,
         setCurrentTable: setSelectedTable,
         searchString: searchString,
         setSearchString: setSearchString,

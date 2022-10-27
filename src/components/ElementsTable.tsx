@@ -20,7 +20,7 @@ const defaultDisplayStrings = {
 /**
  * ElementsTable should be shown when the elements table selection is active. It contains details about missing elements.
  *
- * Localization is supported using the `displayStrings` prop, and custom icons can be specified using `fileTypeIcons`.
+ * Localization is supported using the `displayStrings` prop.
  * All of `Table` props from iTwinUI-react are also supported.
  */
 export const ElementsTable = ({

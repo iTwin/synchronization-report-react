@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import { LabeledSelect, SelectOption } from '@itwin/itwinui-react';
-import { ReportContext } from './Report';
+import { ReportContext, Tables } from './Report';
 
 const defaultDisplayStrings = {
   files: 'Files',
@@ -26,7 +26,7 @@ export const ReportTableSelect = ({
   ...rest
 }: {
   displayStrings?: Partial<typeof defaultDisplayStrings>;
-  options?: SelectOption<string>[];
+  options?: SelectOption<Tables>[];
   className?: string;
 }) => {
   const context = React.useContext(ReportContext);

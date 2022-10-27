@@ -10,7 +10,6 @@ import { Issues, ReportContext } from './Report';
 import { Select, Surface, Text } from '@itwin/itwinui-react';
 import SvgFlag from '@itwin/itwinui-icons-react/esm/icons/Flag';
 import SvgHierarchyTree from '@itwin/itwinui-icons-react/esm/icons/HierarchyTree';
-import SvgBentleySystems from '@itwin/itwinui-icons-react/esm/icons/BentleySystems';
 import SvgStatusError from '@itwin/itwinui-icons-color-react/esm/icons/StatusError';
 import SvgStatusWarning from '@itwin/itwinui-icons-color-react/esm/icons/StatusWarning';
 import SvgInfoHollow from '@itwin/itwinui-icons-color-react/esm/icons/InfoHollow';
