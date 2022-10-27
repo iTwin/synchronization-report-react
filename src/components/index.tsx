@@ -9,7 +9,6 @@ export * from './ReportBanner';
 export * from './ReportDebugIds';
 export * from './ReportTableSelect';
 export * from './ReportTableSelectWrapper';
-export * from './ReportSearchbar';
 export * from './ReportTableView';
 export * from './ReportInfoPanel';
 export * from './WorkflowTable';
