@@ -15,7 +15,7 @@ export const testMapping: WorkflowMapping = {
   },
 };
 
-export default {
+export const testReport = {
   context: {
     reportType: 'detailReport',
     operationType: 'NORMAL_UPDATE',
