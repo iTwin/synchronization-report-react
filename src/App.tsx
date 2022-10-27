@@ -24,7 +24,7 @@ export const App = () => {
         </IconButton>
       </Tooltip>
       <main className='App-content'>
-        <Main></Main>
+        <Main />
       </main>
     </div>
   );
