@@ -10,13 +10,7 @@ import { Report } from './components/Report';
 import { testMapping, testReport } from './test-report';
 import './App.scss';
 
-const Main = () => {
-  return (
-    <>
-      <Report data={testReport} workflowMapping={testMapping} />
-    </>
-  );
-};
+const Main = () => <Report data={testReport} workflowMapping={testMapping} />;
 
 export const App = () => {
   const [isDark, setIsDark] = React.useState(useMediaQuery('(prefers-color-scheme: dark)'));
