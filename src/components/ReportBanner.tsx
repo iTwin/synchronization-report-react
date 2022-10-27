@@ -166,7 +166,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
         </>
       ) : (
         Array.from(workflowIssuesCount.keys()).map((w) => (
-          <BannerTile key={w} icon={<SvgBentleySystems />}>
+          <BannerTile key={w}>
             <Text variant='title' style={{ fontWeight: 'bold' }}>
               {workflowIssuesCount.get(w)}
             </Text>

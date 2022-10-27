@@ -125,7 +125,12 @@ export const WorkflowTable = ({
           }
         });
       } else {
-        reportsByWorkFlow.push(r);
+        const index = reportsByWorkFlow.findIndex((tr) => tr.category === 'Unorganized');
+        if (index === -1) {
+          reportsByWorkFlow.push({ category: 'Unorganized', subRows: [r] });
+        } else {
+          reportsByWorkFlow[index].subRows?.push(r);
+        }
       }
     });
 
@@ -291,8 +296,8 @@ export const WorkflowTable = ({
       columns={columns}
       data={data}
       emptyTableContent='No data.'
+      emptyFilteredTableContent='No results found. Clear or try another filter.'
       isSortable
-      initialState={{ sortBy: [{ id: 'level' }] }}
       rowProps={rowProps}
       paginatorRenderer={(props) => <TablePaginator pageSizeList={[10, 25, 50]} {...props} />}
       {...rest}

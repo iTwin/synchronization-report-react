@@ -7,7 +7,7 @@ import * as React from 'react';
 import './BannerTile.scss';
 
 export type BannerTileProps = {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   children: [React.ReactNode, React.ReactNode];
   selected?: boolean;
 } & React.ComponentPropsWithoutRef<'div'>;
@@ -26,7 +26,7 @@ export const BannerTile = (props: BannerTileProps) => {
         className
       )}
     >
-      <div className='isr-banner-tile-icon'>{icon}</div>
+      {icon && <div className='isr-banner-tile-icon'>{icon}</div>}
       <span className='isr-banner-tile-body'>{children[0]}</span>
       <span className='isr-banner-tile-footer'>{children[1]}</span>
     </div>

@@ -9,6 +9,7 @@ import { ProblemsTable } from './ProblemsTable';
 import { ReportContext } from './Report';
 import './ReportTableView.scss';
 import WorkflowTable from './WorkflowTable';
+import ElementsTable from './ElementsTable';
 
 /**
  * `ReportTableView` shows the `FilesTable`, `ProblemsTable`, or `WorkflowTable` depending on the active selection.
@@ -34,11 +35,11 @@ export const ReportTableView = ({
   //TODO TYPE THIS TO THE TABLES TYPES
   currentTable?: string;
   /**
-   * Two `children` can be specified to override the tables.
+   * Four `children` can be specified to override the tables.
    * @default
-   * [<FilesTable />, <ProblemsTable />, <WorkflowTable />]
+   * [<FilesTable />, <ProblemsTable />, <WorkflowTable />, <ElementsTable />]
    */
-  children?: [React.ReactNode, React.ReactNode, React.ReactNode];
+  children?: [React.ReactNode, React.ReactNode, React.ReactNode, React.ReactNode];
   className?: string;
   id?: string;
 }) => {
@@ -53,6 +54,7 @@ export const ReportTableView = ({
   const filesTable = children?.[0] ?? <FilesTable />;
   const problemsTable = children?.[1] ?? <ProblemsTable />;
   const workflowTable = children?.[2] ?? <WorkflowTable />;
+  const elementsTable = children?.[3] ?? <ElementsTable />;
 
   return (
     <div className={classnames('isr-report-table-view', className)} {...rest}>
@@ -64,6 +66,8 @@ export const ReportTableView = ({
             return problemsTable;
           case 'workflow':
             return workflowTable;
+          case 'elements':
+            return elementsTable;
         }
       })()}
     </div>

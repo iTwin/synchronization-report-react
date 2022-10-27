@@ -21,6 +21,7 @@ import { ReportInfoPanelWrapper } from './ReportInfoPanelWrapper';
 import { ReportHeaderBannerWrapper } from './ReportHeaderBannerWrapper';
 import ReportDebugIds from './ReportDebugIds';
 import { ReportTitleWrapper } from './ReportTitleWrapper';
+import ElementsTable from './ElementsTable';
 
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info';
@@ -133,6 +134,7 @@ export const Report = ({
                 <FilesTable />
                 <ProblemsTable />
                 <WorkflowTable />
+                <ElementsTable />
               </ReportTableView>
               <ReportInfoPanel />
             </ReportInfoPanelWrapper>

@@ -37,7 +37,7 @@ const defaultFileTypeIcons = {
 };
 
 /**
- * ProblemsTable should be shown when the problems table selection is active. It contains details about the synchronization issues.
+ * ProblemsTable should be shown when the problems table selection is active. It contains a flat list of all synchronization issues.
  *
  * Localization is supported using the `displayStrings` prop, and custom icons can be specified using `fileTypeIcons`.
  * All of `Table` props from iTwinUI-react are also supported.
@@ -260,6 +260,7 @@ export const ProblemsTable = ({
       columns={columns}
       data={data}
       emptyTableContent='No data.'
+      emptyFilteredTableContent='No results found. Clear or try another filter.'
       isSortable
       initialState={{ sortBy: [{ id: 'level' }] }}
       rowProps={rowProps}
