@@ -61,24 +61,24 @@ export const ReportContext = React.createContext<
  * it does not need to be passed individually.
  *
  * @example
- * <Report data={reportData} />
+ * <Report data={reportData} workflowMapping={workflowMapping}/>
  *
  * @example
- * <Report data={reportData}>
- *   <ReportTitle />
- *   <ReportTimestamp />
- *   <ReportBanner />
- *
+ * <Report data={reportData} workflowMapping={workflowMapping}>
  *   <div style={{ display: 'flex' }}>
- *     <ReportTablist />
- *     <ReportDebugIds />
+ *    <ReportTitle />
+ *    <ReportDebugIds />
  *   </div>
- *
- *   <ReportTabpanel>
- *     <FilesTable />
- *     <ProblemsTable />
- *     <WorkflowTable />
- *   </ReportTabpanel>
+ *   <ReportTableSelect />
+ *   <ReportInfoPanelWrapper>
+ *     <ReportTableView>
+ *       <FilesTable />
+ *       <ProblemsTable />
+ *       <WorkflowTable />
+ *       <ElementsTable />
+ *     </ReportTableView>
+ *     <ReportInfoPanel />
+ *   </ReportInfoPanelWrapper>
  * </Report>
  */
 export const Report = ({
