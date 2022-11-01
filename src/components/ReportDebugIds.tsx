@@ -5,7 +5,7 @@
 import * as React from 'react';
 import './ReportDebugIds.scss';
 import { ReportContext } from './Report';
-import { Button, Label, Text } from '@itwin/itwinui-react';
+import { Button, Label, Surface, Text } from '@itwin/itwinui-react';
 import { ReportDataContext } from './report-data-typings';
 import Tippy from '@tippyjs/react';
 
@@ -76,7 +76,7 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
     <div className={props.className}>
       <Tippy
         content={
-          <div className='isr-support-debugIDWrapper'>
+          <Surface elevation={1} className='isr-support-debugIDWrapper'>
             {debugIds['Activity Id'] && (
               <div className='isr-support-debugID'>
                 <Label as='span'>{`${displayStrings.activityid}:`}</Label>
@@ -144,7 +144,7 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
               </div>
             )}
             {props.children}
-          </div>
+          </Surface>
         }
         trigger='click'
         interactive={true}

@@ -1,3 +1,7 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *--------------------------------------------------------------------------------------------*/
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -11,4 +15,9 @@ module.exports = {
   ],
   rules: {},
   ignorePatterns: ['/dist', '*.scss', '*.css', '/node_modules', '/build', '*.js'],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
 };
