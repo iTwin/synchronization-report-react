@@ -122,7 +122,7 @@ export const Report = ({
               <ReportBanner />
             </ReportHeaderBannerWrapper>
             <ReportTableSelectWrapper>
-              <Label as='span'>Issues Found</Label>
+              <Label as='span'>Synchronization Issues</Label>
               <ReportTableSelect />
             </ReportTableSelectWrapper>
             <ReportInfoPanelWrapper>
