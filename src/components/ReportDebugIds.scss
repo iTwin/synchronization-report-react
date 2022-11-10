@@ -2,22 +2,19 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-@import '@itwin/itwinui-css/scss/menu/menu.scss';
-@import '@itwin/itwinui-css/scss/variables';
-
 .isr-support-open {
   &,
   &:hover {
-    color: var(--iui-icons-color-primary);
+    color: var(--iui-color-text-accent);
   }
 }
 
 .isr-support-debugIDWrapper {
-  padding: $iui-s;
+  padding: var(--iui-size-xs);
   width: max-content;
 }
 
 .isr-support-debugID {
   display: flex;
-  gap: $iui-s;
+  gap: var(--iui-size-xs);
 }

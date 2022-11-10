@@ -4,3 +4,4 @@
  *--------------------------------------------------------------------------------------------*/
 export * from './ClampWithTooltip';
 export * from './BannerTile';
+export * from './StatusIcon';

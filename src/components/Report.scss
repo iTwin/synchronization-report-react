@@ -2,13 +2,12 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-@import '@itwin/itwinui-css/scss/variables';
 
 .isr-report-main {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
-  gap: $iui-baseline;
+  gap: var(--iui-size-s);
   min-height: 0; // allow scrolling if total height overflows
 }

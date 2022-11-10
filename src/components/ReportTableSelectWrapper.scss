@@ -2,11 +2,10 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-@import '@itwin/itwinui-css/scss/variables';
 
 .isr-table-select-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: $iui-s;
+  gap: var(--iui-size-xs);
 }

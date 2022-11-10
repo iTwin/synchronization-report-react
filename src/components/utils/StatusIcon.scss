@@ -2,11 +2,23 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
+.isr-status-icon {
+  width: var(--iui-size-l);
+  height: var(--iui-size-l);
 
-.isr-line-clamp {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  word-break: break-all;
+  &-success {
+    fill: var(--iui-color-icon-positive);
+  }
+
+  &-error {
+    fill: var(--iui-color-icon-negative);
+  }
+
+  &-warning {
+    fill: var(--iui-color-icon-warning);
+  }
+
+  &-informational {
+    fill: var(--iui-color-icon-informational);
+  }
 }

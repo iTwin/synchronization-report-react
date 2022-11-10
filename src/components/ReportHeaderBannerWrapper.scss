@@ -2,11 +2,10 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-@import '@itwin/itwinui-css/scss/variables';
 
 .isr-report-header-banner {
   display: flex;
-  gap: $iui-l;
+  gap: var(--iui-size-l);
   overflow-x: auto;
-  padding: $iui-baseline $iui-s;
+  padding: var(--iui-size-s) var(--iui-size-xs);
 }

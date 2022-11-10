@@ -2,13 +2,12 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-@import '@itwin/itwinui-css/scss/variables';
 
 .isr-workflow-table {
   height: 100%;
 }
 
 .isr-workflow-message {
-  gap: $iui-s;
+  gap: var(--iui-size-xs);
   justify-content: space-between;
 }

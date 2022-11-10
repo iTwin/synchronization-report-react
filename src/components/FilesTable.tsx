@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import { ClampWithTooltip } from './utils';
+import { ClampWithTooltip, StatusIcon } from './utils';
 import { Table, tableFilters, Text, Badge, DefaultCell } from '@itwin/itwinui-react';
 import type { TableProps } from '@itwin/itwinui-react';
 import type { SourceFilesInfo, SourceFile, FileRecord } from './report-data-typings';
@@ -141,7 +141,7 @@ export const FilesTable = ({
                   <DefaultCell
                     cellElementProps={cellElementProps}
                     cellProps={cellProps}
-                    startIcon={<SvgStatusWarning />}
+                    startIcon={<StatusIcon status='warning' />}
                   >
                     <Text>{displayStrings['processedWithIssues']}</Text>
                   </DefaultCell>
@@ -149,7 +149,7 @@ export const FilesTable = ({
                   <DefaultCell
                     cellElementProps={cellElementProps}
                     cellProps={cellProps}
-                    startIcon={<SvgStatusSuccess />}
+                    startIcon={<StatusIcon status='success' />}
                   >
                     <Text>{displayStrings['processed']}</Text>
                   </DefaultCell>
@@ -164,12 +164,7 @@ export const FilesTable = ({
               Cell: (props: CellProps<SourceFile>) => {
                 return (
                   props.row.original.path && (
-                    <a
-                      className='isr-files-data-text isr-files-link isr-line-clamp'
-                      href={props.row.original.path}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    >
+                    <a className='iui-anchor' href={props.row.original.path} target='_blank' rel='noopener noreferrer'>
                       {props.row.original.path}
                     </a>
                   )

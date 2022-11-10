@@ -2,12 +2,10 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-@import '@itwin/itwinui-css/scss/variables';
-@import '@itwin/itwinui-css/scss/icon/index.scss';
 
 .isr-banner-container {
   display: flex;
-  padding: $iui-baseline $iui-s;
+  padding: var(--iui-size-s) var(--iui-size-xs);
   width: fit-content;
-  gap: $iui-s;
+  gap: var(--iui-size-xs);
 }

@@ -5,14 +5,11 @@
 import * as React from 'react';
 import { FileRecord, SourceFile } from './report-data-typings';
 import './ReportBanner.scss';
-import { BannerTile } from './utils';
+import { BannerTile, StatusIcon } from './utils';
 import { Issues, ReportContext } from './Report';
 import { Select, Surface, Text } from '@itwin/itwinui-react';
 import SvgFlag from '@itwin/itwinui-icons-react/esm/icons/Flag';
 import SvgHierarchyTree from '@itwin/itwinui-icons-react/esm/icons/HierarchyTree';
-import SvgStatusError from '@itwin/itwinui-icons-color-react/esm/icons/StatusError';
-import SvgStatusWarning from '@itwin/itwinui-icons-color-react/esm/icons/StatusWarning';
-import SvgInfoHollow from '@itwin/itwinui-icons-color-react/esm/icons/InfoHollow';
 
 const defaultDisplayStrings = {
   errors: 'Errors',
@@ -135,7 +132,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
           <BannerTile
             onClick={() => onClickIssue('Error')}
             selected={context?.focusedIssues.some((p) => p === 'Error')}
-            icon={<SvgStatusError />}
+            icon={<StatusIcon status='error' />}
           >
             <Text variant='title' style={{ fontWeight: 'bold' }}>
               {errorCount}
@@ -145,7 +142,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
           <BannerTile
             onClick={() => onClickIssue('Warning')}
             selected={context?.focusedIssues.some((p) => p === 'Warning')}
-            icon={<SvgStatusWarning />}
+            icon={<StatusIcon status='warning' />}
           >
             <Text variant='title' style={{ fontWeight: 'bold' }}>
               {warningCount}
@@ -155,7 +152,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
           <BannerTile
             onClick={() => onClickIssue('Info')}
             selected={context?.focusedIssues.some((p) => p === 'Info')}
-            icon={<SvgInfoHollow />}
+            icon={<StatusIcon status='informational' />}
           >
             <Text variant='title' style={{ fontWeight: 'bold' }}>
               {infoCount}

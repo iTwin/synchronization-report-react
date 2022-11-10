@@ -6,15 +6,12 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { DefaultCell, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
 import { Issues, ReportContext } from './Report';
-import { ClampWithTooltip } from './utils';
+import { ClampWithTooltip, StatusIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
 import type { FileRecord, SourceFilesInfo } from './report-data-typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import './WorkflowTable.scss';
 import { useCallback } from 'react';
-import SvgStatusError from '@itwin/itwinui-icons-color-react/esm/icons/StatusError';
-import SvgStatusWarning from '@itwin/itwinui-icons-color-react/esm/icons/StatusWarning';
-import SvgInfoHollow from '@itwin/itwinui-icons-color-react/esm/icons/InfoHollow';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 
@@ -216,11 +213,11 @@ export const WorkflowTable = ({
                     cellProps={cellProps}
                     startIcon={
                       _isError ? (
-                        <SvgStatusError />
+                        <StatusIcon status='error' />
                       ) : _isWarning ? (
-                        <SvgStatusWarning />
+                        <StatusIcon status='warning' />
                       ) : level ? (
-                        <SvgInfoHollow />
+                        <StatusIcon status='informational' />
                       ) : undefined
                     }
                   >
