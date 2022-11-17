@@ -10,3 +10,15 @@
 .isr-files-data-text {
   font-family: var(--iui-font-mono);
 }
+
+.isr-file-name {
+  display: flex;
+  align-items: center;
+  gap: var(--iui-size-xs);
+  flex-wrap: wrap;
+
+  > * {
+    margin: 0;
+  }
+  font-family: var(--iui-font-mono);
+}

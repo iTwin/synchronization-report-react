@@ -54,29 +54,24 @@ export const ElementsTable = ({
     () =>
       [
         {
-          Header: 'Table',
-          columns: [
-            {
-              id: 'repositorylinkId',
-              accessor: 'repositorylinkId',
-              Header: displayStrings.repositoryLinkId,
-              Filter: tableFilters.TextFilter(),
-              minWidth: 50,
-              maxWidth: 250,
-            },
-            {
-              id: 'elementCount',
-              accessor: 'elementCount',
-              Header: displayStrings.elementCount,
-              Filter: tableFilters.TextFilter(),
-            },
-            {
-              id: 'reason',
-              accessor: 'reason',
-              Header: displayStrings.reason,
-              Filter: tableFilters.TextFilter(),
-            },
-          ],
+          id: 'repositorylinkId',
+          accessor: 'repositorylinkId',
+          Header: displayStrings.repositoryLinkId,
+          Filter: tableFilters.TextFilter(),
+          minWidth: 50,
+          maxWidth: 250,
+        },
+        {
+          id: 'elementCount',
+          accessor: 'elementCount',
+          Header: displayStrings.elementCount,
+          Filter: tableFilters.TextFilter(),
+        },
+        {
+          id: 'reason',
+          accessor: 'reason',
+          Header: displayStrings.reason,
+          Filter: tableFilters.TextFilter(),
         },
       ] as Column<TableRow>[],
     [displayStrings.elementCount, displayStrings.reason, displayStrings.repositoryLinkId]

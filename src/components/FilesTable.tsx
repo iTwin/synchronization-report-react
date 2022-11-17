@@ -96,110 +96,103 @@ export const FilesTable = ({
     () =>
       [
         {
-          Header: 'Table',
-          columns: [
-            {
-              id: 'fileName',
-              accessor: 'fileName',
-              minWidth: 125,
-              Header: displayStrings['fileName'],
-              Filter: tableFilters.TextFilter(),
-              cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<SourceFile>) => {
-                const extension = cellProps.row.original.fileName?.substring(
-                  cellProps.row.original.fileName.lastIndexOf('.') + 1
-                );
-                return (
-                  <DefaultCell
-                    cellElementProps={cellElementProps}
-                    cellProps={cellProps}
-                    startIcon={
-                      extension && extension in filetypeIcons ? filetypeIcons[extension] : <SvgFiletypeDocument />
-                    }
-                  >
-                    <div className='isr-file-name'>
-                      {cellProps.row.original.fileName}
-                      {cellProps.row.original.mainFile && (
-                        <Badge backgroundColor='primary'>{displayStrings['mainFile']}</Badge>
-                      )}
-                    </div>
-                  </DefaultCell>
-                );
-              },
-            },
-            {
-              id: 'status',
-              Header: displayStrings['status'],
-              minWidth: 75,
-              maxWidth: 200,
-              cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<SourceFile>) =>
-                /* Note: This field can be changed to `State` value from row props. */
-                !cellProps.row.original.fileExists && !cellProps.row.original.bimFileExists ? (
-                  <DefaultCell cellElementProps={cellElementProps} cellProps={cellProps} startIcon={<SvgStatusError />}>
-                    <Text>{displayStrings['failed']}</Text>
-                  </DefaultCell>
-                ) : cellProps.row.original.fileId && processedWithIssues[cellProps.row.original.fileId] ? (
-                  <DefaultCell
-                    cellElementProps={cellElementProps}
-                    cellProps={cellProps}
-                    startIcon={<StatusIcon status='warning' />}
-                  >
-                    <Text>{displayStrings['processedWithIssues']}</Text>
-                  </DefaultCell>
-                ) : (
-                  <DefaultCell
-                    cellElementProps={cellElementProps}
-                    cellProps={cellProps}
-                    startIcon={<StatusIcon status='success' />}
-                  >
-                    <Text>{displayStrings['processed']}</Text>
-                  </DefaultCell>
-                ),
-            },
-            {
-              id: 'path',
-              accessor: 'path',
-              minWidth: 150,
-              Header: displayStrings['path'],
-              Filter: tableFilters.TextFilter(),
-              Cell: (props: CellProps<SourceFile>) => {
-                return (
-                  props.row.original.path && (
-                    <a className='iui-anchor' href={props.row.original.path} target='_blank' rel='noopener noreferrer'>
-                      {props.row.original.path}
-                    </a>
-                  )
-                );
-              },
-            },
-            {
-              id: 'fileId',
-              accessor: 'fileId',
-              minWidth: 100,
-              Header: displayStrings['fileID'],
-              Filter: tableFilters.TextFilter(),
-              Cell: (props: CellProps<SourceFile>) => {
-                return <ClampWithTooltip className='isr-files-data-text'>{props.row.original.fileId}</ClampWithTooltip>;
-              },
-            },
-            {
-              id: 'dataSource',
-              accessor: 'dataSource',
-              minWidth: 100,
-              Header: displayStrings['datasource'],
-              Filter: tableFilters.TextFilter(),
-              cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<SourceFile>) => (
-                <DefaultCell
-                  cellElementProps={cellElementProps}
-                  cellProps={cellProps}
-                  startIcon={
-                    datasourceIcons && cellProps.value in datasourceIcons ? datasourceIcons[cellProps.value] : undefined
-                  }
-                >
-                  {cellProps.value}
-                </DefaultCell>
-              ),
-            },
-          ],
+          id: 'fileName',
+          accessor: 'fileName',
+          minWidth: 125,
+          Header: displayStrings['fileName'],
+          Filter: tableFilters.TextFilter(),
+          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<SourceFile>) => {
+            const extension = cellProps.row.original.fileName?.substring(
+              cellProps.row.original.fileName.lastIndexOf('.') + 1
+            );
+            return (
+              <DefaultCell
+                cellElementProps={cellElementProps}
+                cellProps={cellProps}
+                startIcon={extension && extension in filetypeIcons ? filetypeIcons[extension] : <SvgFiletypeDocument />}
+              >
+                <div className='isr-file-name'>
+                  {cellProps.row.original.fileName}
+                  {cellProps.row.original.mainFile && (
+                    <Badge backgroundColor='primary'>{displayStrings['mainFile']}</Badge>
+                  )}
+                </div>
+              </DefaultCell>
+            );
+          },
+        },
+        {
+          id: 'status',
+          Header: displayStrings['status'],
+          minWidth: 75,
+          maxWidth: 200,
+          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<SourceFile>) =>
+            /* Note: This field can be changed to `State` value from row props. */
+            !cellProps.row.original.fileExists && !cellProps.row.original.bimFileExists ? (
+              <DefaultCell cellElementProps={cellElementProps} cellProps={cellProps} startIcon={<SvgStatusError />}>
+                <Text>{displayStrings['failed']}</Text>
+              </DefaultCell>
+            ) : cellProps.row.original.fileId && processedWithIssues[cellProps.row.original.fileId] ? (
+              <DefaultCell
+                cellElementProps={cellElementProps}
+                cellProps={cellProps}
+                startIcon={<StatusIcon status='warning' />}
+              >
+                <Text>{displayStrings['processedWithIssues']}</Text>
+              </DefaultCell>
+            ) : (
+              <DefaultCell
+                cellElementProps={cellElementProps}
+                cellProps={cellProps}
+                startIcon={<StatusIcon status='success' />}
+              >
+                <Text>{displayStrings['processed']}</Text>
+              </DefaultCell>
+            ),
+        },
+        {
+          id: 'path',
+          accessor: 'path',
+          minWidth: 150,
+          Header: displayStrings['path'],
+          Filter: tableFilters.TextFilter(),
+          Cell: (props: CellProps<SourceFile>) => {
+            return (
+              props.row.original.path && (
+                <a className='iui-anchor' href={props.row.original.path} target='_blank' rel='noopener noreferrer'>
+                  {props.row.original.path}
+                </a>
+              )
+            );
+          },
+        },
+        {
+          id: 'fileId',
+          accessor: 'fileId',
+          minWidth: 100,
+          Header: displayStrings['fileID'],
+          Filter: tableFilters.TextFilter(),
+          Cell: (props: CellProps<SourceFile>) => {
+            return <ClampWithTooltip className='isr-files-data-text'>{props.row.original.fileId}</ClampWithTooltip>;
+          },
+        },
+        {
+          id: 'dataSource',
+          accessor: 'dataSource',
+          minWidth: 100,
+          Header: displayStrings['datasource'],
+          Filter: tableFilters.TextFilter(),
+          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<SourceFile>) => (
+            <DefaultCell
+              cellElementProps={cellElementProps}
+              cellProps={cellProps}
+              startIcon={
+                datasourceIcons && cellProps.value in datasourceIcons ? datasourceIcons[cellProps.value] : undefined
+              }
+            >
+              {cellProps.value}
+            </DefaultCell>
+          ),
         },
       ] as Column<SourceFile>[],
     [displayStrings, filetypeIcons, processedWithIssues, datasourceIcons]

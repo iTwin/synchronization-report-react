@@ -160,106 +160,99 @@ export const WorkflowTable = ({
     () =>
       [
         {
-          Header: 'Table',
-          columns: [
-            {
-              id: 'category',
-              accessor: 'category',
-              Header: displayStrings.category,
-              Filter: tableFilters.TextFilter(),
-              minWidth: 50,
-              maxWidth: 250,
-              Cell: (row: CellProps<TableRow>) =>
-                row.row.subRows.length === 0 ? (
-                  <div
-                    className='iui-anchor'
-                    onClick={() => {
-                      context?.setCurrentAuditInfo({
-                        ...row.row.original,
-                        fileName: row.row.original.fileName ?? getFileNameFromId(row.row.original.fileId),
-                      });
-                    }}
-                  >
-                    {row.value}
-                  </div>
-                ) : (
-                  row.value
-                ),
-            },
-            {
-              id: 'type',
-              accessor: 'type',
-              Header: displayStrings.type,
-              Filter: tableFilters.TextFilter(),
-              minWidth: 75,
-              maxWidth: 250,
-            },
-            {
-              id: 'level',
-              accessor: 'level',
-              Header: displayStrings.level,
-              Filter: tableFilters.TextFilter(),
-              minWidth: 75,
-              maxWidth: 250,
-              sortType: sortByLevel,
-              cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
-                const level = cellProps.row.original.level;
-                const _isError = level === 'Error' || level === 'Fatal';
-                const _isWarning = level === 'Warning' || level === 'Critical';
+          id: 'category',
+          accessor: 'category',
+          Header: displayStrings.category,
+          Filter: tableFilters.TextFilter(),
+          minWidth: 50,
+          maxWidth: 250,
+          Cell: (row: CellProps<TableRow>) =>
+            row.row.subRows.length === 0 ? (
+              <div
+                className='iui-anchor'
+                onClick={() => {
+                  context?.setCurrentAuditInfo({
+                    ...row.row.original,
+                    fileName: row.row.original.fileName ?? getFileNameFromId(row.row.original.fileId),
+                  });
+                }}
+              >
+                {row.value}
+              </div>
+            ) : (
+              row.value
+            ),
+        },
+        {
+          id: 'type',
+          accessor: 'type',
+          Header: displayStrings.type,
+          Filter: tableFilters.TextFilter(),
+          minWidth: 75,
+          maxWidth: 250,
+        },
+        {
+          id: 'level',
+          accessor: 'level',
+          Header: displayStrings.level,
+          Filter: tableFilters.TextFilter(),
+          minWidth: 75,
+          maxWidth: 250,
+          sortType: sortByLevel,
+          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
+            const level = cellProps.row.original.level;
+            const _isError = level === 'Error' || level === 'Fatal';
+            const _isWarning = level === 'Warning' || level === 'Critical';
 
-                return (
-                  <DefaultCell
-                    cellElementProps={cellElementProps}
-                    cellProps={cellProps}
-                    startIcon={
-                      _isError ? (
-                        <StatusIcon status='error' />
-                      ) : _isWarning ? (
-                        <StatusIcon status='warning' />
-                      ) : level ? (
-                        <StatusIcon status='informational' />
-                      ) : undefined
-                    }
-                  >
-                    {level && level in displayStrings ? displayStrings[level] : level}
-                  </DefaultCell>
-                );
-              },
-            },
-            {
-              id: 'fileName',
-              accessor: ({ fileName, fileId }) => fileName ?? getFileNameFromId(fileId),
-              Header: displayStrings.fileName,
-              Filter: tableFilters.TextFilter(),
-              cellClassName: 'iui-main',
-              minWidth: 150,
-              cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
-                const extension = cellProps.value?.substring(cellProps.value.lastIndexOf('.') + 1);
-                return cellProps.row.subRows.length === 0 ? (
-                  <DefaultCell
-                    cellElementProps={cellElementProps}
-                    cellProps={cellProps}
-                    startIcon={
-                      extension && extension in filetypeIcons ? filetypeIcons[extension] : <SvgFiletypeDocument />
-                    }
-                  >
-                    {cellProps.value}
-                  </DefaultCell>
-                ) : (
-                  ''
-                );
-              },
-            },
-            {
-              id: 'message',
-              accessor: 'message',
-              Header: displayStrings.message,
-              Filter: tableFilters.TextFilter(),
-              minWidth: 200,
-              cellClassName: 'isr-workflow-message',
-              Cell: ({ value }: CellProps<TableRow>) => <ClampWithTooltip>{value}</ClampWithTooltip>,
-            },
-          ],
+            return (
+              <DefaultCell
+                cellElementProps={cellElementProps}
+                cellProps={cellProps}
+                startIcon={
+                  _isError ? (
+                    <StatusIcon status='error' />
+                  ) : _isWarning ? (
+                    <StatusIcon status='warning' />
+                  ) : level ? (
+                    <StatusIcon status='informational' />
+                  ) : undefined
+                }
+              >
+                {level && level in displayStrings ? displayStrings[level] : level}
+              </DefaultCell>
+            );
+          },
+        },
+        {
+          id: 'fileName',
+          accessor: ({ fileName, fileId }) => fileName ?? getFileNameFromId(fileId),
+          Header: displayStrings.fileName,
+          Filter: tableFilters.TextFilter(),
+          cellClassName: 'iui-main',
+          minWidth: 150,
+          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
+            const extension = cellProps.value?.substring(cellProps.value.lastIndexOf('.') + 1);
+            return cellProps.row.subRows.length === 0 ? (
+              <DefaultCell
+                cellElementProps={cellElementProps}
+                cellProps={cellProps}
+                startIcon={extension && extension in filetypeIcons ? filetypeIcons[extension] : <SvgFiletypeDocument />}
+              >
+                {cellProps.value}
+              </DefaultCell>
+            ) : (
+              ''
+            );
+          },
+        },
+        {
+          id: 'message',
+          accessor: 'message',
+          Header: displayStrings.message,
+          Filter: tableFilters.TextFilter(),
+          minWidth: 200,
+          cellClassName: 'isr-workflow-message',
+          Cell: ({ value }: CellProps<TableRow>) => <ClampWithTooltip>{value}</ClampWithTooltip>,
         },
       ] as Column<TableRow>[],
     [context, displayStrings, filetypeIcons, getFileNameFromId, sortByLevel]

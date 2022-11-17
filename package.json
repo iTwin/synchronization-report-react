@@ -13,7 +13,7 @@
   "dependencies": {
     "@itwin/itwinui-icons-color-react": "^1.0.3",
     "@itwin/itwinui-icons-react": "^1.15.1",
-    "@itwin/itwinui-react": "dev",
+    "@itwin/itwinui-react": "^2.0.0",
     "classnames": "^2.3.1"
   },
   "devDependencies": {
