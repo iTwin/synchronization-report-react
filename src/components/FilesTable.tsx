@@ -13,8 +13,6 @@ import { ReportContext } from './Report';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
 import SvgStatusError from '@itwin/itwinui-icons-color-react/esm/icons/StatusError';
-import SvgStatusWarning from '@itwin/itwinui-icons-color-react/esm/icons/StatusWarning';
-import SvgStatusSuccess from '@itwin/itwinui-icons-color-react/esm/icons/StatusSuccess';
 import './FilesTable.scss';
 
 const defaultDisplayStrings = {
