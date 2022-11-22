@@ -64,7 +64,7 @@ export const ProblemsTable = ({
     const files = fileRecords || context?.reportData.filerecords || [];
     const reports = files
       .flatMap(({ file, auditrecords }) =>
-        (auditrecords ?? []).map(({ auditinfo }) => {
+        (auditrecords ?? []).flatMap(({ auditinfo }) => {
           if (
             workflowMapping &&
             auditinfo?.category &&
@@ -72,13 +72,17 @@ export const ProblemsTable = ({
             Object.hasOwn(workflowMapping, auditinfo.category) &&
             Object.hasOwn(workflowMapping[auditinfo.category], auditinfo.type)
           ) {
+            if (!workflowMapping[auditinfo.category][auditinfo.type].some((w) => context.focusedWorkflows.includes(w)))
+              return [];
             return {
               fileId: file?.identifier,
               impactedWorkflows: workflowMapping[auditinfo.category][auditinfo.type],
               ...auditinfo,
             };
+          } else if (context?.focusedWorkflows.includes('Unorganized')) {
+            return { fileId: file?.identifier, ...auditinfo };
           }
-          return { fileId: file?.identifier, ...auditinfo };
+          return [];
         })
       )
       .filter((record) => {
@@ -90,7 +94,13 @@ export const ProblemsTable = ({
       });
 
     return reports;
-  }, [fileRecords, context?.reportData.filerecords, context?.focusedIssues, workflowMapping]);
+  }, [
+    fileRecords,
+    context?.reportData.filerecords,
+    context?.focusedWorkflows,
+    context?.focusedIssues,
+    workflowMapping,
+  ]);
 
   const displayStrings = React.useMemo(
     () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),

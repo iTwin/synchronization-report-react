@@ -47,6 +47,8 @@ export const ReportContext = React.createContext<
       setCurrentAuditInfo: (auditInfo?: AuditInfo) => void;
       focusedIssues: Issues[];
       setFocusedIssues: (issues: Issues[] | ((issues: Issues[]) => Issues[])) => void;
+      focusedWorkflows: string[];
+      setFocusedWorkflows: (issues: string[] | ((issues: string[]) => string[])) => void;
     }
   | undefined
 >(undefined);
@@ -96,6 +98,15 @@ export const Report = ({
   const [selectedTable, setSelectedTable] = React.useState<Tables>('workflow');
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
   const [focusedIssues, setFocusedIssues] = React.useState<Issues[]>(['Error']);
+  const [focusedWorkflows, setFocusedWorkflows] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    if (!workflowMapping) return;
+    const allWorkflows = Array.from(
+      new Set(Object.values(workflowMapping).flatMap((c) => Object.values(c).flatMap((i) => i)))
+    );
+    setFocusedWorkflows([...allWorkflows, 'Unorganized']);
+  }, [workflowMapping]);
 
   return (
     <ReportContext.Provider
@@ -108,6 +119,8 @@ export const Report = ({
         setCurrentAuditInfo,
         focusedIssues: focusedIssues,
         setFocusedIssues: setFocusedIssues,
+        focusedWorkflows: focusedWorkflows,
+        setFocusedWorkflows: setFocusedWorkflows,
       }}
     >
       <div className={classnames('isr-report-main', className)}>

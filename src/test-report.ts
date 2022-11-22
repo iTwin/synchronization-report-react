@@ -8,10 +8,10 @@ import { AuditInfo, ReportData, SourceFile, WorkflowMapping } from './components
 export const testMapping: WorkflowMapping = {
   MissingData: {
     Material: ['Workflow1', 'Workflow2'],
-    ReferenceFile: ['Workflow3', 'Workflow4'],
+    ReferenceFile: ['Workflow2', 'Workflow3', 'Workflow4'],
   },
   VisualFidelity: {
-    Level: ['Workflow5'],
+    Level: ['Workflow4', 'Workflow5'],
   },
 };
 

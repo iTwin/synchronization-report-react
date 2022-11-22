@@ -73,9 +73,9 @@ export const WorkflowTable = ({
 
   const data = React.useMemo(() => {
     const files = fileRecords || context?.reportData.filerecords || [];
-    const reports = files
+    const reports: TableRow[] = files
       .flatMap(({ file, auditrecords }) =>
-        (auditrecords ?? []).map(({ auditinfo }) => {
+        (auditrecords ?? []).flatMap(({ auditinfo }) => {
           if (
             workflowMapping &&
             auditinfo?.category &&
@@ -83,6 +83,8 @@ export const WorkflowTable = ({
             Object.hasOwn(workflowMapping, auditinfo.category) &&
             Object.hasOwn(workflowMapping[auditinfo.category], auditinfo.type)
           ) {
+            if (!workflowMapping[auditinfo.category][auditinfo.type].some((w) => context.focusedWorkflows.includes(w)))
+              return [];
             return {
               fileId: file?.identifier,
               impactedWorkflows: workflowMapping[auditinfo.category][auditinfo.type],
@@ -100,20 +102,13 @@ export const WorkflowTable = ({
         return context?.focusedIssues.some((issue) => bannerLevel === issue);
       });
 
-    // By default just list everything if no workflow schema is provided.
-    if (!workflowMapping) return reports;
-
     const reportsByWorkFlow: TableRow[] = [];
 
     // Accumulate into workflow buckets
     reports.forEach((r) => {
-      if (
-        r.category &&
-        r.type &&
-        Object.hasOwn(workflowMapping, r.category) &&
-        Object.hasOwn(workflowMapping[r.category], r.type)
-      ) {
-        workflowMapping[r.category][r.type].forEach((s) => {
+      if (r.impactedWorkflows && r.impactedWorkflows.length > 0) {
+        r.impactedWorkflows.forEach((s) => {
+          if (!context?.focusedWorkflows.includes(s)) return;
           const index = reportsByWorkFlow.findIndex((tr) => tr.category === s);
           if (index === -1) {
             reportsByWorkFlow.push({ category: s, subRows: [r] });
@@ -121,7 +116,7 @@ export const WorkflowTable = ({
             reportsByWorkFlow[index].subRows?.push(r);
           }
         });
-      } else {
+      } else if (context?.focusedWorkflows.includes('Unorganized')) {
         const index = reportsByWorkFlow.findIndex((tr) => tr.category === 'Unorganized');
         if (index === -1) {
           reportsByWorkFlow.push({ category: 'Unorganized', subRows: [r] });
@@ -132,7 +127,13 @@ export const WorkflowTable = ({
     });
 
     return reportsByWorkFlow;
-  }, [fileRecords, context?.reportData.filerecords, context?.focusedIssues, workflowMapping]);
+  }, [
+    fileRecords,
+    context?.reportData.filerecords,
+    context?.focusedWorkflows,
+    context?.focusedIssues,
+    workflowMapping,
+  ]);
 
   const displayStrings = React.useMemo(
     () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),

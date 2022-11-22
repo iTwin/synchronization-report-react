@@ -59,24 +59,30 @@ export const ReportBanner = (props: ReportBannerProps) => {
   const [issuesCount, setIssuesCount] = React.useState(0);
   const [summaryType, setSummaryType] = React.useState('totalIssues');
   const [workflowIssuesCount, setWorkFlowIssuesCount] = React.useState<Map<string, number>>(new Map());
+  const [unorganizedCount, setUnorganizedCount] = React.useState<number>(0);
 
   React.useEffect(() => {
     let error = 0,
       warning = 0,
       info = 0;
-    const wCount = new Map<string, number>();
+    let allWorkflows: string[] = [];
+    if (context?.workflowMapping) {
+      allWorkflows = Array.from(
+        new Set(Object.values(context?.workflowMapping).flatMap((c) => Object.values(c).flatMap((i) => i)))
+      );
+    }
+
+    const wCount = new Map<string, number>(allWorkflows.map((w) => [w, 0]));
+    setUnorganizedCount(0);
     fileRecords?.forEach((file) => {
       file.auditrecords?.forEach((record) => {
         const level = record.auditinfo?.level;
         let bannerLevel: Issues = 'Info';
         if (level === 'Error' || level === 'Fatal') {
-          error++;
           bannerLevel = 'Error';
         } else if (level === 'Warning' || level === 'Critical') {
-          warning++;
           bannerLevel = 'Warning';
-        } else if (level === 'Info') info++;
-
+        }
         if (
           context?.workflowMapping &&
           record.auditinfo?.category &&
@@ -91,7 +97,29 @@ export const ReportBanner = (props: ReportBannerProps) => {
             const count = currentCount ?? 0;
             wCount.set(w, count + 1);
           });
+        } else {
+          if (context?.focusedIssues.some((issue) => bannerLevel === issue)) setUnorganizedCount((c) => c + 1);
         }
+
+        if (
+          context?.workflowMapping &&
+          record.auditinfo?.category &&
+          record.auditinfo.type &&
+          Object.hasOwn(context.workflowMapping, record.auditinfo.category) &&
+          Object.hasOwn(context.workflowMapping[record.auditinfo.category], record.auditinfo.type)
+        ) {
+          const workflows = context.workflowMapping[record.auditinfo.category][record.auditinfo.type];
+          if (!workflows.some((w) => context.focusedWorkflows.includes(w))) {
+            return;
+          }
+        } else if (!context?.focusedWorkflows.includes('Unorganized')) {
+          return;
+        }
+        if (level === 'Error' || level === 'Fatal') {
+          error++;
+        } else if (level === 'Warning' || level === 'Critical') {
+          warning++;
+        } else if (level === 'Info') info++;
       });
     });
     setWorkFlowIssuesCount(wCount);
@@ -99,7 +127,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
     setWarningCount(warning);
     setInfoCount(info);
     setIssuesCount(error + warning + info);
-  }, [context?.focusedIssues, context?.workflowMapping, fileRecords]);
+  }, [context?.focusedIssues, context?.focusedWorkflows, context?.workflowMapping, fileRecords]);
 
   const onClickIssue = React.useCallback(
     (issue: Issues) =>
@@ -107,6 +135,16 @@ export const ReportBanner = (props: ReportBannerProps) => {
         focusedIssues.some((currentIssue) => issue === currentIssue)
           ? focusedIssues.filter((i) => i !== issue)
           : [...focusedIssues, issue]
+      ),
+    [context]
+  );
+
+  const onClickWorkflow = React.useCallback(
+    (workflow: string) =>
+      context?.setFocusedWorkflows((focusedWorkflows) =>
+        focusedWorkflows.some((currentWorkflow) => workflow === currentWorkflow)
+          ? focusedWorkflows.filter((i) => i !== workflow)
+          : [...focusedWorkflows, workflow]
       ),
     [context]
   );
@@ -161,14 +199,29 @@ export const ReportBanner = (props: ReportBannerProps) => {
           </BannerTile>
         </>
       ) : (
-        Array.from(workflowIssuesCount.keys()).map((w) => (
-          <BannerTile key={w}>
+        <>
+          {Array.from(workflowIssuesCount.keys()).map((w) => (
+            <BannerTile
+              key={w}
+              onClick={() => onClickWorkflow(w)}
+              selected={context?.focusedWorkflows.some((p) => p === w)}
+            >
+              <Text variant='title' style={{ fontWeight: 'bold' }}>
+                {workflowIssuesCount.get(w)}
+              </Text>
+              <Text variant='small'>{w}</Text>
+            </BannerTile>
+          ))}
+          <BannerTile
+            onClick={() => onClickWorkflow('Unorganized')}
+            selected={context?.focusedWorkflows.some((p) => p === 'Unorganized')}
+          >
             <Text variant='title' style={{ fontWeight: 'bold' }}>
-              {workflowIssuesCount.get(w)}
+              {unorganizedCount}
             </Text>
-            <Text variant='small'>{w}</Text>
+            <Text variant='small'>{'Unorganized'}</Text>
           </BannerTile>
-        ))
+        </>
       )}
     </Surface>
   );
