@@ -17,6 +17,7 @@ const defaultDisplayStrings = {
   otherIssues: 'Other issues',
   totalIssues: 'Total Issues',
   workflows: 'Workflows',
+  unorganized: 'Unorganized',
 };
 
 export type ReportBannerProps = {
@@ -219,7 +220,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
             <Text variant='title' style={{ fontWeight: 'bold' }}>
               {unorganizedCount}
             </Text>
-            <Text variant='small'>{'Unorganized'}</Text>
+            <Text variant='small'>{displayStrings.unorganized}</Text>
           </BannerTile>
         </>
       )}

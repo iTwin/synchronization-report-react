@@ -26,6 +26,7 @@ const defaultDisplayStrings = {
   category: 'Issue',
   type: 'Type',
   message: 'Message',
+  unorganized: 'Unorganized',
 };
 
 const defaultFileTypeIcons = {
@@ -70,6 +71,11 @@ export const WorkflowTable = ({
     impactedWorkflows: string[];
     subRows: TableRow[];
   }>;
+
+  const displayStrings = React.useMemo(
+    () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),
+    [userDisplayStrings]
+  );
 
   const data = React.useMemo(() => {
     const files = fileRecords || context?.reportData.filerecords || [];
@@ -119,7 +125,7 @@ export const WorkflowTable = ({
       } else if (context?.focusedWorkflows.includes('Unorganized')) {
         const index = reportsByWorkFlow.findIndex((tr) => tr.category === 'Unorganized');
         if (index === -1) {
-          reportsByWorkFlow.push({ category: 'Unorganized', subRows: [r] });
+          reportsByWorkFlow.push({ category: displayStrings.unorganized, subRows: [r] });
         } else {
           reportsByWorkFlow[index].subRows?.push(r);
         }
@@ -133,12 +139,8 @@ export const WorkflowTable = ({
     context?.focusedWorkflows,
     context?.focusedIssues,
     workflowMapping,
+    displayStrings,
   ]);
-
-  const displayStrings = React.useMemo(
-    () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),
-    [userDisplayStrings]
-  );
 
   const sortByLevel = React.useCallback((rowA: Row<TableRow>, rowB: Row<TableRow>) => {
     const levelsOrder = ['Fatal', 'Error', 'Critical', 'Warning', 'Info'];
