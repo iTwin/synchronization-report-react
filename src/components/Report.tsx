@@ -22,6 +22,7 @@ import { ReportHeaderBannerWrapper } from './ReportHeaderBannerWrapper';
 import ReportDebugIds from './ReportDebugIds';
 import { ReportTitleWrapper } from './ReportTitleWrapper';
 import ElementsTable from './ElementsTable';
+import { defaultWorkflowMapping } from './report-workflow-mapping';
 
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info';
@@ -85,7 +86,7 @@ export const ReportContext = React.createContext<
  */
 export const Report = ({
   data,
-  workflowMapping,
+  workflowMapping = defaultWorkflowMapping,
   children,
   className,
 }: {
