@@ -4,24 +4,52 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import { DetailsTable } from './DetailsTable';
+import { ProblemsTable } from './ProblemsTable';
 import { FilesTable } from './FilesTable';
-import { ReportData } from './report-data-typings';
+import { ReportData, WorkflowMapping } from './report-data-typings';
 import { ReportTitle } from './ReportTitle';
 import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';
-import { ReportTablist } from './ReportTablist';
-import { ReportTabpanel } from './ReportTabpanel';
-import { ReportTablistWrapper } from './ReportTablistWrapper';
-import { ReportSearchbar } from './ReportSearchbar';
+import { ReportTableSelect } from './ReportTableSelect';
+import { ReportTableView } from './ReportTableView';
+import { ReportTableSelectWrapper } from './ReportTableSelectWrapper';
+import { Label } from '@itwin/itwinui-react';
 import './Report.scss';
+import WorkflowTable from './WorkflowTable';
+import { ReportInfoPanel } from './ReportInfoPanel';
+import { ReportInfoPanelWrapper } from './ReportInfoPanelWrapper';
+import { ReportHeaderBannerWrapper } from './ReportHeaderBannerWrapper';
+import ReportDebugIds from './ReportDebugIds';
+import { ReportTitleWrapper } from './ReportTitleWrapper';
+import ElementsTable from './ElementsTable';
+import { defaultWorkflowMapping } from './report-workflow-mapping';
+
+type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
+export type Issues = 'Error' | 'Warning' | 'Info';
+export type Tables = 'files' | 'problems' | 'workflow' | 'elements';
+
+type AuditInfo = Partial<{
+  level: Levels;
+  category: string;
+  message: string;
+  type: string;
+  fileName: string;
+  filePath: string;
+  impactedWorkflows: string[];
+}>;
+
 export const ReportContext = React.createContext<
   | {
       reportData: ReportData;
-      currentTab: 'files' | 'details';
-      setCurrentTab: (tab: 'files' | 'details' | ((prev: 'files' | 'details') => 'files' | 'details')) => void;
-      searchString: string;
-      setSearchString: (search: string) => void;
+      workflowMapping?: WorkflowMapping;
+      currentTable: Tables;
+      setCurrentTable: (table: Tables | ((prev: Tables) => Tables)) => void;
+      currentAuditInfo?: AuditInfo;
+      setCurrentAuditInfo: (auditInfo?: AuditInfo) => void;
+      focusedIssues: Issues[];
+      setFocusedIssues: (issues: Issues[] | ((issues: Issues[]) => Issues[])) => void;
+      focusedWorkflows: string[];
+      setFocusedWorkflows: (issues: string[] | ((issues: string[]) => string[])) => void;
     }
   | undefined
 >(undefined);
@@ -36,62 +64,90 @@ export const ReportContext = React.createContext<
  * it does not need to be passed individually.
  *
  * @example
- * <Report data={reportData} />
+ * <Report data={reportData} workflowMapping={workflowMapping}/>
  *
  * @example
- * <Report data={reportData}>
- *   <ReportTitle />
- *   <ReportTimestamp />
- *   <ReportBanner />
- *
+ * <Report data={reportData} workflowMapping={workflowMapping}>
  *   <div style={{ display: 'flex' }}>
- *     <ReportTablist />
- *     <ReportDebugIds />
+ *    <ReportTitle />
+ *    <ReportDebugIds />
  *   </div>
- *
- *   <ReportTabpanel>
- *     <FilesTable />
- *     <DetailsTable />
- *   </ReportTabpanel>
+ *   <ReportTableSelect />
+ *   <ReportInfoPanelWrapper>
+ *     <ReportTableView>
+ *       <FilesTable />
+ *       <ProblemsTable />
+ *       <WorkflowTable />
+ *       <ElementsTable />
+ *     </ReportTableView>
+ *     <ReportInfoPanel />
+ *   </ReportInfoPanelWrapper>
  * </Report>
  */
 export const Report = ({
   data,
+  workflowMapping = defaultWorkflowMapping,
   children,
   className,
 }: {
   /** The report data should be compatible with the type definitions. */
   data: ReportData;
+  workflowMapping?: WorkflowMapping;
   className?: string;
   children?: React.ReactNode;
 }) => {
-  const [selectedTab, setSelectedTab] = React.useState<'files' | 'details'>('files');
-  const [searchString, setSearchString] = React.useState<string>('');
+  const [selectedTable, setSelectedTable] = React.useState<Tables>('workflow');
+  const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
+  const [focusedIssues, setFocusedIssues] = React.useState<Issues[]>(['Error']);
+  const [focusedWorkflows, setFocusedWorkflows] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    if (!workflowMapping) return;
+    const allWorkflows = Array.from(
+      new Set(Object.values(workflowMapping).flatMap((c) => Object.values(c).flatMap((i) => i)))
+    );
+    setFocusedWorkflows([...allWorkflows, 'Unorganized']);
+  }, [workflowMapping]);
 
   return (
     <ReportContext.Provider
       value={{
         reportData: data,
-        currentTab: selectedTab,
-        setCurrentTab: setSelectedTab,
-        searchString: searchString,
-        setSearchString: setSearchString,
+        workflowMapping,
+        currentTable: selectedTable,
+        setCurrentTable: setSelectedTable,
+        currentAuditInfo,
+        setCurrentAuditInfo,
+        focusedIssues: focusedIssues,
+        setFocusedIssues: setFocusedIssues,
+        focusedWorkflows: focusedWorkflows,
+        setFocusedWorkflows: setFocusedWorkflows,
       }}
     >
       <div className={classnames('isr-report-main', className)}>
         {children ?? (
           <>
-            <ReportTitle />
-            <ReportTimestamp />
-            <ReportBanner />
-            <ReportTablistWrapper>
-              <ReportTablist />
-              <ReportSearchbar />
-            </ReportTablistWrapper>
-            <ReportTabpanel>
-              <FilesTable />
-              <DetailsTable />
-            </ReportTabpanel>
+            <ReportTitleWrapper>
+              <ReportTitle />
+              <ReportDebugIds />
+            </ReportTitleWrapper>
+            <ReportHeaderBannerWrapper>
+              <ReportTimestamp />
+              <ReportBanner />
+            </ReportHeaderBannerWrapper>
+            <ReportTableSelectWrapper>
+              <Label as='span'>Synchronization Issues</Label>
+              <ReportTableSelect />
+            </ReportTableSelectWrapper>
+            <ReportInfoPanelWrapper>
+              <ReportTableView>
+                <FilesTable />
+                <ProblemsTable />
+                <WorkflowTable />
+                <ElementsTable />
+              </ReportTableView>
+              <ReportInfoPanel />
+            </ReportInfoPanelWrapper>
           </>
         )}
       </div>

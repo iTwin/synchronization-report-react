@@ -7,9 +7,9 @@ jobs:
         clean: all
 
       - task: NodeTool@0
-        displayName: Use Node 12.x
+        displayName: Use Node 14.x
         inputs:
-          versionSpec: 12.x
+          versionSpec: 14.x
           latest: true
 
       - task: npmAuthenticate@0

@@ -2,34 +2,10 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-@import '@itwin/itwinui-css/scss/variables';
-@import '@itwin/itwinui-css/scss/icon/index.scss';
-@import '@itwin/itwinui-css/scss/alert/alert.scss';
 
-.isr-header-banner {
-  @include iui-alert;
-  background-color: var(--iui-color-background-3);
-  margin: $iui-baseline 0;
-
-  &-message {
-    display: flex;
-    gap: $iui-sm;
-  }
-
-  &-section {
-    display: flex;
-    gap: $iui-s;
-    align-items: center;
-
-    &:not(:last-child)::after {
-      content: '';
-      width: 1px;
-      height: 1em;
-      background-color: var(--iui-text-color);
-    }
-  }
-
-  &.isr-negative {
-    @include iui-alert-category($statusColor: 'negative', $rootSelector: '.isr-header-banner-section');
-  }
+.isr-banner-container {
+  display: flex;
+  padding: var(--iui-size-s) var(--iui-size-xs);
+  width: fit-content;
+  gap: var(--iui-size-xs);
 }

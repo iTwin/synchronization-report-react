@@ -2,7 +2,9 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-.isr-report-tabpanel {
-  min-height: 0;
-  flex: 1;
+
+.isr-timestamp-container {
+  display: flex;
+  padding: var(--iui-size-s) 0;
+  width: fit-content;
 }

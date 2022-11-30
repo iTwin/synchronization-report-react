@@ -1,0 +1,50 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *--------------------------------------------------------------------------------------------*/
+
+.isr-banner-tile-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--iui-size-s);
+  padding: calc(var(--iui-size-s) / 2) var(--iui-size-l);
+  border-right: 1px solid var(--iui-color-border-subtle);
+  width: calc(var(--iui-size-m) * 11);
+
+  &-on-click {
+    cursor: pointer;
+  }
+
+  &:last-child {
+    border: 0;
+  }
+
+  .isr-banner-tile-icon {
+    fill: var(--iui-color-icon-muted);
+    width: var(--iui-size-l);
+    height: var(--iui-size-l);
+  }
+
+  .isr-banner-tile-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    font-weight: bold;
+    height: calc(var(--iui-size-s) * 6);
+  }
+
+  .isr-banner-tile-footer {
+    display: flex;
+    font-style: italic;
+    text-align: center;
+    flex: 1;
+  }
+
+  &-selected {
+    outline: solid 2px var(--iui-color-border-accent);
+    background-color: var(--iui-color-background-accent-muted);
+  }
+}

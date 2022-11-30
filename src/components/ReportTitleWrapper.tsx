@@ -3,23 +3,23 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
-import { Tooltip } from '@itwin/itwinui-react';
-import './ClampWithTooltip.scss';
 import classnames from 'classnames';
+import './ReportTitleWrapper.scss';
 
-export const ClampWithTooltip = ({
+/**
+ * `ReportTitleWrapper` is wrapper component for ReportTitle, ReportDebugIds and other components in the title section.
+ */
+export const ReportTitleWrapper = ({
   children,
   className,
   ...rest
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
 }) => {
   return (
-    <Tooltip content={children} appendTo={() => document.body}>
-      <span className={classnames('isr-line-clamp', className)} {...rest}>
-        {children}
-      </span>
-    </Tooltip>
+    <div className={classnames('isr-report-title-wrapper', className)} {...rest}>
+      {children}
+    </div>
   );
 };

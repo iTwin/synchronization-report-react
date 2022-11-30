@@ -2,21 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-@import '@itwin/itwinui-css/scss/style/variables';
 
-.isr-text-with-icon {
-  display: inline-flex;
-  gap: $iui-s;
-  align-items: center;
-}
-
-.isr-icon {
-  flex-shrink: 0;
-  display: inline-flex;
-  width: $iui-icons-default;
-  height: $iui-icons-default;
-
-  svg {
-    display: inline-block;
-  }
+.isr-elements-table {
+  height: 100%;
 }

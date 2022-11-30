@@ -6,6 +6,23 @@ export type ReportData = {
   context?: ReportDataContext;
   sourceFilesInfo?: SourceFilesInfo;
   filerecords?: FileRecord[];
+  elementRecords?: ElementRecord[];
+};
+
+export type Workflow = string;
+
+export type Type = {
+  [type: string]: Workflow[];
+};
+
+export type WorkflowMapping = {
+  [category: string]: Type;
+};
+
+export type ElementRecord = {
+  elementids?: string;
+  reason?: string;
+  repositorylinkId?: string;
 };
 
 export type SourceFilesInfo = {

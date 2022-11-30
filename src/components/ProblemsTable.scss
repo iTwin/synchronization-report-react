@@ -3,10 +3,11 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 
-.isr-line-clamp {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  word-break: break-all;
+.isr-problems-table {
+  height: 100%;
+}
+
+.isr-problems-message {
+  gap: var(--iui-size-xs);
+  justify-content: space-between;
 }

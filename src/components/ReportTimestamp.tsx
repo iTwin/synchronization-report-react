@@ -4,10 +4,16 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import { ReportContext } from './Report';
-import { Text } from '@itwin/itwinui-react';
+import { Surface, Text } from '@itwin/itwinui-react';
+import { BannerTile } from './utils';
+import SvgClock from '@itwin/itwinui-icons-react/cjs/icons/Clock';
+import './ReportTimestamp.scss';
+import SvgDocument from '@itwin/itwinui-icons-react/cjs/icons/Document';
+import { SourceFile } from './report-data-typings';
 
 const defaultDisplayStrings = {
-  runCompleted: 'Run completed',
+  syncTime: 'Sync Time',
+  files: 'Files Processed',
 };
 
 /**
@@ -16,20 +22,26 @@ const defaultDisplayStrings = {
  */
 export const ReportTimestamp = ({
   timestamp,
+  filesCount,
+  filesProcessed,
   displayStrings: userDisplayStrings,
-  ...rest
 }: {
-  timestamp?: string;
+  timestamp?: Date;
+  filesProcessed?: SourceFile[];
+  filesCount?: number;
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   className?: string;
 }) => {
   const context = React.useContext(ReportContext);
 
-  if (!timestamp) {
+  if (!timestamp && !filesCount) {
     if (!context) {
-      throw new Error('timestamp must be specified or ReportTimestamp must be used inside Report');
+      throw new Error(
+        'timestamp and numberOfFiles must be specified or ReportTimestamp and list of files must be used inside Report'
+      );
     }
-    timestamp = context.reportData.context?.timestamp;
+    timestamp = new Date(context.reportData.context?.timestamp ?? '');
+    filesCount = context.reportData.sourceFilesInfo?.Files?.length;
   }
 
   const displayStrings = React.useMemo(
@@ -38,20 +50,44 @@ export const ReportTimestamp = ({
   );
 
   const [date, setDate] = React.useState<string>('');
+  const [time, setTime] = React.useState<string>('');
   React.useEffect(() => {
-    const options: Intl.DateTimeFormatOptions = {
+    let options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
     };
-    setDate(timestamp ? new Date(timestamp).toLocaleDateString(undefined, options) : '');
+    setDate(timestamp?.toLocaleDateString(undefined, options) ?? '');
+
+    options = { hour: 'numeric', minute: '2-digit' };
+    setTime(timestamp?.toLocaleTimeString([], options) ?? '');
   }, [timestamp]);
 
+  const allFilesProcessed: SourceFile[] = React.useMemo(() => {
+    if (filesProcessed) {
+      return [...filesProcessed];
+    } else if (context?.reportData.sourceFilesInfo?.Files) {
+      return [context.reportData.sourceFilesInfo, ...context.reportData.sourceFilesInfo.Files];
+    }
+
+    return [];
+  }, [context?.reportData.sourceFilesInfo, filesProcessed]);
+
   return (
-    <Text variant='small' isMuted={true} {...rest}>
-      {`${displayStrings.runCompleted}: ${date}`}
-    </Text>
+    <Surface elevation={1} className='isr-timestamp-container'>
+      <BannerTile icon={<SvgClock />}>
+        <span>
+          <Text>{date}</Text>
+          <Text>{time}</Text>
+        </span>
+        <Text variant='small'>{displayStrings.syncTime}</Text>
+      </BannerTile>
+      <BannerTile icon={<SvgDocument />}>
+        <Text variant='title' style={{ fontWeight: 'bold' }}>
+          {allFilesProcessed.length}
+        </Text>
+        <Text variant='small'>{displayStrings.files}</Text>
+      </BannerTile>
+    </Surface>
   );
 };

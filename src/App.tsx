@@ -7,16 +7,10 @@ import { IconButton, Tooltip, useTheme } from '@itwin/itwinui-react';
 import { useMediaQuery } from 'beautiful-react-hooks';
 import { SvgSun, SvgMoon } from '@itwin/itwinui-icons-react';
 import { Report } from './components/Report';
-import testReport from './test-report';
+import { testReport } from './test-report';
 import './App.scss';
 
-const Main = () => {
-  return (
-    <>
-      <Report data={testReport} />
-    </>
-  );
-};
+const Main = () => <Report data={testReport} />;
 
 export const App = () => {
   const [isDark, setIsDark] = React.useState(useMediaQuery('(prefers-color-scheme: dark)'));
@@ -30,7 +24,7 @@ export const App = () => {
         </IconButton>
       </Tooltip>
       <main className='App-content'>
-        <Main></Main>
+        <Main />
       </main>
     </div>
   );

@@ -36,7 +36,7 @@ import '@itwin/synchronization-report-react/dist/style.css';
 
 ### 3. Basic usage
 
-Simply pass your report data into the `Report` component.
+Simply pass your report data and workflow mapping into the `Report` component.
 
 ```tsx
 export const App = () => {
@@ -44,7 +44,7 @@ export const App = () => {
 
   return (
     <>
-      <Report data={report} />
+      <Report data={report} workflowMapping={mapping} />
     </>
   );
 };
@@ -66,21 +66,28 @@ export const App = () => {
   // ... load report data
 
   return (
-    <Report data={reportData}>
-      <ReportTitle />
-      <ReportTimestamp />
-      <ReportBanner />
-
-      <ReportTablistWrapper>
-        <ReportTablist />
+    <Report data={reportData} workflowMapping={mapping}>
+      <ReportTitleWrapper>
+        <ReportTitle />
         <ReportDebugIds />
-        <ReportSearchbar />
-      </ReportTablistWrapper>
-
-      <ReportTabpanel>
-        <FilesTable />
-        <DetailsTable />
-      </ReportTabpanel>
+      </ReportTitleWrapper>
+      <ReportHeaderBannerWrapper>
+        <ReportTimestamp />
+        <ReportBanner />
+      </ReportHeaderBannerWrapper>
+      <ReportTableSelectWrapper>
+        <Label as='span'>Issues Found</Label>
+        <ReportTableSelect />
+      </ReportTableSelectWrapper>
+      <ReportInfoPanelWrapper>
+        <ReportTableView>
+          <FilesTable />
+          <ProblemsTable />
+          <WorkflowTable />
+          <ElementsTable />
+        </ReportTableView>
+        <ReportInfoPanel />
+      </ReportInfoPanelWrapper>
     </Report>
   );
 };

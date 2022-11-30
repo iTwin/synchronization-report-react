@@ -4,12 +4,12 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import './ReportTablistWrapper.scss';
+import './ReportHeaderBannerWrapper.scss';
 
 /**
- * `ReportTablistWrapper` is wrapper component for Tablist, ReportSearchbar and other user defined components to be placed over tables.
+ * `ReportHeaderBannerWrapper` is wrapper component for ReportTimestamp, ReportBanner and other components in the header.
  */
-export const ReportTablistWrapper = ({
+export const ReportHeaderBannerWrapper = ({
   children,
   className,
   ...rest
@@ -18,7 +18,7 @@ export const ReportTablistWrapper = ({
   className?: string;
 }) => {
   return (
-    <div className={classnames('isr-tablist-wrapper', className)} {...rest}>
+    <div className={classnames('isr-report-header-banner', className)} {...rest}>
       {children}
     </div>
   );

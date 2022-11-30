@@ -7,7 +7,7 @@ import { ReportContext } from './Report';
 import { Text } from '@itwin/itwinui-react';
 
 const defaultDisplayStrings = {
-  synchronizationReport: 'Synchronization report',
+  synchronizationReport: 'Synchronization Report',
   unknown: 'unknown',
 };
 
@@ -40,7 +40,7 @@ export const ReportTitle = ({
 
   return (
     <Text variant={'title'} {...rest}>
-      {`${displayStrings.synchronizationReport} | ${fileName ?? defaultDisplayStrings.unknown}`}
+      {`${fileName ?? defaultDisplayStrings.unknown} - ${displayStrings.synchronizationReport}`}
     </Text>
   );
 };

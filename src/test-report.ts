@@ -3,9 +3,19 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 
-import { AuditInfo, ReportData, SourceFile } from './components/report-data-typings';
+import { AuditInfo, ReportData, SourceFile, WorkflowMapping } from './components/report-data-typings';
 
-export default {
+export const testMapping: WorkflowMapping = {
+  MissingData: {
+    Material: ['Workflow1', 'Workflow2'],
+    ReferenceFile: ['Workflow2', 'Workflow3', 'Workflow4'],
+  },
+  VisualFidelity: {
+    Level: ['Workflow4', 'Workflow5'],
+  },
+};
+
+export const testReport = {
   context: {
     reportType: 'detailReport',
     operationType: 'NORMAL_UPDATE',
