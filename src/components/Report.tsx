@@ -20,6 +20,8 @@ export const ReportContext = React.createContext<
       reportData: ReportData;
       currentTab: 'files' | 'details';
       setCurrentTab: (tab: 'files' | 'details' | ((prev: 'files' | 'details') => 'files' | 'details')) => void;
+      severityFilter: 'error' | 'warning' | 'info' | 'failed' | undefined;
+      setSeverityFilter: (severity: 'error' | 'warning' | 'info' | 'failed' | undefined) => void;
       searchString: string;
       setSearchString: (search: string) => void;
     }
@@ -66,6 +68,7 @@ export const Report = ({
   children?: React.ReactNode;
 }) => {
   const [selectedTab, setSelectedTab] = React.useState<'files' | 'details'>('files');
+  const [severityFilter, setSeverityFilter] = React.useState<'error' | 'warning' | 'info' | 'failed' | undefined>();
   const [searchString, setSearchString] = React.useState<string>('');
 
   return (
@@ -74,6 +77,8 @@ export const Report = ({
         reportData: data,
         currentTab: selectedTab,
         setCurrentTab: setSelectedTab,
+        severityFilter: severityFilter,
+        setSeverityFilter: setSeverityFilter,
         searchString: searchString,
         setSearchString: setSearchString,
       }}

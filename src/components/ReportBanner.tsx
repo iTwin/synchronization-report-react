@@ -17,6 +17,7 @@ const defaultDisplayStrings = {
   warnings: 'Warnings',
   otherIssues: 'Other issues',
   noSynchronizationIssuesFound: 'No synchronization issues found',
+  seeDetails: 'See details',
 };
 
 export type ReportBannerProps = {
@@ -106,7 +107,6 @@ export const ReportBanner = (props: ReportBannerProps) => {
             props.className
           )}
         >
-          {/* Todo: Make files table filter by status when clicking on '1 file failed'*/}
           {currentTab === 'files' && filesProcessed && (
             <div className='isr-header-banner-message'>
               <span className='isr-header-banner-section'>
@@ -117,7 +117,16 @@ export const ReportBanner = (props: ReportBannerProps) => {
               {failedFileCount > 0 && (
                 <span className='isr-header-banner-section'>
                   <StatusIcon status='error' />
-                  <span className='isr-header-banner-section-message'>
+                  <span
+                    className={classnames('isr-header-banner-section-error', {
+                      'isr-active': context?.severityFilter === 'failed',
+                    })}
+                    tabIndex={0}
+                    onClick={() => {
+                      if (context?.severityFilter === 'failed') context?.setSeverityFilter(undefined);
+                      else context?.setSeverityFilter('failed');
+                    }}
+                  >
                     {`${failedFileCount} ${displayStrings.filesFailedToSynchronize}`}
                   </span>
                 </span>
@@ -126,6 +135,16 @@ export const ReportBanner = (props: ReportBannerProps) => {
                 <span className='isr-header-banner-section'>
                   <span className='isr-header-banner-section-message'>
                     {`${issuesCount} ${displayStrings.synchronizationIssuesFound}`}
+                  </span>
+                  <span
+                    className='isr-header-banner-section-info'
+                    tabIndex={0}
+                    onClick={() => {
+                      context?.setCurrentTab('details');
+                      context?.setSeverityFilter(undefined);
+                    }}
+                  >
+                    {displayStrings.seeDetails}
                   </span>
                 </span>
               ) : (
@@ -141,7 +160,6 @@ export const ReportBanner = (props: ReportBannerProps) => {
             </div>
           )}
 
-          {/* Todo: Make details table filter by issue type when clicking on issue*/}
           {currentTab === 'details' && fileRecords && (
             <div className='isr-header-banner-message'>
               {issuesCount > 0 ? (
@@ -154,19 +172,52 @@ export const ReportBanner = (props: ReportBannerProps) => {
                   {errorCount > 0 && (
                     <span className='isr-header-banner-section'>
                       <StatusIcon status='error' />
-                      <span className='isr-header-banner-section-message'>{`${displayStrings.errors}: ${errorCount}`}</span>
+                      <span
+                        className={classnames('isr-header-banner-section-error', {
+                          'isr-active': context?.severityFilter === 'error',
+                        })}
+                        tabIndex={0}
+                        onClick={() => {
+                          if (context?.severityFilter === 'error') context?.setSeverityFilter(undefined);
+                          else context?.setSeverityFilter('error');
+                        }}
+                      >
+                        {`${displayStrings.errors}: ${errorCount}`}
+                      </span>
                     </span>
                   )}
                   {warningCount > 0 && (
                     <span className='isr-header-banner-section'>
                       <StatusIcon status='warning' />
-                      <span className='isr-header-banner-section-message'>{`${displayStrings.warnings}: ${warningCount}`}</span>
+                      <span
+                        className={classnames('isr-header-banner-section-warning', {
+                          'isr-active': context?.severityFilter === 'warning',
+                        })}
+                        tabIndex={0}
+                        onClick={() => {
+                          if (context?.severityFilter === 'warning') context?.setSeverityFilter(undefined);
+                          else context?.setSeverityFilter('warning');
+                        }}
+                      >
+                        {`${displayStrings.warnings}: ${warningCount}`}
+                      </span>
                     </span>
                   )}
                   {infoCount > 0 && (
                     <span className='isr-header-banner-section'>
                       <StatusIcon status='informational' />
-                      <span className='isr-header-banner-section-message'>{`${displayStrings.otherIssues}: ${infoCount}`}</span>
+                      <span
+                        className={classnames('isr-header-banner-section-info', {
+                          'isr-active': context?.severityFilter === 'info',
+                        })}
+                        tabIndex={0}
+                        onClick={() => {
+                          if (context?.severityFilter === 'info') context?.setSeverityFilter(undefined);
+                          else context?.setSeverityFilter('info');
+                        }}
+                      >
+                        {`${displayStrings.otherIssues}: ${infoCount}`}
+                      </span>
                     </span>
                   )}
                 </>

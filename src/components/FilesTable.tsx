@@ -80,10 +80,22 @@ export const FilesTable = ({
     [search]
   );
 
+  const severityFilter = React.useCallback(
+    (file: SourceFile) => {
+      if (context?.severityFilter === 'failed') {
+        return file.bimFileExists === false && file.fileExists === false;
+      }
+      return true;
+    },
+    [context?.severityFilter]
+  );
+
   const data = React.useMemo(() => {
     const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
-    return [{ ...filesInfo, mainFile: true }, ...(filesInfo?.Files ?? [])].filter((file) => filterFiles(file));
-  }, [sourceFilesInfo, context?.reportData.sourceFilesInfo, filterFiles]);
+    return [{ ...filesInfo, mainFile: true }, ...(filesInfo?.Files ?? [])].filter(
+      (file) => filterFiles(file) && severityFilter(file)
+    );
+  }, [sourceFilesInfo, context?.reportData.sourceFilesInfo, filterFiles, severityFilter]);
 
   const processedWithIssues = React.useMemo(() => {
     const fileStatusEntries = data
