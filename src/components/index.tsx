@@ -12,6 +12,7 @@ export * from './ReportTableSelectWrapper';
 export * from './ReportTableView';
 export * from './ReportInfoPanel';
 export * from './WorkflowTable';
+export * from './ElementsTable';
 export * from './ReportTitleWrapper';
 export * from './ReportHeaderBannerWrapper';
 export * from './ReportInfoPanel';
