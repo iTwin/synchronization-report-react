@@ -12,15 +12,16 @@ import WorkflowTable from './WorkflowTable';
 import ElementsTable from './ElementsTable';
 
 /**
- * `ReportTableView` shows the `FilesTable`, `ProblemsTable`, or `WorkflowTable` depending on the active selection.
+ * `ReportTableView` shows the `FilesTable`, `ProblemsTable`, `WorkflowTable`, or `ElementsTable` depending on the active selection.
  *
- * The `FilesTable`, `ProblemsTable`, or `WorkflowTable` can be passed as children with custom props (e.g. localization, custom icons).
+ * The `FilesTable`, `ProblemsTable`, `WorkflowTable`, or `ElementsTable` can be passed as children with custom props (e.g. localization, custom icons).
  *
  * @example
  * <ReportTableView>
  *   <FilesTable displayStrings={{ ... }} />
  *   <ProblemsTable displayStrings={{ ... }} />
  *   <WorkflowTable displayStrings={{ ... }} />
+ *   <ElementsTable displayStrings={{ ... }} />
  * </ReportTableView>
  */
 export const ReportTableView = ({
