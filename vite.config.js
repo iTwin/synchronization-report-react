@@ -25,6 +25,9 @@ export default defineConfig({
         '@itwin/itwinui-css',
         '@itwin/itwinui-variables',
         'react-table',
+        'classnames',
+        'tippy.js',
+        '@tippyjs/react'
       ],
       output: {
         globals: { react: 'React' },
