@@ -18,7 +18,17 @@ export default defineConfig({
       fileName: () => 'index.js',
     },
     rollupOptions: {
-      external: ['react', '@itwin/itwinui-react', '@itwin/itwinui-css'],
+      external: [
+        'react',
+        'react-dom',
+        '@itwin/itwinui-react',
+        '@itwin/itwinui-css',
+        '@itwin/itwinui-variables',
+        'react-table',
+        'classnames',
+        'tippy.js',
+        '@tippyjs/react'
+      ],
       output: {
         globals: { react: 'React' },
       },
