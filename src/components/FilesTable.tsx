@@ -73,7 +73,10 @@ export const FilesTable = ({
   fileRecords ??= context?.reportData.filerecords ?? [];
   const data = React.useMemo(() => {
     const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
-    return [{ ...filesInfo, mainFile: true }, ...(filesInfo?.Files ?? [])];
+    return [
+      { ...filesInfo, mainFile: true },
+      ...(filesInfo && filesInfo.Files ? filesInfo.Files.filter((file: SourceFile) => file.state !== 'Hidden') : []),
+    ];
   }, [sourceFilesInfo, context?.reportData.sourceFilesInfo]);
 
   const processedWithIssues = React.useMemo(() => {
