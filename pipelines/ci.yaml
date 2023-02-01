@@ -25,10 +25,6 @@ jobs:
       - script: yarn build:package
         displayName: yarn build
 
-      - bash: echo test
-        displayName: Condition test
-        condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
-
       - bash: |
           pkgName=$(node -p "require('./package.json').name")
           pkgVer=$(node -p "require('./package.json').version")
