@@ -91,7 +91,7 @@ export const defaultWorkflowMapping: WorkflowMapping = {
     RootModelMustBePhysical: ['Design Review'],
     LinkProcessingError: ['Design Review'],
   },
-  'Briefcase To iModel': {
+  BriefcaseToiModel: {
     Attachment: ['Design Review'],
     Alert: ['Design Review', 'Reporting', 'Clash', 'Construction'],
     'BRep-Surface': ['Design Review'],
@@ -349,7 +349,7 @@ export const defaultWorkflowMapping: WorkflowMapping = {
     RootModelMustBePhysical: ['Design Review'],
     LinkProcessingError: ['Design Review'],
   },
-  'Corrupt Data': {
+  CorruptData: {
     Attachment: ['Design Review'],
     Alert: ['Design Review', 'Reporting', 'Clash', 'Construction'],
     'BRep-Surface': ['Design Review'],
@@ -435,7 +435,7 @@ export const defaultWorkflowMapping: WorkflowMapping = {
     RootModelMustBePhysical: ['Design Review'],
     LinkProcessingError: ['Design Review'],
   },
-  'Digital Rights': {
+  DigitalRights: {
     Attachment: ['Design Review'],
     Alert: ['Design Review', 'Reporting', 'Clash', 'Construction'],
     'BRep-Surface': ['Design Review'],
@@ -779,7 +779,7 @@ export const defaultWorkflowMapping: WorkflowMapping = {
     RootModelMustBePhysical: ['Design Review'],
     LinkProcessingError: ['Design Review'],
   },
-  'Inconsistent Data': {
+  InconsistentData: {
     Attachment: ['Design Review'],
     Alert: ['Design Review', 'Reporting', 'Clash', 'Construction'],
     'BRep-Surface': ['Design Review'],
@@ -951,7 +951,7 @@ export const defaultWorkflowMapping: WorkflowMapping = {
     RootModelMustBePhysical: ['Design Review'],
     LinkProcessingError: ['Design Review'],
   },
-  'Missing Data': {
+  MissingData: {
     Attachment: ['Design Review'],
     Alert: ['Design Review', 'Reporting', 'Clash', 'Construction'],
     'BRep-Surface': ['Design Review'],
@@ -1467,7 +1467,7 @@ export const defaultWorkflowMapping: WorkflowMapping = {
     RootModelMustBePhysical: ['Design Review'],
     LinkProcessingError: ['Design Review'],
   },
-  'Visual Fidelity': {
+  VisualFidelity: {
     Attachment: ['Design Review'],
     Alert: ['Design Review', 'Reporting', 'Clash', 'Construction'],
     'BRep-Surface': ['Design Review'],
