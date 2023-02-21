@@ -467,10 +467,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@itwin/itwinui-css@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@itwin/itwinui-css@npm:1.0.0"
-  checksum: e3e3c8266e77c37789724d782797030da6ac520669606d538da6781d94778eb3e4163695f0f05c663280174f81f615989f976d7ec0f7a1d6c54451b08e48ec59
+"@itwin/itwinui-css@npm:1.5.0-dev.2":
+  version: 1.5.0-dev.2
+  resolution: "@itwin/itwinui-css@npm:1.5.0-dev.2"
+  checksum: eee491707fbbebeaa2a0fdeb72bf049f918ead305a4bfa13285c98448570ed688be71f5f8398825e0259d750793197a763d184108e2088083635b3c19c0ca025
   languageName: node
   linkType: hard
 
@@ -504,13 +504,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@itwin/itwinui-react@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@itwin/itwinui-react@npm:2.0.0"
+"@itwin/itwinui-react@npm:2.4.0-dev.3":
+  version: 2.4.0-dev.3
+  resolution: "@itwin/itwinui-react@npm:2.4.0-dev.3"
   dependencies:
-    "@itwin/itwinui-css": ^1.0.0
+    "@itwin/itwinui-css": 1.5.0-dev.2
     "@itwin/itwinui-illustrations-react": ^2.0.0
-    "@itwin/itwinui-variables": ^1.0.0
+    "@itwin/itwinui-variables": 2.0.0-dev.1
     "@tippyjs/react": ^4.2.6
     "@types/react-table": ^7.0.18
     classnames: ^2.2.6
@@ -520,14 +520,14 @@ __metadata:
   peerDependencies:
     react: ">=16.8.6 < 19.0.0"
     react-dom: ">=16.8.6 < 19.0.0"
-  checksum: 133621af8f906aa6e523fd59750c1b656b66058c27878f9d7dc8823731a7d8c30266e411a43b5194f23679e773b802707352b64d1510d4437f6c8ccb0d56946d
+  checksum: 86418063016f66f8cd334aeb46a407a330b2ec836bead50c36e324dae6ad1650caddfc83cb3592fe0bd85178570f719e1917476bb2b08665c2bca3111f8d9c5f
   languageName: node
   linkType: hard
 
-"@itwin/itwinui-variables@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@itwin/itwinui-variables@npm:1.0.0"
-  checksum: 6b0efdb7b44522ad3c68020c0e44d85b50a813b25527d59f92a97705756d8159cec9cf6cdd7a02707312b0d6bbd6e96417898ce6378d8599f2fe804073d3a644
+"@itwin/itwinui-variables@npm:2.0.0-dev.1":
+  version: 2.0.0-dev.1
+  resolution: "@itwin/itwinui-variables@npm:2.0.0-dev.1"
+  checksum: b9e8fb7ff8af72ba15a5a96331ec4cf0b526e996cf4c9233b003ba04aee618eda3df2b1c18d58c8b6aa6db3e2dcd602aef971c572d2e15a197f3b36ace11258c
   languageName: node
   linkType: hard
 
@@ -539,7 +539,7 @@ __metadata:
     "@cypress/vite-dev-server": ^2.2.1
     "@itwin/itwinui-icons-color-react": ^1.0.3
     "@itwin/itwinui-icons-react": ^1.15.1
-    "@itwin/itwinui-react": ^2.0.0
+    "@itwin/itwinui-react": 2.4.0-dev.3
     "@types/node": ^14.14.0
     "@types/react": ^17.0.0
     "@types/react-dom": ^17.0.0

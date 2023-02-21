@@ -13,7 +13,7 @@ import { ReportBanner } from './ReportBanner';
 import { ReportTableSelect } from './ReportTableSelect';
 import { ReportTableView } from './ReportTableView';
 import { ReportTableSelectWrapper } from './ReportTableSelectWrapper';
-import { Label } from '@itwin/itwinui-react';
+import { Label, ThemeProvider } from '@itwin/itwinui-react';
 import './Report.scss';
 import WorkflowTable from './WorkflowTable';
 import { ReportInfoPanel } from './ReportInfoPanel';
@@ -110,48 +110,50 @@ export const Report = ({
   }, [workflowMapping]);
 
   return (
-    <ReportContext.Provider
-      value={{
-        reportData: data,
-        workflowMapping,
-        currentTable: selectedTable,
-        setCurrentTable: setSelectedTable,
-        currentAuditInfo,
-        setCurrentAuditInfo,
-        focusedIssues: focusedIssues,
-        setFocusedIssues: setFocusedIssues,
-        focusedWorkflows: focusedWorkflows,
-        setFocusedWorkflows: setFocusedWorkflows,
-      }}
-    >
-      <div className={classnames('isr-report-main', className)}>
-        {children ?? (
-          <>
-            <ReportTitleWrapper>
-              <ReportTitle />
-              <ReportDebugIds />
-            </ReportTitleWrapper>
-            <ReportHeaderBannerWrapper>
-              <ReportTimestamp />
-              <ReportBanner />
-            </ReportHeaderBannerWrapper>
-            <ReportTableSelectWrapper>
-              <Label as='span'>Synchronization Issues</Label>
-              <ReportTableSelect />
-            </ReportTableSelectWrapper>
-            <ReportInfoPanelWrapper>
-              <ReportTableView>
-                <FilesTable />
-                <ProblemsTable />
-                <WorkflowTable />
-                <ElementsTable />
-              </ReportTableView>
-              <ReportInfoPanel />
-            </ReportInfoPanelWrapper>
-          </>
-        )}
-      </div>
-    </ReportContext.Provider>
+    <ThemeProvider theme='inherit'>
+      <ReportContext.Provider
+        value={{
+          reportData: data,
+          workflowMapping,
+          currentTable: selectedTable,
+          setCurrentTable: setSelectedTable,
+          currentAuditInfo,
+          setCurrentAuditInfo,
+          focusedIssues: focusedIssues,
+          setFocusedIssues: setFocusedIssues,
+          focusedWorkflows: focusedWorkflows,
+          setFocusedWorkflows: setFocusedWorkflows,
+        }}
+      >
+        <div className={classnames('isr-report-main', className)}>
+          {children ?? (
+            <>
+              <ReportTitleWrapper>
+                <ReportTitle />
+                <ReportDebugIds />
+              </ReportTitleWrapper>
+              <ReportHeaderBannerWrapper>
+                <ReportTimestamp />
+                <ReportBanner />
+              </ReportHeaderBannerWrapper>
+              <ReportTableSelectWrapper>
+                <Label as='span'>Synchronization Issues</Label>
+                <ReportTableSelect />
+              </ReportTableSelectWrapper>
+              <ReportInfoPanelWrapper>
+                <ReportTableView>
+                  <FilesTable />
+                  <ProblemsTable />
+                  <WorkflowTable />
+                  <ElementsTable />
+                </ReportTableView>
+                <ReportInfoPanel />
+              </ReportInfoPanelWrapper>
+            </>
+          )}
+        </div>
+      </ReportContext.Provider>
+    </ThemeProvider>
   );
 };
 
