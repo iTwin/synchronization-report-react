@@ -467,30 +467,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@itwin/itwinui-css@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@itwin/itwinui-css@npm:1.0.0"
-  checksum: e3e3c8266e77c37789724d782797030da6ac520669606d538da6781d94778eb3e4163695f0f05c663280174f81f615989f976d7ec0f7a1d6c54451b08e48ec59
+"@itwin/itwinui-css@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@itwin/itwinui-css@npm:1.6.0"
+  checksum: 62c951eeedbf3232cfa136ce31ee829c7aa2247a9a6ceb9ed30b30afe68dc72dc078df3b26cdece726d429b334704d59ddd8b0f7ce5a074cb0484f2c08c11442
   languageName: node
   linkType: hard
 
-"@itwin/itwinui-icons-color-react@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "@itwin/itwinui-icons-color-react@npm:1.0.3"
+"@itwin/itwinui-icons-color-react@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@itwin/itwinui-icons-color-react@npm:2.0.0"
   peerDependencies:
     react: ">=16.8.6"
     react-dom: ">=16.8.6"
-  checksum: 848439bbb34e663d251aa10741eb74ef1afcb734c55d637bc6d470b4477fea787bbb5ba95af96c4f8ee7379e092af362ca8f4987a53f6fe2c879ea62d8156f45
+  checksum: fb6b585c13d84cddf9143f7872a1b0c96b553ec212d46653fae4d7531d444dc305845810549770da764a5a9c2fffb4016e7dddf9b6ac6d2f7e9865884ef4caa2
   languageName: node
   linkType: hard
 
-"@itwin/itwinui-icons-react@npm:^1.15.1":
-  version: 1.15.1
-  resolution: "@itwin/itwinui-icons-react@npm:1.15.1"
+"@itwin/itwinui-icons-react@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "@itwin/itwinui-icons-react@npm:2.1.0"
   peerDependencies:
     react: ">=16.8.6"
     react-dom: ">=16.8.6"
-  checksum: ba26c145b7af219b63373b846184ad8df5cc6ce9e2f0e321615c96929fe69354335bc4e590bf89b14e1ab31b39b41afd04bbab23ad897cd16253e928e199434e
+  checksum: 07508b28130260a9104897848d8e0d158b117e94ddb13ecbb5c14c72c4452d8303df91c12898165b065b43285de0c1c402e125d147f41649b55a9240b8696512
   languageName: node
   linkType: hard
 
@@ -504,13 +504,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@itwin/itwinui-react@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@itwin/itwinui-react@npm:2.0.0"
+"@itwin/itwinui-react@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "@itwin/itwinui-react@npm:2.5.0"
   dependencies:
-    "@itwin/itwinui-css": ^1.0.0
+    "@itwin/itwinui-css": ^1.6.0
     "@itwin/itwinui-illustrations-react": ^2.0.0
-    "@itwin/itwinui-variables": ^1.0.0
+    "@itwin/itwinui-variables": ^2.0.0
     "@tippyjs/react": ^4.2.6
     "@types/react-table": ^7.0.18
     classnames: ^2.2.6
@@ -520,14 +520,14 @@ __metadata:
   peerDependencies:
     react: ">=16.8.6 < 19.0.0"
     react-dom: ">=16.8.6 < 19.0.0"
-  checksum: 133621af8f906aa6e523fd59750c1b656b66058c27878f9d7dc8823731a7d8c30266e411a43b5194f23679e773b802707352b64d1510d4437f6c8ccb0d56946d
+  checksum: c28b6007e4ad57c407453a03ba8e1b2fcda2b86ff24588ea2180f073f11efb7935add8b59cdaf9aad9e20e05ed00f7e75200e4c86b180898ddcfc90103eb9a11
   languageName: node
   linkType: hard
 
-"@itwin/itwinui-variables@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@itwin/itwinui-variables@npm:1.0.0"
-  checksum: 6b0efdb7b44522ad3c68020c0e44d85b50a813b25527d59f92a97705756d8159cec9cf6cdd7a02707312b0d6bbd6e96417898ce6378d8599f2fe804073d3a644
+"@itwin/itwinui-variables@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@itwin/itwinui-variables@npm:2.0.0"
+  checksum: fc32e19ac5fac320c24dc0162389e42731ef6abb851481a70820031aff1de3986f05882f84bfd8f402db8a2bf78fd852f52a5d6fa570b25051f566c0fce81b24
   languageName: node
   linkType: hard
 
@@ -537,9 +537,9 @@ __metadata:
   dependencies:
     "@cypress/react": ^5.10.3
     "@cypress/vite-dev-server": ^2.2.1
-    "@itwin/itwinui-icons-color-react": ^1.0.3
-    "@itwin/itwinui-icons-react": ^1.15.1
-    "@itwin/itwinui-react": ^2.0.0
+    "@itwin/itwinui-icons-color-react": ^2.0.0
+    "@itwin/itwinui-icons-react": ^2.0.0
+    "@itwin/itwinui-react": ^2.5.0
     "@types/node": ^14.14.0
     "@types/react": ^17.0.0
     "@types/react-dom": ^17.0.0

@@ -1,6 +1,6 @@
 {
   "name": "@itwin/synchronization-report-react",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "files": [
     "dist"
   ],
@@ -12,9 +12,9 @@
   },
   "typings": "./dist/index.d.ts",
   "dependencies": {
-    "@itwin/itwinui-icons-color-react": "^1.0.3",
-    "@itwin/itwinui-icons-react": "^1.15.1",
-    "@itwin/itwinui-react": "^2.0.0",
+    "@itwin/itwinui-icons-color-react": "^2.0.0",
+    "@itwin/itwinui-icons-react": "^2.0.0",
+    "@itwin/itwinui-react": "^2.5.0",
     "classnames": "^2.3.1"
   },
   "devDependencies": {
