@@ -16,7 +16,6 @@ const defaultDisplayStrings = {
   warnings: 'Warnings',
   otherIssues: 'Other issues',
   totalIssues: 'Total Issues',
-  workflows: 'Workflows',
   unorganized: 'Unorganized',
 };
 
@@ -58,9 +57,6 @@ export const ReportBanner = (props: ReportBannerProps) => {
   const [warningCount, setWarningCount] = React.useState(0);
   const [infoCount, setInfoCount] = React.useState(0);
   const [issuesCount, setIssuesCount] = React.useState(0);
-  const [summaryType, setSummaryType] = React.useState('totalIssues');
-  const [workflowIssuesCount, setWorkFlowIssuesCount] = React.useState<Map<string, number>>(new Map());
-  const [unorganizedCount, setUnorganizedCount] = React.useState<number>(0);
 
   React.useEffect(() => {
     let error = 0,
@@ -74,7 +70,6 @@ export const ReportBanner = (props: ReportBannerProps) => {
     }
 
     const wCount = new Map<string, number>(allWorkflows.map((w) => [w, 0]));
-    setUnorganizedCount(0);
     fileRecords?.forEach((file) => {
       file.auditrecords?.forEach((record) => {
         const level = record.auditinfo?.level;
@@ -98,9 +93,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
             const count = currentCount ?? 0;
             wCount.set(w, count + 1);
           });
-        } else {
-          if (context?.focusedIssues.some((issue) => bannerLevel === issue)) setUnorganizedCount((c) => c + 1);
-        }
+        } 
 
         if (
           context?.workflowMapping &&
@@ -123,7 +116,6 @@ export const ReportBanner = (props: ReportBannerProps) => {
         } else if (level === 'Info') info++;
       });
     });
-    setWorkFlowIssuesCount(wCount);
     setErrorCount(error);
     setWarningCount(warning);
     setInfoCount(info);
@@ -140,90 +132,46 @@ export const ReportBanner = (props: ReportBannerProps) => {
     [context]
   );
 
-  const onClickWorkflow = React.useCallback(
-    (workflow: string) =>
-      context?.setFocusedWorkflows((focusedWorkflows) =>
-        focusedWorkflows.some((currentWorkflow) => workflow === currentWorkflow)
-          ? focusedWorkflows.filter((i) => i !== workflow)
-          : [...focusedWorkflows, workflow]
-      ),
-    [context]
-  );
-
   return (
     <Surface elevation={1} className='isr-banner-container'>
-      <BannerTile icon={summaryType === 'totalIssues' ? <SvgFlag /> : <SvgHierarchyTree />}>
+      <BannerTile icon={<SvgFlag />}>
         <Text variant='title' style={{ fontWeight: 'bold' }}>
-          {summaryType === 'totalIssues' ? issuesCount : workflowIssuesCount.size}
+          {issuesCount}
         </Text>
-        <Select
-          options={[
-            { value: 'totalIssues', label: displayStrings.totalIssues },
-            { value: 'workflows', label: displayStrings.workflows },
-          ]}
-          onChange={setSummaryType}
-          value={summaryType}
-          size='small'
-        />
+        <Text variant='small'>{displayStrings.totalIssues}</Text>
       </BannerTile>
-      {summaryType === 'totalIssues' ? (
-        <>
-          <BannerTile
-            onClick={() => onClickIssue('Error')}
-            selected={context?.focusedIssues.some((p) => p === 'Error')}
-            icon={<StatusIcon status='error' />}
-          >
-            <Text variant='title' style={{ fontWeight: 'bold' }}>
-              {errorCount}
-            </Text>
-            <Text variant='small'>{displayStrings.errors}</Text>
-          </BannerTile>
-          <BannerTile
-            onClick={() => onClickIssue('Warning')}
-            selected={context?.focusedIssues.some((p) => p === 'Warning')}
-            icon={<StatusIcon status='warning' />}
-          >
-            <Text variant='title' style={{ fontWeight: 'bold' }}>
-              {warningCount}
-            </Text>
-            <Text variant='small'>{displayStrings.warnings}</Text>
-          </BannerTile>
-          <BannerTile
-            onClick={() => onClickIssue('Info')}
-            selected={context?.focusedIssues.some((p) => p === 'Info')}
-            icon={<StatusIcon status='informational' />}
-          >
-            <Text variant='title' style={{ fontWeight: 'bold' }}>
-              {infoCount}
-            </Text>
-            <Text variant='small'>{displayStrings.otherIssues}</Text>
-          </BannerTile>
-        </>
-      ) : (
-        <>
-          {Array.from(workflowIssuesCount.keys()).map((w) => (
-            <BannerTile
-              key={w}
-              onClick={() => onClickWorkflow(w)}
-              selected={context?.focusedWorkflows.some((p) => p === w)}
-            >
-              <Text variant='title' style={{ fontWeight: 'bold' }}>
-                {workflowIssuesCount.get(w)}
-              </Text>
-              <Text variant='small'>{w}</Text>
-            </BannerTile>
-          ))}
-          <BannerTile
-            onClick={() => onClickWorkflow('Unorganized')}
-            selected={context?.focusedWorkflows.some((p) => p === 'Unorganized')}
-          >
-            <Text variant='title' style={{ fontWeight: 'bold' }}>
-              {unorganizedCount}
-            </Text>
-            <Text variant='small'>{displayStrings.unorganized}</Text>
-          </BannerTile>
-        </>
-      )}
+      <>
+        <BannerTile
+          onClick={() => onClickIssue('Error')}
+          selected={context?.focusedIssues.some((p) => p === 'Error')}
+          icon={<StatusIcon status='error' />}
+        >
+          <Text variant='title' style={{ fontWeight: 'bold' }}>
+            {errorCount}
+          </Text>
+          <Text variant='small'>{displayStrings.errors}</Text>
+        </BannerTile>
+        <BannerTile
+          onClick={() => onClickIssue('Warning')}
+          selected={context?.focusedIssues.some((p) => p === 'Warning')}
+          icon={<StatusIcon status='warning' />}
+        >
+          <Text variant='title' style={{ fontWeight: 'bold' }}>
+            {warningCount}
+          </Text>
+          <Text variant='small'>{displayStrings.warnings}</Text>
+        </BannerTile>
+        <BannerTile
+          onClick={() => onClickIssue('Info')}
+          selected={context?.focusedIssues.some((p) => p === 'Info')}
+          icon={<StatusIcon status='informational' />}
+        >
+          <Text variant='title' style={{ fontWeight: 'bold' }}>
+            {infoCount}
+          </Text>
+          <Text variant='small'>{displayStrings.otherIssues}</Text>
+        </BannerTile>
+      </>
     </Surface>
   );
 };

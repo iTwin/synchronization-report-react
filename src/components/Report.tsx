@@ -26,7 +26,7 @@ import { defaultWorkflowMapping } from './report-workflow-mapping';
 
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info';
-export type Tables = 'files' | 'problems' | 'workflow' | 'elements';
+export type Tables = 'files' | 'problems';
 
 type AuditInfo = Partial<{
   level: Levels;
@@ -96,7 +96,7 @@ export const Report = ({
   className?: string;
   children?: React.ReactNode;
 }) => {
-  const [selectedTable, setSelectedTable] = React.useState<Tables>('workflow');
+  const [selectedTable, setSelectedTable] = React.useState<Tables>('problems');
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
   const [focusedIssues, setFocusedIssues] = React.useState<Issues[]>(['Error']);
   const [focusedWorkflows, setFocusedWorkflows] = React.useState<string[]>([]);
