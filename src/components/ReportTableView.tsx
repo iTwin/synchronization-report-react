@@ -8,20 +8,17 @@ import { FilesTable } from './FilesTable';
 import { ProblemsTable } from './ProblemsTable';
 import { ReportContext, Tables } from './Report';
 import './ReportTableView.scss';
-import WorkflowTable from './WorkflowTable';
-import ElementsTable from './ElementsTable';
+
 
 /**
- * `ReportTableView` shows the `FilesTable`, `ProblemsTable`, `WorkflowTable`, or `ElementsTable` depending on the active selection.
+ * `ReportTableView` shows the `FilesTable`, `ProblemsTable`, depending on the active selection.
  *
- * The `FilesTable`, `ProblemsTable`, `WorkflowTable`, or `ElementsTable` can be passed as children with custom props (e.g. localization, custom icons).
+ * The `FilesTable`, `ProblemsTable`, can be passed as children with custom props (e.g. localization, custom icons).
  *
  * @example
  * <ReportTableView>
  *   <FilesTable displayStrings={{ ... }} />
  *   <ProblemsTable displayStrings={{ ... }} />
- *   <WorkflowTable displayStrings={{ ... }} />
- *   <ElementsTable displayStrings={{ ... }} />
  * </ReportTableView>
  */
 export const ReportTableView = ({
@@ -35,11 +32,11 @@ export const ReportTableView = ({
    */
   currentTable?: Tables;
   /**
-   * Four `children` can be specified to override the tables.
+   * Two `children` can be specified to override the tables.
    * @default
-   * [<FilesTable />, <ProblemsTable />, <WorkflowTable />, <ElementsTable />]
+   * [<FilesTable />, <ProblemsTable />]
    */
-  children?: [React.ReactNode, React.ReactNode, React.ReactNode, React.ReactNode];
+  children?: React.ReactNode[];
   className?: string;
   id?: string;
 }) => {
@@ -53,8 +50,6 @@ export const ReportTableView = ({
 
   const filesTable = children?.[0] ?? <FilesTable />;
   const problemsTable = children?.[1] ?? <ProblemsTable />;
-  const workflowTable = children?.[2] ?? <WorkflowTable />;
-  const elementsTable = children?.[3] ?? <ElementsTable />;
 
   return (
     <div className={classnames('isr-report-table-view', className)} {...rest}>
@@ -64,10 +59,6 @@ export const ReportTableView = ({
             return filesTable;
           case 'problems':
             return problemsTable;
-          case 'workflow':
-            return workflowTable;
-          case 'elements':
-            return elementsTable;
         }
       })()}
     </div>

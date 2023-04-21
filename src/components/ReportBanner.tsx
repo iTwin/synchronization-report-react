@@ -7,9 +7,8 @@ import { FileRecord, SourceFile } from './report-data-typings';
 import './ReportBanner.scss';
 import { BannerTile, StatusIcon } from './utils';
 import { Issues, ReportContext } from './Report';
-import { Select, Surface, Text } from '@itwin/itwinui-react';
+import { Surface, Text } from '@itwin/itwinui-react';
 import SvgFlag from '@itwin/itwinui-icons-react/esm/icons/Flag';
-import SvgHierarchyTree from '@itwin/itwinui-icons-react/esm/icons/HierarchyTree';
 
 const defaultDisplayStrings = {
   errors: 'Errors',

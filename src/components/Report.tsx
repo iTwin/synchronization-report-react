@@ -15,13 +15,11 @@ import { ReportTableView } from './ReportTableView';
 import { ReportTableSelectWrapper } from './ReportTableSelectWrapper';
 import { Label, ThemeProvider } from '@itwin/itwinui-react';
 import './Report.scss';
-import WorkflowTable from './WorkflowTable';
 import { ReportInfoPanel } from './ReportInfoPanel';
 import { ReportInfoPanelWrapper } from './ReportInfoPanelWrapper';
 import { ReportHeaderBannerWrapper } from './ReportHeaderBannerWrapper';
 import ReportDebugIds from './ReportDebugIds';
 import { ReportTitleWrapper } from './ReportTitleWrapper';
-import ElementsTable from './ElementsTable';
 import { defaultWorkflowMapping } from './report-workflow-mapping';
 
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
@@ -77,8 +75,6 @@ export const ReportContext = React.createContext<
  *     <ReportTableView>
  *       <FilesTable />
  *       <ProblemsTable />
- *       <WorkflowTable />
- *       <ElementsTable />
  *     </ReportTableView>
  *     <ReportInfoPanel />
  *   </ReportInfoPanelWrapper>
@@ -144,8 +140,6 @@ export const Report = ({
                 <ReportTableView>
                   <FilesTable />
                   <ProblemsTable />
-                  <WorkflowTable />
-                  <ElementsTable />
                 </ReportTableView>
                 <ReportInfoPanel />
               </ReportInfoPanelWrapper>
