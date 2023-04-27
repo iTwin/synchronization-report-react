@@ -24,7 +24,6 @@ const defaultDisplayStrings = {
   level: 'Status',
   category: 'Issue',
   type: 'Type',
-  impactedWorkflows: 'Impacted Workflows',
   message: 'Message',
 };
 
@@ -209,16 +208,6 @@ export const ProblemsTable = ({
               </DefaultCell>
             );
           },
-        },
-        {
-          id: 'impactedWorkflows',
-          accessor: 'impactedWorkflows',
-          Header: displayStrings.impactedWorkflows,
-          Filter: tableFilters.TextFilter(),
-          minWidth: 50,
-          maxWidth: 250,
-          Cell: ({ value }: CellProps<TableRow>) =>
-            value ? <ClampWithTooltip>{value.join(', ')}</ClampWithTooltip> : '',
         },
         {
           id: 'message',

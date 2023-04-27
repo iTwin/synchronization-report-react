@@ -83,8 +83,6 @@ export const App = () => {
         <ReportTableView>
           <FilesTable />
           <ProblemsTable />
-          <WorkflowTable />
-          <ElementsTable />
         </ReportTableView>
         <ReportInfoPanel />
       </ReportInfoPanelWrapper>

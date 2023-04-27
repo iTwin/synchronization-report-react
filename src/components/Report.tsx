@@ -15,18 +15,16 @@ import { ReportTableView } from './ReportTableView';
 import { ReportTableSelectWrapper } from './ReportTableSelectWrapper';
 import { Label, ThemeProvider } from '@itwin/itwinui-react';
 import './Report.scss';
-import WorkflowTable from './WorkflowTable';
 import { ReportInfoPanel } from './ReportInfoPanel';
 import { ReportInfoPanelWrapper } from './ReportInfoPanelWrapper';
 import { ReportHeaderBannerWrapper } from './ReportHeaderBannerWrapper';
 import ReportDebugIds from './ReportDebugIds';
 import { ReportTitleWrapper } from './ReportTitleWrapper';
-import ElementsTable from './ElementsTable';
 import { defaultWorkflowMapping } from './report-workflow-mapping';
 
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info';
-export type Tables = 'files' | 'problems' | 'workflow' | 'elements';
+export type Tables = 'files' | 'problems';
 
 type AuditInfo = Partial<{
   level: Levels;
@@ -77,8 +75,6 @@ export const ReportContext = React.createContext<
  *     <ReportTableView>
  *       <FilesTable />
  *       <ProblemsTable />
- *       <WorkflowTable />
- *       <ElementsTable />
  *     </ReportTableView>
  *     <ReportInfoPanel />
  *   </ReportInfoPanelWrapper>
@@ -96,7 +92,7 @@ export const Report = ({
   className?: string;
   children?: React.ReactNode;
 }) => {
-  const [selectedTable, setSelectedTable] = React.useState<Tables>('workflow');
+  const [selectedTable, setSelectedTable] = React.useState<Tables>('problems');
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
   const [focusedIssues, setFocusedIssues] = React.useState<Issues[]>(['Error']);
   const [focusedWorkflows, setFocusedWorkflows] = React.useState<string[]>([]);
@@ -144,8 +140,6 @@ export const Report = ({
                 <ReportTableView>
                   <FilesTable />
                   <ProblemsTable />
-                  <WorkflowTable />
-                  <ElementsTable />
                 </ReportTableView>
                 <ReportInfoPanel />
               </ReportInfoPanelWrapper>
