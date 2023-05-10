@@ -92,7 +92,53 @@ export const ProblemsTable = ({
         return context?.focusedIssues.some((issue) => bannerLevel === issue);
       });
 
-    return reports;
+    // if cat (first level) has subrows:
+    //   {
+    //     category
+    //   }
+    // if type (second) has subrows:
+    //   {
+    //     type
+    //   }
+
+    //   type subrows have remaining cols
+
+    // if no subrows: show rest
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const expandableReports: any = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const nonCategoryReports: any[] = [];
+
+    reports.forEach((report) => {
+      const category = report?.category;
+
+      const reportSubRow = { ...report };
+      delete reportSubRow.category;
+
+      // unecessary if always category, pretending this is the case
+      if (!category) {
+        nonCategoryReports.push(report);
+      } else {
+        if (!Object.hasOwn(expandableReports, category)) {
+          expandableReports[category] = [];
+        }
+
+        expandableReports[category].push(reportSubRow);
+      }
+    });
+
+    const processedReports = [];
+    for (const category of Object.keys(expandableReports)) {
+      processedReports.push({
+        category,
+        subRows: expandableReports[category],
+      });
+    }
+
+    console.log({ reports, expandableReports });
+
+    return processedReports;
   }, [
     fileRecords,
     context?.reportData.filerecords,
@@ -135,19 +181,6 @@ export const ProblemsTable = ({
           Filter: tableFilters.TextFilter(),
           minWidth: 75,
           maxWidth: 250,
-          Cell: (row: CellProps<TableRow>) => (
-            <div
-              className='iui-anchor'
-              onClick={() => {
-                context?.setCurrentAuditInfo({
-                  ...row.row.original,
-                  fileName: row.row.original.fileName ?? getFileNameFromId(row.row.original.fileId),
-                });
-              }}
-            >
-              {row.value}
-            </div>
-          ),
         },
         {
           id: 'type',
@@ -156,6 +189,22 @@ export const ProblemsTable = ({
           Filter: tableFilters.TextFilter(),
           minWidth: 50,
           maxWidth: 250,
+          Cell: (row: CellProps<TableRow>) => {
+            console.log({ row });
+            return (
+              <div
+                className='iui-anchor'
+                onClick={() => {
+                  context?.setCurrentAuditInfo({
+                    ...row.row.original,
+                    fileName: row.row.original?.fileName ?? getFileNameFromId(row.row.original?.fileId),
+                  });
+                }}
+              >
+                {row.value}
+              </div>
+            );
+          },
         },
         {
           id: 'level',
@@ -166,7 +215,7 @@ export const ProblemsTable = ({
           maxWidth: 250,
           sortType: sortByLevel,
           cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
-            const level = cellProps.row.original.level;
+            const level = cellProps.row.original?.level;
             const _isError = level === 'Error' || level === 'Fatal' || level === 'Critical';
             const _isWarning = level === 'Warning';
 
