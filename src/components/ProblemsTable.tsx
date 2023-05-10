@@ -75,7 +75,6 @@ export const ProblemsTable = ({
               return [];
             return {
               fileId: file?.identifier,
-              impactedWorkflows: workflowMapping[auditinfo.category][auditinfo.type],
               ...auditinfo,
             };
           } else if (context?.focusedWorkflows.includes('Unorganized')) {
