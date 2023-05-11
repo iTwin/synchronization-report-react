@@ -127,8 +127,8 @@ export const Report = ({
                 <ReportTitle />
                 <ReportDebugIds />
               </ReportTitleWrapper>
+              <ReportTimestamp />
               <ReportHeaderBannerWrapper>
-                <ReportTimestamp />
                 <ReportBanner />
               </ReportHeaderBannerWrapper>
               <ReportTableSelectWrapper>
