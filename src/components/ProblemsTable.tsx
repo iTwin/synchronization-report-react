@@ -91,29 +91,16 @@ export const ProblemsTable = ({
         return context?.focusedIssues.some((issue) => bannerLevel === issue);
       });
 
-    // if cat (first level) has subrows:
-    //   {
-    //     category
-    //   }
-    // if type (second) has subrows:
-    //   {
-    //     type
-    //   }
-
-    //   type subrows have remaining cols
-
-    // if no subrows: show rest
-
+    // **FIX cyclical type reference
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const expandableReports: any = {};
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const nonCategoryReports: any[] = [];
+    const nonCategoryReports: TableRow[] = [];
 
     reports.forEach((report) => {
       const category = report?.category;
 
       const reportSubRow = { ...report };
-      delete reportSubRow.category;
+      // delete reportSubRow.category;
 
       // unecessary if always category, pretending this is the case
       if (!category) {
@@ -134,8 +121,6 @@ export const ProblemsTable = ({
         subRows: expandableReports[category],
       });
     }
-
-    console.log({ reports, expandableReports });
 
     return processedReports;
   }, [
@@ -163,12 +148,15 @@ export const ProblemsTable = ({
     [sourceFilesInfo, context?.reportData.sourceFilesInfo]
   );
 
-  const sortByLevel = React.useCallback((rowA: Row<TableRow>, rowB: Row<TableRow>) => {
-    const levelsOrder = ['Fatal', 'Error', 'Critical', 'Warning', 'Info'];
-    const indexA = levelsOrder.indexOf(rowA.original.level || '');
-    const indexB = levelsOrder.indexOf(rowB.original.level || '');
-    return indexA > indexB ? 1 : -1;
-  }, []);
+  const sortByLevel = React.useCallback(
+    (rowA: Row<TableRow | TableRow['subRows']>, rowB: Row<TableRow | TableRow['subRows']>) => {
+      const levelsOrder = ['Fatal', 'Error', 'Critical', 'Warning', 'Info'];
+      const indexA = levelsOrder.indexOf(rowA.original.level || '');
+      const indexB = levelsOrder.indexOf(rowB.original.level || '');
+      return indexA > indexB ? 1 : -1;
+    },
+    []
+  );
 
   const columns = React.useMemo(
     () =>
@@ -180,6 +168,10 @@ export const ProblemsTable = ({
           Filter: tableFilters.TextFilter(),
           minWidth: 75,
           maxWidth: 250,
+          Cell: (row: CellProps<TableRow | TableRow['subRows']>) => (
+            // Hide issue if a subrow
+            <div>{!Object.hasOwn(row.row.original, 'subRows') ? '' : row.value}</div>
+          ),
         },
         {
           id: 'type',
@@ -188,8 +180,7 @@ export const ProblemsTable = ({
           Filter: tableFilters.TextFilter(),
           minWidth: 50,
           maxWidth: 250,
-          Cell: (row: CellProps<TableRow>) => {
-            console.log({ row });
+          Cell: (row: CellProps<TableRow | TableRow['subRows']>) => {
             return (
               <div
                 className='iui-anchor'
@@ -213,8 +204,8 @@ export const ProblemsTable = ({
           minWidth: 75,
           maxWidth: 250,
           sortType: sortByLevel,
-          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
-            const level = cellProps.row.original?.level;
+          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow | TableRow['subRows']>) => {
+            const level = cellProps.row.original.level;
             const _isError = level === 'Error' || level === 'Fatal' || level === 'Critical';
             const _isWarning = level === 'Warning';
 
@@ -232,14 +223,15 @@ export const ProblemsTable = ({
                   ) : undefined
                 }
               >
-                {level && level in displayStrings ? displayStrings[level] : level}
+                {level && level in displayStrings ? displayStrings.level : level}
               </DefaultCell>
             );
           },
         },
         {
           id: 'fileName',
-          accessor: ({ fileName, fileId }) => fileName ?? getFileNameFromId(fileId),
+          accessor: ({ fileName, fileId }: Partial<TableRow | TableRow['subRows']>) =>
+            fileName ?? getFileNameFromId(fileId),
           Header: displayStrings.fileName,
           Filter: tableFilters.TextFilter(),
           cellClassName: 'iui-main',
@@ -273,7 +265,7 @@ export const ProblemsTable = ({
   const rowProps = React.useCallback(
     ({
       original: { level },
-    }: Row<TableRow>): {
+    }: Row<TableRow | TableRow['subRows']>): {
       status?: 'positive' | 'warning' | 'negative';
     } => {
       switch (level) {
