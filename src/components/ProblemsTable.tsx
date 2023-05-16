@@ -91,16 +91,16 @@ export const ProblemsTable = ({
         return context?.focusedIssues.some((issue) => bannerLevel === issue);
       });
 
-    // **FIX cyclical type reference
+    // **FIX referenced in own type annotation
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const expandableReports: any = {};
-    const nonCategoryReports: TableRow[] = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const nonCategoryReports: any[] = [];
 
     reports.forEach((report) => {
       const category = report?.category;
 
       const reportSubRow = { ...report };
-      // delete reportSubRow.category;
 
       // unecessary if always category, pretending this is the case
       if (!category) {
@@ -122,7 +122,7 @@ export const ProblemsTable = ({
       });
     }
 
-    return processedReports;
+    return [...processedReports, ...nonCategoryReports];
   }, [
     fileRecords,
     context?.reportData.filerecords,
