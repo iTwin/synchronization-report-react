@@ -92,7 +92,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
             const count = currentCount ?? 0;
             wCount.set(w, count + 1);
           });
-        } 
+        }
 
         if (
           context?.workflowMapping &&
@@ -133,12 +133,6 @@ export const ReportBanner = (props: ReportBannerProps) => {
 
   return (
     <Surface elevation={1} className='isr-banner-container'>
-      <BannerTile icon={<SvgFlag />}>
-        <Text variant='title' style={{ fontWeight: 'bold' }}>
-          {issuesCount}
-        </Text>
-        <Text variant='small'>{displayStrings.totalIssues}</Text>
-      </BannerTile>
       <>
         <BannerTile
           onClick={() => onClickIssue('Error')}
@@ -169,6 +163,12 @@ export const ReportBanner = (props: ReportBannerProps) => {
             {infoCount}
           </Text>
           <Text variant='small'>{displayStrings.otherIssues}</Text>
+        </BannerTile>
+        <BannerTile icon={<SvgFlag />}>
+          <Text variant='title' style={{ fontWeight: 'bold' }}>
+            {issuesCount}
+          </Text>
+          <Text variant='small'>{displayStrings.totalIssues}</Text>
         </BannerTile>
       </>
     </Surface>
