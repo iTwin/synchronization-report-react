@@ -36,7 +36,7 @@ export const ReportInfoPanel = ({
   const { currentAuditInfo, setCurrentAuditInfo } = context;
 
   return (
-    <InformationPanel className={className} isOpen={!!currentAuditInfo} {...rest}>
+    <InformationPanel className={className} isOpen={!!currentAuditInfo} style={{ position: 'fixed' }} {...rest}>
       <InformationPanelHeader onClose={() => setCurrentAuditInfo(undefined)}>
         <Text variant='subheading'>{currentAuditInfo?.category ?? displayStrings['metadata']}</Text>
       </InformationPanelHeader>
