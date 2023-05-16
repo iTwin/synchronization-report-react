@@ -102,7 +102,6 @@ export const ProblemsTable = ({
 
       const reportSubRow = { ...report };
 
-      // unecessary if always category, pretending this is the case
       if (!category) {
         nonCategoryReports.push(report);
       } else {
