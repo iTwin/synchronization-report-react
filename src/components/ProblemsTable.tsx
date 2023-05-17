@@ -169,7 +169,7 @@ export const ProblemsTable = ({
           maxWidth: 250,
           Cell: (row: CellProps<TableRow | TableRow['subRows']>) => (
             // Hide issue if a subrow
-            <div>{!Object.hasOwn(row.row.original, 'subRows') ? '' : row.value}</div>
+            <div>{Object.hasOwn(row.row.original, 'subRows') ? row.value : ''}</div>
           ),
         },
         {
