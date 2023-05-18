@@ -14,6 +14,15 @@ import './ProblemsTable.scss';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
 import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
 
+type Report = {
+  level?: 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical' | undefined;
+  category?: string | undefined;
+  message?: string | undefined;
+  type?: string | undefined;
+  fileName?: string | undefined;
+  fileId: string | undefined;
+};
+
 const defaultDisplayStrings = {
   Fatal: 'Fatal Error',
   Error: 'Error',
@@ -59,6 +68,38 @@ export const ProblemsTable = ({
     [userFileTypeIcons]
   );
 
+  const expandReports = (reports: Report[]): { category: string; subRows: Report[] }[] => {
+    const expandableReports: Record<string, Report[]> = {};
+
+    reports.forEach((report) => {
+      const category = report?.category;
+
+      if (!category) {
+        if (!Object.hasOwn(expandableReports, 'Others')) {
+          expandableReports.Others = [];
+        }
+
+        expandableReports.Others.push(report);
+      } else {
+        if (!Object.hasOwn(expandableReports, category)) {
+          expandableReports[category] = [];
+        }
+
+        expandableReports[category].push(report);
+      }
+    });
+
+    const processedReports = [];
+    for (const category of Object.keys(expandableReports)) {
+      processedReports.push({
+        category,
+        subRows: expandableReports[category],
+      });
+    }
+
+    return processedReports;
+  };
+
   const data = React.useMemo(() => {
     const files = fileRecords || context?.reportData.filerecords || [];
     const reports = files
@@ -91,37 +132,7 @@ export const ProblemsTable = ({
         return context?.focusedIssues.some((issue) => bannerLevel === issue);
       });
 
-    // **FIX referenced in own type annotation
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const expandableReports: any = {};
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const nonCategoryReports: any[] = [];
-
-    reports.forEach((report) => {
-      const category = report?.category;
-
-      const reportSubRow = { ...report };
-
-      if (!category) {
-        nonCategoryReports.push(report);
-      } else {
-        if (!Object.hasOwn(expandableReports, category)) {
-          expandableReports[category] = [];
-        }
-
-        expandableReports[category].push(reportSubRow);
-      }
-    });
-
-    const processedReports = [];
-    for (const category of Object.keys(expandableReports)) {
-      processedReports.push({
-        category,
-        subRows: expandableReports[category],
-      });
-    }
-
-    return [...processedReports, ...nonCategoryReports];
+    return expandReports(reports);
   }, [
     fileRecords,
     context?.reportData.filerecords,
@@ -135,7 +146,7 @@ export const ProblemsTable = ({
     [userDisplayStrings]
   );
 
-  type TableRow = Partial<typeof data[number]>;
+  type TableRow = Partial<typeof data[number]> | Record<string, Report>;
 
   const getFileNameFromId = React.useCallback(
     (id?: string) => {
@@ -147,15 +158,12 @@ export const ProblemsTable = ({
     [sourceFilesInfo, context?.reportData.sourceFilesInfo]
   );
 
-  const sortByLevel = React.useCallback(
-    (rowA: Row<TableRow | TableRow['subRows']>, rowB: Row<TableRow | TableRow['subRows']>) => {
-      const levelsOrder = ['Fatal', 'Error', 'Critical', 'Warning', 'Info'];
-      const indexA = levelsOrder.indexOf(rowA.original.level || '');
-      const indexB = levelsOrder.indexOf(rowB.original.level || '');
-      return indexA > indexB ? 1 : -1;
-    },
-    []
-  );
+  const sortByLevel = React.useCallback((rowA, rowB) => {
+    const levelsOrder = ['Fatal', 'Error', 'Critical', 'Warning', 'Info'];
+    const indexA = levelsOrder.indexOf(rowA.original.level || '');
+    const indexB = levelsOrder.indexOf(rowB.original.level || '');
+    return indexA > indexB ? 1 : -1;
+  }, []);
 
   const columns = React.useMemo(
     () =>
@@ -167,7 +175,7 @@ export const ProblemsTable = ({
           Filter: tableFilters.TextFilter(),
           minWidth: 75,
           maxWidth: 250,
-          Cell: (row: CellProps<TableRow | TableRow['subRows']>) => (
+          Cell: (row: CellProps<TableRow>) => (
             // Hide issue if a subrow
             <div>{Object.hasOwn(row.row.original, 'subRows') ? row.value : ''}</div>
           ),
@@ -179,7 +187,7 @@ export const ProblemsTable = ({
           Filter: tableFilters.TextFilter(),
           minWidth: 50,
           maxWidth: 250,
-          Cell: (row: CellProps<TableRow | TableRow['subRows']>) => {
+          Cell: (row: CellProps<Report>) => {
             return (
               <div
                 className='iui-anchor'
@@ -203,7 +211,7 @@ export const ProblemsTable = ({
           minWidth: 75,
           maxWidth: 250,
           sortType: sortByLevel,
-          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow | TableRow['subRows']>) => {
+          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<Report>) => {
             const level = cellProps.row.original.level;
             const _isError = level === 'Error' || level === 'Fatal' || level === 'Critical';
             const _isWarning = level === 'Warning';
@@ -229,8 +237,7 @@ export const ProblemsTable = ({
         },
         {
           id: 'fileName',
-          accessor: ({ fileName, fileId }: Partial<TableRow | TableRow['subRows']>) =>
-            fileName ?? getFileNameFromId(fileId),
+          accessor: ({ fileName, fileId }: Partial<Report>) => fileName ?? getFileNameFromId(fileId),
           Header: displayStrings.fileName,
           Filter: tableFilters.TextFilter(),
           cellClassName: 'iui-main',
@@ -264,7 +271,7 @@ export const ProblemsTable = ({
   const rowProps = React.useCallback(
     ({
       original: { level },
-    }: Row<TableRow | TableRow['subRows']>): {
+    }): {
       status?: 'positive' | 'warning' | 'negative';
     } => {
       switch (level) {
@@ -281,12 +288,13 @@ export const ProblemsTable = ({
     []
   );
 
-  const onRowClick = (event: React.MouseEvent<Element, MouseEvent>, row: Row<TableRow | TableRow['subRows']>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onRowClick = (event: React.MouseEvent<Element, MouseEvent>, row: Row<Record<string, any>>): void => {
     const element = event.target as HTMLTableRowElement;
     element.parentElement?.classList.add('active');
     context?.setCurrentAuditInfo({
       ...row.original,
-      fileName: row.original.filename ?? getFileNameFromId(row.original.fileId),
+      fileName: row.original.fileName ?? getFileNameFromId(row.original.fileId),
     });
 
     // event listener added as component does not have an 'outside clicked' handler
