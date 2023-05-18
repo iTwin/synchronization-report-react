@@ -281,28 +281,30 @@ export const ProblemsTable = ({
     []
   );
 
+  const onRowClick = (event: React.MouseEvent<Element, MouseEvent>, row: Row<TableRow | TableRow['subRows']>) => {
+    const element = event.target as HTMLTableRowElement;
+    element.parentElement?.classList.add('active');
+    context?.setCurrentAuditInfo({
+      ...row.original,
+      fileName: row.original.filename ?? getFileNameFromId(row.original.fileId),
+    });
+
+    // event listener added as component does not have an 'outside clicked' handler
+    // and cannot wrap individual row in a custom react hook
+    document.addEventListener(
+      'mousedown',
+      (event: MouseEvent) => {
+        if (!element.parentElement?.contains(event.target as Node)) {
+          element.parentElement?.classList.remove('active');
+        }
+      },
+      { once: true }
+    );
+  };
+
   return (
     <Table
-      onRowClick={(event: React.MouseEvent<Element, MouseEvent>, row: Row<TableRow | TableRow['subRows']>) => {
-        const element = event.target as HTMLTableRowElement;
-        element.parentElement?.classList.add('active');
-        context?.setCurrentAuditInfo({
-          ...row.original,
-          fileName: row.original.filename ?? getFileNameFromId(row.original.fileId),
-        });
-
-        // event listener added as component does not have an 'outside clicked' handler
-        // and cannot wrap individual row in a custom react hook
-        document.addEventListener(
-          'mousedown',
-          (event: MouseEvent) => {
-            if (!element.parentElement?.contains(event.target as Node)) {
-              element.parentElement?.classList.remove('active');
-            }
-          },
-          { once: true }
-        );
-      }}
+      onRowClick={onRowClick}
       selectRowOnClick
       enableVirtualization
       className={classnames('isr-problems-table', className)}
