@@ -33,11 +33,16 @@ export const ReportInfoPanel = ({
 
   const displayStrings = { ...defaultDisplayStrings, ...userDisplayStrings };
 
-  const { currentAuditInfo, setCurrentAuditInfo } = context;
+  const { currentAuditInfo, setCurrentAuditInfo, setActiveRow } = context;
+
+  const onClose = () => {
+    setCurrentAuditInfo(undefined);
+    setActiveRow('');
+  };
 
   return (
     <InformationPanel className={className} isOpen={!!currentAuditInfo} {...rest}>
-      <InformationPanelHeader onClose={() => setCurrentAuditInfo(undefined)}>
+      <InformationPanelHeader onClose={onClose}>
         <Text variant='subheading'>{currentAuditInfo?.category ?? displayStrings['metadata']}</Text>
       </InformationPanelHeader>
       <InformationPanelBody className='isr-info-panel-body'>

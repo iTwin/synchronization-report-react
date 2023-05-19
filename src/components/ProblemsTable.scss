@@ -12,6 +12,6 @@
   justify-content: space-between;
 }
 
-:where(.iui-root, [data-iui-theme]) .iui-table-body .iui-table-row.active .iui-table-cell {
-  background-color: var(--iui-color-background-accent-muted);
+.active-row > div {
+  background-color: var(--iui-color-background-accent-muted) !important;
 }

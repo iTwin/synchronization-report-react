@@ -47,6 +47,8 @@ export const ReportContext = React.createContext<
       setFocusedIssues: (issues: Issues[] | ((issues: Issues[]) => Issues[])) => void;
       focusedWorkflows: string[];
       setFocusedWorkflows: (issues: string[] | ((issues: string[]) => string[])) => void;
+      activeRow: string;
+      setActiveRow: React.Dispatch<React.SetStateAction<string>>;
     }
   | undefined
 >(undefined);
@@ -95,6 +97,7 @@ export const Report = ({
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
   const [focusedIssues, setFocusedIssues] = React.useState<Issues[]>(['Error']);
   const [focusedWorkflows, setFocusedWorkflows] = React.useState<string[]>([]);
+  const [activeRow, setActiveRow] = React.useState<string>('');
 
   React.useEffect(() => {
     if (!workflowMapping) return;
@@ -118,6 +121,8 @@ export const Report = ({
           setFocusedIssues: setFocusedIssues,
           focusedWorkflows: focusedWorkflows,
           setFocusedWorkflows: setFocusedWorkflows,
+          activeRow: activeRow,
+          setActiveRow: setActiveRow,
         }}
       >
         <div className={classnames('isr-report-main', className)}>

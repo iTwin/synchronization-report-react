@@ -268,45 +268,45 @@ export const ProblemsTable = ({
 
   const rowProps = React.useCallback(
     ({
+      id,
       original: { level },
     }): {
-      status?: 'positive' | 'warning' | 'negative';
+      status?: 'positive' | 'warning' | 'negative' | undefined;
+      className: string;
     } => {
+      const isActiveRow = id === context?.activeRow;
+      let statusConverted: 'positive' | 'warning' | 'negative' | undefined = undefined;
+
       switch (level) {
         case 'Critical':
         case 'Error':
         case 'Fatal':
-          return { status: 'negative' };
+          statusConverted = 'negative';
+          break;
         case 'Warning':
-          return { status: 'warning' };
+          statusConverted = 'warning';
+          break;
         default:
-          return {};
+          break;
       }
+
+      return {
+        status: statusConverted,
+        className: isActiveRow ? 'active-row' : '',
+      };
     },
-    []
+    [context?.activeRow]
   );
 
   const onRowClick = React.useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (event: React.MouseEvent<Element, MouseEvent>, row: Row<Record<string, any>>): void => {
-      const element = event.target as HTMLTableRowElement;
-      element.parentElement?.classList.add('active');
       context?.setCurrentAuditInfo({
         ...row.original,
         fileName: row.original.fileName ?? getFileNameFromId(row.original.fileId),
       });
 
-      // event listener added as component does not have an 'outside clicked' handler
-      // and cannot wrap individual row in a custom react hook
-      document.addEventListener(
-        'mousedown',
-        (event: MouseEvent) => {
-          if (!element.parentElement?.contains(event.target as Node)) {
-            element.parentElement?.classList.remove('active');
-          }
-        },
-        { once: true }
-      );
+      context?.setActiveRow(row.id);
     },
     [context, getFileNameFromId]
   );
