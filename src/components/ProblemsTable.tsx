@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import { DefaultCell, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
+import { Anchor, DefaultCell, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
 import { Issues, ReportContext } from './Report';
 import { ClampWithTooltip, StatusIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
@@ -189,8 +189,7 @@ export const ProblemsTable = ({
           maxWidth: 250,
           Cell: (row: CellProps<Report>) => {
             return (
-              <div
-                className='iui-anchor'
+              <Anchor
                 onClick={() => {
                   context?.setCurrentAuditInfo({
                     ...row.row.original,
@@ -199,7 +198,7 @@ export const ProblemsTable = ({
                 }}
               >
                 {row.value}
-              </div>
+              </Anchor>
             );
           },
         },
