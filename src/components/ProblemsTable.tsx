@@ -288,8 +288,8 @@ export const ProblemsTable = ({
     []
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onRowClick = React.useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (event: React.MouseEvent<Element, MouseEvent>, row: Row<Record<string, any>>): void => {
       const element = event.target as HTMLTableRowElement;
       element.parentElement?.classList.add('active');
