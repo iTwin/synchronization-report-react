@@ -33,7 +33,6 @@ type AuditInfo = Partial<{
   type: string;
   fileName: string;
   filePath: string;
-  impactedWorkflows: string[];
 }>;
 
 export const ReportContext = React.createContext<
@@ -128,8 +127,8 @@ export const Report = ({
                 <ReportTitle />
                 <ReportDebugIds />
               </ReportTitleWrapper>
+              <ReportTimestamp />
               <ReportHeaderBannerWrapper>
-                <ReportTimestamp />
                 <ReportBanner />
               </ReportHeaderBannerWrapper>
               <ReportTableSelectWrapper>

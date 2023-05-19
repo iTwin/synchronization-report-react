@@ -9,3 +9,7 @@
   gap: var(--iui-size-s);
   overflow-wrap: break-word;
 }
+
+:where(.iui-root, [data-iui-theme]) .iui-information-panel {
+  position: fixed;
+}
