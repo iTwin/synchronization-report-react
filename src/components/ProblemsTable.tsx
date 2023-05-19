@@ -292,7 +292,7 @@ export const ProblemsTable = ({
 
       return {
         status: statusConverted,
-        className: isActiveRow ? 'active-row' : '',
+        className: `table-row__${isActiveRow ? 'active' : ''}`,
       };
     },
     [context?.activeRow]
