@@ -289,26 +289,29 @@ export const ProblemsTable = ({
   );
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onRowClick = (event: React.MouseEvent<Element, MouseEvent>, row: Row<Record<string, any>>): void => {
-    const element = event.target as HTMLTableRowElement;
-    element.parentElement?.classList.add('active');
-    context?.setCurrentAuditInfo({
-      ...row.original,
-      fileName: row.original.fileName ?? getFileNameFromId(row.original.fileId),
-    });
+  const onRowClick = React.useCallback(
+    (event: React.MouseEvent<Element, MouseEvent>, row: Row<Record<string, any>>): void => {
+      const element = event.target as HTMLTableRowElement;
+      element.parentElement?.classList.add('active');
+      context?.setCurrentAuditInfo({
+        ...row.original,
+        fileName: row.original.fileName ?? getFileNameFromId(row.original.fileId),
+      });
 
-    // event listener added as component does not have an 'outside clicked' handler
-    // and cannot wrap individual row in a custom react hook
-    document.addEventListener(
-      'mousedown',
-      (event: MouseEvent) => {
-        if (!element.parentElement?.contains(event.target as Node)) {
-          element.parentElement?.classList.remove('active');
-        }
-      },
-      { once: true }
-    );
-  };
+      // event listener added as component does not have an 'outside clicked' handler
+      // and cannot wrap individual row in a custom react hook
+      document.addEventListener(
+        'mousedown',
+        (event: MouseEvent) => {
+          if (!element.parentElement?.contains(event.target as Node)) {
+            element.parentElement?.classList.remove('active');
+          }
+        },
+        { once: true }
+      );
+    },
+    [context, getFileNameFromId]
+  );
 
   return (
     <Table
