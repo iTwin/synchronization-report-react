@@ -9,6 +9,7 @@ import { ProblemsTable } from './ProblemsTable';
 import { ReportContext, Tables } from './Report';
 import './ReportTableView.scss';
 
+
 /**
  * `ReportTableView` shows the `FilesTable`, `ProblemsTable`, depending on the active selection.
  *

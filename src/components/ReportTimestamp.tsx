@@ -74,14 +74,20 @@ export const ReportTimestamp = ({
   }, [context?.reportData.sourceFilesInfo, filesProcessed]);
 
   return (
-    <div className='isr-timestamp-container'>
-      <span>
-        <Text>
-          {' '}
-          <SvgClock /> {date} {time} {displayStrings.syncTime} | <SvgDocument /> {allFilesProcessed.length}{' '}
-          {displayStrings.files}
+    <Surface elevation={1} className='isr-timestamp-container'>
+      <BannerTile icon={<SvgClock />}>
+        <span>
+          <Text>{date}</Text>
+          <Text>{time}</Text>
+        </span>
+        <Text variant='small'>{displayStrings.syncTime}</Text>
+      </BannerTile>
+      <BannerTile icon={<SvgDocument />}>
+        <Text variant='title' style={{ fontWeight: 'bold' }}>
+          {allFilesProcessed.length}
         </Text>
-      </span>
-    </div>
+        <Text variant='small'>{displayStrings.files}</Text>
+      </BannerTile>
+    </Surface>
   );
 };

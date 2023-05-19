@@ -59,6 +59,14 @@ export const ReportInfoPanel = ({
             {currentAuditInfo?.type ?? ''}
           </span>
         )}
+        {currentAuditInfo?.impactedWorkflows && (
+          <span>
+            <Label as='span'>{displayStrings['impactedWorkflows']}</Label>
+            {currentAuditInfo?.impactedWorkflows?.map((w) => (
+              <Text key={w}>{w}</Text>
+            ))}
+          </span>
+        )}
         {currentAuditInfo?.fileName && (
           <span>
             <Label as='span'>{displayStrings['fileName']}</Label>
