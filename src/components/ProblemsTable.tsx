@@ -239,7 +239,6 @@ export const ProblemsTable = ({
           accessor: ({ fileName, fileId }: Partial<Report>) => fileName ?? getFileNameFromId(fileId),
           Header: displayStrings.fileName,
           Filter: tableFilters.TextFilter(),
-          cellClassName: 'iui-main',
           minWidth: 150,
           cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
             const extension = cellProps.value?.substring(cellProps.value.lastIndexOf('.') + 1);

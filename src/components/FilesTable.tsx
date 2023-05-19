@@ -5,7 +5,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { ClampWithTooltip, StatusIcon } from './utils';
-import { Table, tableFilters, Text, Badge, DefaultCell } from '@itwin/itwinui-react';
+import { Table, tableFilters, Text, Badge, DefaultCell, Anchor } from '@itwin/itwinui-react';
 import type { TableProps } from '@itwin/itwinui-react';
 import type { SourceFilesInfo, SourceFile, FileRecord } from './report-data-typings';
 import type { CellProps, Column, Row, CellRendererProps } from 'react-table';
@@ -160,9 +160,9 @@ export const FilesTable = ({
           Cell: (props: CellProps<SourceFile>) => {
             return (
               props.row.original.path && (
-                <a className='iui-anchor' href={props.row.original.path} target='_blank' rel='noopener noreferrer'>
+                <Anchor href={props.row.original.path} target='_blank' rel='noopener noreferrer'>
                   {props.row.original.path}
-                </a>
+                </Anchor>
               )
             );
           },
