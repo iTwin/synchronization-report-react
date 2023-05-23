@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import { DefaultCell, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
+import { Anchor, DefaultCell, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
 import { Issues, ReportContext } from './Report';
 import { ClampWithTooltip, StatusIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
@@ -189,8 +189,7 @@ export const ProblemsTable = ({
           maxWidth: 250,
           Cell: (row: CellProps<Report>) => {
             return (
-              <div
-                className='iui-anchor'
+              <Anchor
                 onClick={() => {
                   context?.setCurrentAuditInfo({
                     ...row.row.original,
@@ -199,7 +198,7 @@ export const ProblemsTable = ({
                 }}
               >
                 {row.value}
-              </div>
+              </Anchor>
             );
           },
         },
@@ -240,7 +239,6 @@ export const ProblemsTable = ({
           accessor: ({ fileName, fileId }: Partial<Report>) => fileName ?? getFileNameFromId(fileId),
           Header: displayStrings.fileName,
           Filter: tableFilters.TextFilter(),
-          cellClassName: 'iui-main',
           minWidth: 150,
           cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
             const extension = cellProps.value?.substring(cellProps.value.lastIndexOf('.') + 1);
@@ -270,45 +268,45 @@ export const ProblemsTable = ({
 
   const rowProps = React.useCallback(
     ({
+      id,
       original: { level },
     }): {
-      status?: 'positive' | 'warning' | 'negative';
+      status?: 'positive' | 'warning' | 'negative' | undefined;
+      className: string;
     } => {
+      const isActiveRow = id === context?.activeRow;
+      let statusConverted: 'positive' | 'warning' | 'negative' | undefined = undefined;
+
       switch (level) {
         case 'Critical':
         case 'Error':
         case 'Fatal':
-          return { status: 'negative' };
+          statusConverted = 'negative';
+          break;
         case 'Warning':
-          return { status: 'warning' };
+          statusConverted = 'warning';
+          break;
         default:
-          return {};
+          break;
       }
+
+      return {
+        status: statusConverted,
+        className: `table-row__${isActiveRow ? 'active' : ''}`,
+      };
     },
-    []
+    [context?.activeRow]
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onRowClick = React.useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (event: React.MouseEvent<Element, MouseEvent>, row: Row<Record<string, any>>): void => {
-      const element = event.target as HTMLTableRowElement;
-      element.parentElement?.classList.add('active');
       context?.setCurrentAuditInfo({
         ...row.original,
         fileName: row.original.fileName ?? getFileNameFromId(row.original.fileId),
       });
 
-      // event listener added as component does not have an 'outside clicked' handler
-      // and cannot wrap individual row in a custom react hook
-      document.addEventListener(
-        'mousedown',
-        (event: MouseEvent) => {
-          if (!element.parentElement?.contains(event.target as Node)) {
-            element.parentElement?.classList.remove('active');
-          }
-        },
-        { once: true }
-      );
+      context?.setActiveRow(row.id);
     },
     [context, getFileNameFromId]
   );
