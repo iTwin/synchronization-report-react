@@ -94,7 +94,7 @@ export const Report = ({
 }) => {
   const [selectedTable, setSelectedTable] = React.useState<Tables>('problems');
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
-  const [focusedIssues, setFocusedIssues] = React.useState<Issues[]>(['Error']);
+  const [focusedIssues, setFocusedIssues] = React.useState<Issues[]>(['Error', 'Warning', 'Info']);
   const [focusedWorkflows, setFocusedWorkflows] = React.useState<string[]>([]);
 
   React.useEffect(() => {
