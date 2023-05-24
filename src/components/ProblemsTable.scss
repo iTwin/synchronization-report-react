@@ -11,3 +11,7 @@
   gap: var(--iui-size-xs);
   justify-content: space-between;
 }
+
+.isr-info-panel-wrapper .isr-report-table-view .isr-problems-table .table-row__active > * {
+  background-color: var(--iui-color-background-accent-muted);
+}

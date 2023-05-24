@@ -33,11 +33,16 @@ export const ReportInfoPanel = ({
 
   const displayStrings = { ...defaultDisplayStrings, ...userDisplayStrings };
 
-  const { currentAuditInfo, setCurrentAuditInfo } = context;
+  const { currentAuditInfo, setCurrentAuditInfo, setActiveRow } = context;
+
+  const onClose = () => {
+    setCurrentAuditInfo(undefined);
+    setActiveRow('');
+  };
 
   return (
     <InformationPanel className={className} isOpen={!!currentAuditInfo} {...rest}>
-      <InformationPanelHeader onClose={() => setCurrentAuditInfo(undefined)}>
+      <InformationPanelHeader onClose={onClose}>
         <Text variant='subheading'>{currentAuditInfo?.category ?? displayStrings['metadata']}</Text>
       </InformationPanelHeader>
       <InformationPanelBody className='isr-info-panel-body'>
@@ -57,14 +62,6 @@ export const ReportInfoPanel = ({
           <span>
             <Label as='span'>{displayStrings['issueType']}</Label>
             {currentAuditInfo?.type ?? ''}
-          </span>
-        )}
-        {currentAuditInfo?.impactedWorkflows && (
-          <span>
-            <Label as='span'>{displayStrings['impactedWorkflows']}</Label>
-            {currentAuditInfo?.impactedWorkflows?.map((w) => (
-              <Text key={w}>{w}</Text>
-            ))}
           </span>
         )}
         {currentAuditInfo?.fileName && (
