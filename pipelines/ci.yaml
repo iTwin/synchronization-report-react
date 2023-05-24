@@ -45,13 +45,13 @@ jobs:
           echo "Should publish: $newer"
         name: checkPublish
         displayName: Check if should publish
-        condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'))
+        condition: succeeded()
 
       - bash: npm pack
         displayName: npm pack
-        condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['checkPublish.shouldPublish'], 'true'))
+        condition: succeeded()
 
       - publish: itwin-synchronization-report-react-$(checkPublish.version).tgz
         artifact: tarball
         displayName: Publish packed file
-        condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['checkPublish.shouldPublish'], 'true'))
+        condition: succeeded()
