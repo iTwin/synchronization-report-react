@@ -35,7 +35,7 @@ jobs:
           fi
           echo "Server version found: $ver"
           echo "Local version found: $pkgVer"
-          if [ "$ver" != "$pkgVer" ] && [ "$(printf '%s\n' "$ver" "$pkgVer" | sort -V | head -n1)" = "$ver" ]; then
+          if [ "$ver" != "$pkgVer" ]; then
             newer=true
           else
             newer=false
