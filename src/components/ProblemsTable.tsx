@@ -223,7 +223,7 @@ export const ProblemsTable = ({
                   ) : undefined
                 }
               >
-                {level && level in displayStrings ? displayStrings.level : level}
+                {level}
               </DefaultCell>
             );
           },
