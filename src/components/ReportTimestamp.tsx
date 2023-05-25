@@ -4,8 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import { ReportContext } from './Report';
-import { Surface, Text } from '@itwin/itwinui-react';
-import { BannerTile } from './utils';
+import { Text } from '@itwin/itwinui-react';
 import SvgClock from '@itwin/itwinui-icons-react/cjs/icons/Clock';
 import './ReportTimestamp.scss';
 import SvgDocument from '@itwin/itwinui-icons-react/cjs/icons/Document';
