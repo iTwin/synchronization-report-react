@@ -92,7 +92,7 @@ export const ProblemsTable = ({
     const processedReports = [];
     for (const category of Object.keys(expandableReports)) {
       processedReports.push({
-        category,
+        category: `${category} (${expandableReports[category].length})`,
         subRows: expandableReports[category],
       });
     }
