@@ -31,7 +31,7 @@ const defaultDisplayStrings = {
   Info: 'Info',
   fileName: 'File name',
   level: 'Severity',
-  category: 'Issue',
+  category: 'Category',
   type: 'Type',
   message: 'Message',
 };
