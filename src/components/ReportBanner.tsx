@@ -13,7 +13,7 @@ import SvgFlag from '@itwin/itwinui-icons-react/esm/icons/Flag';
 const defaultDisplayStrings = {
   errors: 'Errors',
   warnings: 'Warnings',
-  otherIssues: 'Other issues',
+  otherIssues: 'Info',
   totalIssues: 'Total Issues',
   unorganized: 'Unorganized',
 };
