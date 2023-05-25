@@ -301,12 +301,16 @@ export const ProblemsTable = ({
   const onRowClick = React.useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (event: React.MouseEvent<Element, MouseEvent>, row: Row<Record<string, any>>): void => {
-      context?.setCurrentAuditInfo({
-        ...row.original,
-        fileName: row.original.fileName ?? getFileNameFromId(row.original.fileId),
-      });
+      if (row.subRows.length) {
+        row.toggleRowExpanded();
+      } else {
+        context?.setCurrentAuditInfo({
+          ...row.original,
+          fileName: row.original.fileName ?? getFileNameFromId(row.original.fileId),
+        });
 
-      context?.setActiveRow(row.id);
+        context?.setActiveRow(row.id);
+      }
     },
     [context, getFileNameFromId]
   );
