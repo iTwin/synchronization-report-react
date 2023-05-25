@@ -129,17 +129,11 @@ export const ProblemsTable = ({
         let bannerLevel: Issues = 'Info';
         if (level === 'Error' || level === 'Fatal') bannerLevel = 'Error';
         else if (level === 'Warning' || level === 'Critical') bannerLevel = 'Warning';
-        return context?.focusedIssues.some((issue) => bannerLevel === issue);
+        return context?.focusedIssue === bannerLevel || context?.focusedIssue === 'All';
       });
 
     return expandReports(reports);
-  }, [
-    fileRecords,
-    context?.reportData.filerecords,
-    context?.focusedWorkflows,
-    context?.focusedIssues,
-    workflowMapping,
-  ]);
+  }, [fileRecords, context?.reportData.filerecords, context?.focusedWorkflows, context?.focusedIssue, workflowMapping]);
 
   const displayStrings = React.useMemo(
     () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),

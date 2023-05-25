@@ -23,7 +23,7 @@ import { ReportTitleWrapper } from './ReportTitleWrapper';
 import { defaultWorkflowMapping } from './report-workflow-mapping';
 
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
-export type Issues = 'Error' | 'Warning' | 'Info';
+export type Issues = 'Error' | 'Warning' | 'Info' | 'All';
 export type Tables = 'files' | 'problems';
 
 type AuditInfo = Partial<{
@@ -43,8 +43,8 @@ export const ReportContext = React.createContext<
       setCurrentTable: (table: Tables | ((prev: Tables) => Tables)) => void;
       currentAuditInfo?: AuditInfo;
       setCurrentAuditInfo: (auditInfo?: AuditInfo) => void;
-      focusedIssues: Issues[];
-      setFocusedIssues: (issues: Issues[] | ((issues: Issues[]) => Issues[])) => void;
+      focusedIssue: Issues;
+      setFocusedIssue: (issue: Issues) => void;
       focusedWorkflows: string[];
       setFocusedWorkflows: (issues: string[] | ((issues: string[]) => string[])) => void;
       activeRow: string;
@@ -95,7 +95,7 @@ export const Report = ({
 }) => {
   const [selectedTable, setSelectedTable] = React.useState<Tables>('problems');
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
-  const [focusedIssues, setFocusedIssues] = React.useState<Issues[]>(['Error', 'Warning', 'Info']);
+  const [focusedIssue, setFocusedIssue] = React.useState<Issues>('All');
   const [focusedWorkflows, setFocusedWorkflows] = React.useState<string[]>([]);
   const [activeRow, setActiveRow] = React.useState<string>('');
 
@@ -117,8 +117,8 @@ export const Report = ({
           setCurrentTable: setSelectedTable,
           currentAuditInfo,
           setCurrentAuditInfo,
-          focusedIssues: focusedIssues,
-          setFocusedIssues: setFocusedIssues,
+          focusedIssue: focusedIssue,
+          setFocusedIssue: setFocusedIssue,
           focusedWorkflows: focusedWorkflows,
           setFocusedWorkflows: setFocusedWorkflows,
           activeRow: activeRow,
