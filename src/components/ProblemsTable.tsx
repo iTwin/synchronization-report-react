@@ -180,7 +180,7 @@ export const ProblemsTable = ({
           Header: displayStrings.type,
           Filter: tableFilters.TextFilter(),
           minWidth: 50,
-          maxWidth: 250,
+          maxWidth: 170,
           Cell: (row: CellProps<Report>) => {
             return (
               <Anchor
@@ -201,8 +201,8 @@ export const ProblemsTable = ({
           accessor: 'level',
           Header: displayStrings.level,
           Filter: tableFilters.TextFilter(),
-          minWidth: 75,
-          maxWidth: 250,
+          minWidth: 50,
+          maxWidth: 170,
           sortType: sortByLevel,
           cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<Report>) => {
             const level = cellProps.row.original.level;
