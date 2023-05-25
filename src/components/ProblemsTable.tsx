@@ -30,7 +30,7 @@ const defaultDisplayStrings = {
   Warning: 'Warning',
   Info: 'Info',
   fileName: 'File name',
-  level: 'Status',
+  level: 'Severity',
   category: 'Issue',
   type: 'Type',
   message: 'Message',
