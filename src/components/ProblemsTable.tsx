@@ -246,7 +246,13 @@ export const ProblemsTable = ({
               <DefaultCell
                 cellElementProps={cellElementProps}
                 cellProps={cellProps}
-                startIcon={extension && extension in filetypeIcons ? filetypeIcons[extension] : <SvgFiletypeDocument />}
+                startIcon={
+                  extension && extension in filetypeIcons ? (
+                    filetypeIcons[extension]
+                  ) : !cellProps.row.original.subRows ? (
+                    <SvgFiletypeDocument />
+                  ) : undefined
+                }
               >
                 {cellProps.value}
               </DefaultCell>
