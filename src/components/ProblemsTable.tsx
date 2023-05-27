@@ -102,6 +102,7 @@ export const ProblemsTable = ({
 
   const data = React.useMemo(() => {
     const files = fileRecords || context?.reportData.filerecords || [];
+    console.log({ files });
     const reports = files
       .flatMap(({ file, auditrecords }) =>
         (auditrecords ?? []).flatMap(({ auditinfo }) => {
@@ -156,7 +157,7 @@ export const ProblemsTable = ({
     const levelsOrder = ['Fatal', 'Error', 'Critical', 'Warning', 'Info'];
     const indexA = levelsOrder.indexOf(rowA.original.level || '');
     const indexB = levelsOrder.indexOf(rowB.original.level || '');
-    return indexA > indexB ? 1 : -1;
+    return indexA > indexB ? -1 : 1;
   }, []);
 
   const columns = React.useMemo(
