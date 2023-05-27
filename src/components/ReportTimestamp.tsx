@@ -77,7 +77,7 @@ export const ReportTimestamp = ({
       <span>
         <Text>
           {' '}
-          <SvgClock /> {date} {time} {displayStrings.syncTime} | <SvgDocument /> {allFilesProcessed.length}{' '}
+          <SvgClock /> {date} {time} {displayStrings.syncTime} | <SvgDocument /> {filesCount}/{allFilesProcessed.length}{' '}
           {displayStrings.files}
         </Text>
       </span>
