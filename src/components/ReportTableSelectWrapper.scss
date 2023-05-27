@@ -5,7 +5,8 @@
 
 .isr-table-select-wrapper {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
   justify-content: space-between;
   gap: var(--iui-size-xs);
 }
