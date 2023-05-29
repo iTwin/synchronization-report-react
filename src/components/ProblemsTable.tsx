@@ -323,7 +323,7 @@ export const ProblemsTable = ({
       className={classnames('isr-problems-table', className)}
       columns={columns}
       data={data}
-      emptyTableContent='No data.'
+      emptyTableContent={`No ${context?.focusedIssue} Data`}
       emptyFilteredTableContent='No results found. Clear or try another filter.'
       isSortable
       initialState={{ sortBy: [{ id: 'level' }] }}
