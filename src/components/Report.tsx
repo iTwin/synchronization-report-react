@@ -133,8 +133,8 @@ export const Report = ({
                 <ReportDebugIds />
               </ReportTitleWrapper>
               <ReportTimestamp />
-              <Label as='span'>Issues found by severity</Label>
               <ReportHeaderBannerWrapper>
+                <Label as='span'>Issues found by severity</Label>
                 <ReportBanner />
               </ReportHeaderBannerWrapper>
               <ReportTableSelectWrapper>
