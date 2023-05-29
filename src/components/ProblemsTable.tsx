@@ -102,7 +102,6 @@ export const ProblemsTable = ({
 
   const data = React.useMemo(() => {
     const files = fileRecords || context?.reportData.filerecords || [];
-    console.log({ files });
     const reports = files
       .flatMap(({ file, auditrecords }) =>
         (auditrecords ?? []).flatMap(({ auditinfo }) => {
