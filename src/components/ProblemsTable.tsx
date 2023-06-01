@@ -36,6 +36,11 @@ const defaultDisplayStrings = {
   message: 'Message',
 };
 
+const tableStyleAccessor = {
+  problems: 'category',
+  files: 'fileId',
+};
+
 const defaultFileTypeIcons = {
   dgn: <SvgFiletypeMicrostation />,
   dgnlib: <SvgFiletypeMicrostation />,
@@ -68,37 +73,62 @@ export const ProblemsTable = ({
     [userFileTypeIcons]
   );
 
-  const expandReports = (reports: Report[]): { category: string; subRows: Report[] }[] => {
-    const expandableReports: Record<string, Report[]> = {};
+  const getFileNameFromId = React.useCallback(
+    (id?: string) => {
+      const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
+      return filesInfo?.fileId === id
+        ? filesInfo?.fileName
+        : filesInfo?.Files?.find((file) => file.fileId === id)?.fileName;
+    },
+    [sourceFilesInfo, context?.reportData.sourceFilesInfo]
+  );
 
-    reports.forEach((report) => {
-      const category = report?.category;
-
-      if (!category) {
-        if (!Object.hasOwn(expandableReports, 'Others')) {
-          expandableReports.Others = [];
-        }
-
-        expandableReports.Others.push(report);
-      } else {
-        if (!Object.hasOwn(expandableReports, category)) {
-          expandableReports[category] = [];
-        }
-
-        expandableReports[category].push(report);
+  const expandReports = React.useCallback(
+    (reports: Report[], level?: keyof Report) => {
+      if (!level) {
+        return reports;
       }
-    });
 
-    const processedReports = [];
-    for (const category of Object.keys(expandableReports)) {
-      processedReports.push({
-        category,
-        subRows: expandableReports[category],
+      const expandableReports: Record<string, Report[]> = {};
+
+      reports.forEach((report) => {
+        const topLevel = report[level];
+
+        if (!topLevel) {
+          if (!Object.hasOwn(expandableReports, 'Others')) {
+            expandableReports.Others = [];
+          }
+
+          expandableReports.Others.push(report);
+        } else {
+          if (!Object.hasOwn(expandableReports, topLevel)) {
+            expandableReports[topLevel] = [];
+          }
+
+          expandableReports[topLevel].push(report);
+        }
       });
-    }
 
-    return processedReports;
-  };
+      const processedReports = [];
+      for (const topLevel of Object.keys(expandableReports)) {
+        let convertedLevel = undefined;
+        let convertedTopLevel = undefined;
+
+        if (level === 'fileId') {
+          convertedLevel = 'fileName';
+          convertedTopLevel = getFileNameFromId(topLevel);
+        }
+
+        processedReports.push({
+          [convertedLevel || level]: convertedTopLevel || topLevel,
+          subRows: expandableReports[topLevel],
+        });
+      }
+
+      return processedReports;
+    },
+    [getFileNameFromId]
+  );
 
   const data = React.useMemo(() => {
     const files = fileRecords || context?.reportData.filerecords || [];
@@ -132,12 +162,17 @@ export const ProblemsTable = ({
         return context?.focusedIssues.some((issue) => bannerLevel === issue);
       });
 
-    return expandReports(reports);
+    const currentTable = context?.currentTable;
+    const level = currentTable ? (tableStyleAccessor[currentTable] as keyof Report) : undefined;
+
+    return expandReports(reports, level);
   }, [
     fileRecords,
     context?.reportData.filerecords,
+    context?.currentTable,
     context?.focusedWorkflows,
     context?.focusedIssues,
+    expandReports,
     workflowMapping,
   ]);
 
@@ -147,16 +182,6 @@ export const ProblemsTable = ({
   );
 
   type TableRow = Partial<typeof data[number]> | Record<string, Report>;
-
-  const getFileNameFromId = React.useCallback(
-    (id?: string) => {
-      const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
-      return filesInfo?.fileId === id
-        ? filesInfo?.fileName
-        : filesInfo?.Files?.find((file) => file.fileId === id)?.fileName;
-    },
-    [sourceFilesInfo, context?.reportData.sourceFilesInfo]
-  );
 
   const sortByLevel = React.useCallback((rowA, rowB) => {
     const levelsOrder = ['Fatal', 'Error', 'Critical', 'Warning', 'Info'];
@@ -176,8 +201,14 @@ export const ProblemsTable = ({
           minWidth: 75,
           maxWidth: 250,
           Cell: (row: CellProps<TableRow>) => (
-            // Hide issue if a subrow
-            <div>{Object.hasOwn(row.row.original, 'subRows') ? row.value : ''}</div>
+            // Hide issue if a subrow of category table view
+            <div>
+              {row.row.subRows.length === 0 &&
+              context?.currentTable &&
+              tableStyleAccessor[context?.currentTable] === 'category'
+                ? ''
+                : row.value}
+            </div>
           ),
         },
         {
@@ -240,22 +271,48 @@ export const ProblemsTable = ({
           Header: displayStrings.fileName,
           Filter: tableFilters.TextFilter(),
           minWidth: 150,
-          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
+          // **FIX cellRenderer not working with subrows
+          // cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
+          //   const extension = cellProps.value?.substring(cellProps.value.lastIndexOf('.') + 1);
+          //   return (
+          //     // Hide issue if a subrow of file table view
+          //     (cellProps.row.subRows.length === 0) && (context?.currentTable && tableStyleAccessor[context?.currentTable] === "fileId")
+          //     ? <div></div>
+          //     :
+          //     <DefaultCell
+          //       cellElementProps={cellElementProps}
+          //       cellProps={cellProps}
+          //       startIcon={
+          //         extension && extension in filetypeIcons ? (
+          //           filetypeIcons[extension]
+          //         ) : !cellProps.row.subRows ? (
+          //           <SvgFiletypeDocument />
+          //         ) : undefined
+          //       }
+          //     >
+          //       {cellProps.value}
+          //     </DefaultCell>
+          //   );
+          // },
+          Cell: (cellProps: CellProps<TableRow>) => {
+            // Hide issue if a subrow of file table view
             const extension = cellProps.value?.substring(cellProps.value.lastIndexOf('.') + 1);
-            return (
-              <DefaultCell
-                cellElementProps={cellElementProps}
-                cellProps={cellProps}
-                startIcon={
-                  extension && extension in filetypeIcons ? (
+
+            return cellProps.row.subRows.length === 0 &&
+              context?.currentTable &&
+              tableStyleAccessor[context?.currentTable] === 'fileId' ? (
+              <div></div>
+            ) : (
+              <>
+                <div className='iui-table-cell-start-icon'>
+                  {extension && extension in filetypeIcons ? (
                     filetypeIcons[extension]
-                  ) : !cellProps.row.original.subRows ? (
+                  ) : !cellProps.row.subRows ? (
                     <SvgFiletypeDocument />
-                  ) : undefined
-                }
-              >
+                  ) : undefined}
+                </div>
                 {cellProps.value}
-              </DefaultCell>
+              </>
             );
           },
         },
@@ -270,6 +327,28 @@ export const ProblemsTable = ({
         },
       ] as Column<TableRow>[],
     [context, displayStrings, filetypeIcons, getFileNameFromId, sortByLevel]
+  );
+
+  const reorderColumn = React.useCallback(
+    (column: Column<TableRow>[]) => {
+      const currentTable = context?.currentTable;
+      let toplevel = currentTable ? (tableStyleAccessor[currentTable] as keyof Report) : undefined;
+
+      if (!toplevel) {
+        return column;
+      }
+
+      if (toplevel === 'fileId') {
+        toplevel = 'fileName';
+      }
+
+      const topPosition = column.findIndex((col) => col.id === toplevel);
+      const topCol = column.splice(topPosition, 1);
+      column.unshift(topCol[0]);
+
+      return column;
+    },
+    [context?.currentTable]
   );
 
   const rowProps = React.useCallback(
@@ -323,7 +402,7 @@ export const ProblemsTable = ({
       selectRowOnClick
       enableVirtualization
       className={classnames('isr-problems-table', className)}
-      columns={columns}
+      columns={reorderColumn(columns)}
       data={data}
       emptyTableContent='No data.'
       emptyFilteredTableContent='No results found. Clear or try another filter.'

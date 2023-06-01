@@ -4,7 +4,6 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import { FilesTable } from './FilesTable';
 import { ProblemsTable } from './ProblemsTable';
 import { ReportContext, Tables } from './Report';
 import './ReportTableView.scss';
@@ -30,11 +29,6 @@ export const ReportTableView = ({
    * Current table. Will be inferred from context if not specified.
    */
   currentTable?: Tables;
-  /**
-   * Two `children` can be specified to override the tables.
-   * @default
-   * [<FilesTable />, <ProblemsTable />]
-   */
   children?: React.ReactNode[];
   className?: string;
   id?: string;
@@ -47,19 +41,11 @@ export const ReportTableView = ({
     currentTable = context.currentTable;
   }
 
-  const filesTable = children?.[0] ?? <FilesTable />;
   const problemsTable = children?.[1] ?? <ProblemsTable />;
 
   return (
     <div className={classnames('isr-report-table-view', className)} {...rest}>
-      {(() => {
-        switch (currentTable) {
-          case 'files':
-            return filesTable;
-          case 'problems':
-            return problemsTable;
-        }
-      })()}
+      {problemsTable}
     </div>
   );
 };
