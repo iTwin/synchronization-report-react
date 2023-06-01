@@ -5,7 +5,8 @@
 
 .isr-report-header-banner {
   display: flex;
-  gap: var(--iui-size-l);
+  flex-direction: column;
+  gap: var(--iui-size-xs);
   overflow-x: auto;
   padding: var(--iui-size-s) var(--iui-size-xs);
 }

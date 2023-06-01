@@ -13,7 +13,7 @@ import SvgFlag from '@itwin/itwinui-icons-react/esm/icons/Flag';
 const defaultDisplayStrings = {
   errors: 'Errors',
   warnings: 'Warnings',
-  otherIssues: 'Other issues',
+  otherIssues: 'Info',
   totalIssues: 'Total Issues',
   unorganized: 'Unorganized',
 };
@@ -84,7 +84,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
           record.auditinfo.type &&
           Object.hasOwn(context.workflowMapping, record.auditinfo.category) &&
           Object.hasOwn(context.workflowMapping[record.auditinfo.category], record.auditinfo.type) &&
-          context?.focusedIssues.some((issue) => bannerLevel === issue)
+          context?.focusedIssue === bannerLevel
         ) {
           const workflows = context.workflowMapping[record.auditinfo.category][record.auditinfo.type];
           workflows.forEach((w) => {
@@ -119,24 +119,22 @@ export const ReportBanner = (props: ReportBannerProps) => {
     setWarningCount(warning);
     setInfoCount(info);
     setIssuesCount(error + warning + info);
-  }, [context?.focusedIssues, context?.focusedWorkflows, context?.workflowMapping, fileRecords]);
+  }, [context?.focusedIssue, context?.focusedWorkflows, context?.workflowMapping, fileRecords]);
 
-  const onClickIssue = React.useCallback(
-    (issue: Issues) =>
-      context?.setFocusedIssues((focusedIssues) =>
-        focusedIssues.some((currentIssue) => issue === currentIssue)
-          ? focusedIssues.filter((i) => i !== issue)
-          : [...focusedIssues, issue]
-      ),
-    [context]
-  );
+  const onClickIssue = React.useCallback((issue: Issues) => context?.setFocusedIssue(issue), [context]);
 
   return (
     <Surface elevation={1} className='isr-banner-container'>
       <>
+        <BannerTile icon={<SvgFlag />} onClick={() => onClickIssue('All')} selected={context?.focusedIssue === 'All'}>
+          <Text variant='title' style={{ fontWeight: 'bold' }}>
+            {issuesCount}
+          </Text>
+          <Text variant='small'>{displayStrings.totalIssues}</Text>
+        </BannerTile>
         <BannerTile
           onClick={() => onClickIssue('Error')}
-          selected={context?.focusedIssues.some((p) => p === 'Error')}
+          selected={context?.focusedIssue === 'Error'}
           icon={<StatusIcon status='error' />}
         >
           <Text variant='title' style={{ fontWeight: 'bold' }}>
@@ -146,7 +144,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
         </BannerTile>
         <BannerTile
           onClick={() => onClickIssue('Warning')}
-          selected={context?.focusedIssues.some((p) => p === 'Warning')}
+          selected={context?.focusedIssue === 'Warning'}
           icon={<StatusIcon status='warning' />}
         >
           <Text variant='title' style={{ fontWeight: 'bold' }}>
@@ -156,19 +154,13 @@ export const ReportBanner = (props: ReportBannerProps) => {
         </BannerTile>
         <BannerTile
           onClick={() => onClickIssue('Info')}
-          selected={context?.focusedIssues.some((p) => p === 'Info')}
+          selected={context?.focusedIssue === 'Info'}
           icon={<StatusIcon status='informational' />}
         >
           <Text variant='title' style={{ fontWeight: 'bold' }}>
             {infoCount}
           </Text>
           <Text variant='small'>{displayStrings.otherIssues}</Text>
-        </BannerTile>
-        <BannerTile icon={<SvgFlag />}>
-          <Text variant='title' style={{ fontWeight: 'bold' }}>
-            {issuesCount}
-          </Text>
-          <Text variant='small'>{displayStrings.totalIssues}</Text>
         </BannerTile>
       </>
     </Surface>

@@ -8,7 +8,7 @@ import { ReportContext, Tables } from './Report';
 
 const defaultDisplayStrings = {
   files: 'Files',
-  problems: 'Problems',
+  problems: 'Issues',
 };
 
 /**

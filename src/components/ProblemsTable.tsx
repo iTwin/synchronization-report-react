@@ -30,8 +30,8 @@ const defaultDisplayStrings = {
   Warning: 'Warning',
   Info: 'Info',
   fileName: 'File name',
-  level: 'Status',
-  category: 'Issue',
+  level: 'Severity',
+  category: 'Category',
   type: 'Type',
   message: 'Message',
 };
@@ -159,7 +159,7 @@ export const ProblemsTable = ({
         let bannerLevel: Issues = 'Info';
         if (level === 'Error' || level === 'Fatal') bannerLevel = 'Error';
         else if (level === 'Warning' || level === 'Critical') bannerLevel = 'Warning';
-        return context?.focusedIssues.some((issue) => bannerLevel === issue);
+        return context?.focusedIssue === bannerLevel || context?.focusedIssue === 'All';
       });
 
     const currentTable = context?.currentTable;
@@ -171,7 +171,7 @@ export const ProblemsTable = ({
     context?.reportData.filerecords,
     context?.currentTable,
     context?.focusedWorkflows,
-    context?.focusedIssues,
+    context?.focusedIssue,
     expandReports,
     workflowMapping,
   ]);
@@ -217,7 +217,7 @@ export const ProblemsTable = ({
           Header: displayStrings.type,
           Filter: tableFilters.TextFilter(),
           minWidth: 50,
-          maxWidth: 250,
+          maxWidth: 170,
           Cell: (row: CellProps<Report>) => {
             return (
               <Anchor
@@ -238,8 +238,8 @@ export const ProblemsTable = ({
           accessor: 'level',
           Header: displayStrings.level,
           Filter: tableFilters.TextFilter(),
-          minWidth: 75,
-          maxWidth: 250,
+          minWidth: 50,
+          maxWidth: 170,
           sortType: sortByLevel,
           cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<Report>) => {
             const level = cellProps.row.original.level;
@@ -260,7 +260,7 @@ export const ProblemsTable = ({
                   ) : undefined
                 }
               >
-                {level && level in displayStrings ? displayStrings.level : level}
+                {level}
               </DefaultCell>
             );
           },
@@ -386,12 +386,16 @@ export const ProblemsTable = ({
   const onRowClick = React.useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (event: React.MouseEvent<Element, MouseEvent>, row: Row<Record<string, any>>): void => {
-      context?.setCurrentAuditInfo({
-        ...row.original,
-        fileName: row.original.fileName ?? getFileNameFromId(row.original.fileId),
-      });
+      if (row.subRows.length) {
+        row.toggleRowExpanded();
+      } else {
+        context?.setCurrentAuditInfo({
+          ...row.original,
+          fileName: row.original.fileName ?? getFileNameFromId(row.original.fileId),
+        });
 
-      context?.setActiveRow(row.id);
+        context?.setActiveRow(row.id);
+      }
     },
     [context, getFileNameFromId]
   );
@@ -404,7 +408,7 @@ export const ProblemsTable = ({
       className={classnames('isr-problems-table', className)}
       columns={reorderColumn(columns)}
       data={data}
-      emptyTableContent='No data.'
+      emptyTableContent={`No ${context?.focusedIssue} Data`}
       emptyFilteredTableContent='No results found. Clear or try another filter.'
       isSortable
       initialState={{ sortBy: [{ id: 'level' }] }}
