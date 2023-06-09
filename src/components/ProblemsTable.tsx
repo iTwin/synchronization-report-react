@@ -402,7 +402,7 @@ export const ProblemsTable = ({
 
         return {
           status: statusConverted,
-          className: `table-row__${isActiveRow ? 'active' : ''}`,
+          className: `isr-table-row table-row__${isActiveRow ? 'active' : 'inactive'}`,
         };
       } else if (context?.currentTable === 'files') {
         return !fileExists && !bimFileExists ? { status: 'negative' } : {};
