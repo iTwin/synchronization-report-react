@@ -106,28 +106,26 @@ export const ProblemsTable = ({
   const expandReports = React.useCallback(
     (reports: Report[]) => {
       const currentTable = context?.currentTable;
-      const level = currentTable ? (tableStyleAccessor[currentTable] as keyof Report) : undefined;
+      const expandableColumn = currentTable ? (tableStyleAccessor[currentTable] as keyof Report) : undefined;
+      const isFileTable = expandableColumn === 'fileId';
 
-      if (!level || context?.currentTable === 'problems') {
+      if (!expandableColumn || context?.currentTable === 'problems') {
         return reports;
       }
 
       const expandableReports: Record<string, Report[]> = {};
 
       reports.forEach((report) => {
-        const topLevel = report[level];
-
+        const topLevel = report[expandableColumn];
         if (!topLevel) {
           if (!Object.hasOwn(expandableReports, 'Others')) {
             expandableReports.Others = [];
           }
-
           expandableReports.Others.push(report);
         } else {
           if (!Object.hasOwn(expandableReports, topLevel)) {
             expandableReports[topLevel] = [];
           }
-
           expandableReports[topLevel].push(report);
         }
       });
@@ -135,18 +133,16 @@ export const ProblemsTable = ({
       const processedReports = [];
       for (const topLevel of Object.keys(expandableReports)) {
         let processedReport: ExpandableFileReport = {
-          [level as keyof Report]: topLevel,
+          [expandableColumn as keyof Report]: topLevel,
           subRows: expandableReports[topLevel],
         };
-
-        if (level === 'fileId') {
+        if (isFileTable) {
           processedReport = { ...processedReport, ...fileDataHash[topLevel] };
         }
-
         processedReports.push(processedReport);
       }
 
-      if (level === 'fileId') {
+      if (isFileTable) {
         const reportsFileNames = processedReports.map((report) => report.fileName as string);
         fileData.forEach((file) => {
           if (file.fileName && !reportsFileNames.includes(file.fileName)) {

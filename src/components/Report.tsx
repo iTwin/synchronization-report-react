@@ -77,7 +77,6 @@ export const ReportContext = React.createContext<
  *   <ReportTableSelect />
  *   <ReportInfoPanelWrapper>
  *     <ReportTableView>
- *       <FilesTable />
  *       <ProblemsTable />
  *     </ReportTableView>
  *     <ReportInfoPanel />
