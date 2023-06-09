@@ -80,10 +80,7 @@ export const App = () => {
         <ReportTableSelect />
       </ReportTableSelectWrapper>
       <ReportInfoPanelWrapper>
-        <ReportTableView>
-          <FilesTable />
           <ProblemsTable />
-        </ReportTableView>
         <ReportInfoPanel />
       </ReportInfoPanelWrapper>
     </Report>

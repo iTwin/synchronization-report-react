@@ -76,9 +76,7 @@ export const ReportContext = React.createContext<
  *   </div>
  *   <ReportTableSelect />
  *   <ReportInfoPanelWrapper>
- *     <ReportTableView>
  *       <ProblemsTable />
- *     </ReportTableView>
  *     <ReportInfoPanel />
  *   </ReportInfoPanelWrapper>
  * </Report>
@@ -132,7 +130,7 @@ export const Report = ({
             <>
               <ReportTitleWrapper>
                 <ReportTitle />
-                <ReportDebugIds />
+                <ReportDebugIds />-
               </ReportTitleWrapper>
               <ReportTimestamp />
               <ReportHeaderBannerWrapper>
