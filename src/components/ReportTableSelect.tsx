@@ -13,7 +13,7 @@ const defaultDisplayStrings = {
 };
 
 /**
- * `ReportTableSelect` shows the selection for different tables (only the table selection, not the panel content).
+ * `ReportTableSelect` shows the selection for different tables.
  * It should be used as a descendant of `Report`.
  *
  * Two `children` can be specified to show custom tab components.
