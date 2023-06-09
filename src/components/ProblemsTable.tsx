@@ -4,11 +4,11 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import { Anchor, DefaultCell, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
+import { Anchor, Badge, DefaultCell, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
 import { Issues, ReportContext } from './Report';
 import { ClampWithTooltip, StatusIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
-import type { FileRecord, SourceFilesInfo } from './report-data-typings';
+import type { FileRecord, SourceFile, SourceFilesInfo } from './report-data-typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import './ProblemsTable.scss';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
@@ -23,6 +23,10 @@ type Report = {
   fileId: string | undefined;
 };
 
+interface ExpandableFileReport extends SourceFile {
+  subRows?: Report[];
+}
+
 const defaultDisplayStrings = {
   Fatal: 'Fatal Error',
   Error: 'Error',
@@ -34,11 +38,13 @@ const defaultDisplayStrings = {
   category: 'Category',
   type: 'Type',
   message: 'Message',
+  mainFile: 'master',
 };
 
 const tableStyleAccessor = {
-  problems: 'category',
+  problems: 'problems',
   files: 'fileId',
+  categories: 'category',
 };
 
 const defaultFileTypeIcons = {
@@ -83,9 +89,26 @@ export const ProblemsTable = ({
     [sourceFilesInfo, context?.reportData.sourceFilesInfo]
   );
 
+  const fileData = React.useMemo(() => {
+    const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
+    return [
+      { ...filesInfo, mainFile: true },
+      ...(filesInfo && filesInfo.Files ? filesInfo.Files.filter((file: SourceFile) => file.state !== 'Hidden') : []),
+    ];
+  }, [sourceFilesInfo, context?.reportData.sourceFilesInfo]);
+
+  const fileDataHash = React.useMemo(() => {
+    return fileData.reduce((previousValue, currentValue) => {
+      return { ...previousValue, [currentValue.fileId as string]: currentValue };
+    }, {}) as { [fileId: string]: SourceFile };
+  }, [fileData]);
+
   const expandReports = React.useCallback(
-    (reports: Report[], level?: keyof Report) => {
-      if (!level) {
+    (reports: Report[]) => {
+      const currentTable = context?.currentTable;
+      const level = currentTable ? (tableStyleAccessor[currentTable] as keyof Report) : undefined;
+
+      if (!level || context?.currentTable === 'problems') {
         return reports;
       }
 
@@ -111,30 +134,58 @@ export const ProblemsTable = ({
 
       const processedReports = [];
       for (const topLevel of Object.keys(expandableReports)) {
-        let convertedLevel = undefined;
-        let convertedTopLevel = undefined;
+        let processedReport: ExpandableFileReport = {
+          [level as keyof Report]: topLevel,
+          subRows: expandableReports[topLevel],
+        };
 
         if (level === 'fileId') {
-          convertedLevel = 'fileName';
-          convertedTopLevel = getFileNameFromId(topLevel);
+          processedReport = { ...processedReport, ...fileDataHash[topLevel] };
         }
 
-        processedReports.push({
-          [convertedLevel || level]: convertedTopLevel || topLevel,
-          subRows: expandableReports[topLevel],
+        processedReports.push(processedReport);
+      }
+
+      if (level === 'fileId') {
+        const reportsFileNames = processedReports.map((report) => report.fileName as string);
+        fileData.forEach((file) => {
+          if (file.fileName && !reportsFileNames.includes(file.fileName)) {
+            processedReports.push(file);
+          }
         });
       }
 
       return processedReports;
     },
-    [getFileNameFromId]
+    [context?.currentTable, fileData, fileDataHash]
   );
+
+  const processedWithIssues = React.useMemo(() => {
+    const fileStatusEntries = fileData
+      .filter((sourceFile) => !!sourceFile.fileId)
+      .map(({ fileId }) => {
+        const hasIssue = fileRecords
+          ?.filter(({ file }) => file?.identifier === fileId)
+          .flatMap(({ auditrecords }) => auditrecords ?? [])
+          .some(({ auditinfo }) => ['Critical', 'Fatal', 'Warning', 'Error'].includes(auditinfo?.level ?? ''));
+        return [fileId, hasIssue] as const;
+      });
+
+    return Object.fromEntries(fileStatusEntries) as Record<string, boolean>;
+  }, [fileData, fileRecords]);
 
   const data = React.useMemo(() => {
     const files = fileRecords || context?.reportData.filerecords || [];
     const reports = files
       .flatMap(({ file, auditrecords }) =>
         (auditrecords ?? []).flatMap(({ auditinfo }) => {
+          const fileId = file?.identifier;
+          const filesInfo = fileId ? (fileDataHash[fileId] as SourceFile) : {};
+          const fileCollection = {
+            fileId,
+            ...filesInfo,
+            ...auditinfo,
+          };
           if (
             workflowMapping &&
             auditinfo?.category &&
@@ -142,14 +193,14 @@ export const ProblemsTable = ({
             Object.hasOwn(workflowMapping, auditinfo.category) &&
             Object.hasOwn(workflowMapping[auditinfo.category], auditinfo.type)
           ) {
-            if (!workflowMapping[auditinfo.category][auditinfo.type].some((w) => context.focusedWorkflows.includes(w)))
+            if (
+              !workflowMapping[auditinfo.category][auditinfo.type].some((w) => context.focusedWorkflows.includes(w))
+            ) {
               return [];
-            return {
-              fileId: file?.identifier,
-              ...auditinfo,
-            };
+            }
+            return fileCollection;
           } else if (context?.focusedWorkflows.includes('Unorganized')) {
-            return { fileId: file?.identifier, ...auditinfo };
+            return fileCollection;
           }
           return [];
         })
@@ -162,16 +213,13 @@ export const ProblemsTable = ({
         return context?.focusedIssue === bannerLevel || context?.focusedIssue === 'All';
       });
 
-    const currentTable = context?.currentTable;
-    const level = currentTable ? (tableStyleAccessor[currentTable] as keyof Report) : undefined;
-
-    return expandReports(reports, level);
+    return expandReports(reports);
   }, [
     fileRecords,
     context?.reportData.filerecords,
-    context?.currentTable,
     context?.focusedWorkflows,
     context?.focusedIssue,
+    fileDataHash,
     expandReports,
     workflowMapping,
   ]);
@@ -201,7 +249,6 @@ export const ProblemsTable = ({
           minWidth: 75,
           maxWidth: 250,
           Cell: (row: CellProps<TableRow>) => (
-            // Hide issue if a subrow of category table view
             <div>
               {row.row.subRows.length === 0 &&
               context?.currentTable &&
@@ -271,47 +318,28 @@ export const ProblemsTable = ({
           Header: displayStrings.fileName,
           Filter: tableFilters.TextFilter(),
           minWidth: 150,
-          // **FIX cellRenderer not working with subrows
-          // cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
-          //   const extension = cellProps.value?.substring(cellProps.value.lastIndexOf('.') + 1);
-          //   return (
-          //     // Hide issue if a subrow of file table view
-          //     (cellProps.row.subRows.length === 0) && (context?.currentTable && tableStyleAccessor[context?.currentTable] === "fileId")
-          //     ? <div></div>
-          //     :
-          //     <DefaultCell
-          //       cellElementProps={cellElementProps}
-          //       cellProps={cellProps}
-          //       startIcon={
-          //         extension && extension in filetypeIcons ? (
-          //           filetypeIcons[extension]
-          //         ) : !cellProps.row.subRows ? (
-          //           <SvgFiletypeDocument />
-          //         ) : undefined
-          //       }
-          //     >
-          //       {cellProps.value}
-          //     </DefaultCell>
-          //   );
-          // },
-          Cell: (cellProps: CellProps<TableRow>) => {
-            // Hide issue if a subrow of file table view
+          Cell: (cellProps: CellProps<TableRow & SourceFile>) => {
             const extension = cellProps.value?.substring(cellProps.value.lastIndexOf('.') + 1);
 
-            return cellProps.row.subRows.length === 0 &&
+            return cellProps.row.depth != 0 &&
               context?.currentTable &&
               tableStyleAccessor[context?.currentTable] === 'fileId' ? (
               <div></div>
             ) : (
               <>
-                <div className='iui-table-cell-start-icon'>
+                <div className='isr-table-cell-start-icon'>
                   {extension && extension in filetypeIcons ? (
                     filetypeIcons[extension]
                   ) : !cellProps.row.subRows ? (
                     <SvgFiletypeDocument />
                   ) : undefined}
                 </div>
-                {cellProps.value}
+                <div className='isr-file-name'>
+                  {cellProps.value}
+                  {context?.currentTable === 'files' && cellProps.row.original.mainFile && (
+                    <Badge backgroundColor='primary'>{displayStrings['mainFile']}</Badge>
+                  )}
+                </div>
               </>
             );
           },
@@ -334,7 +362,7 @@ export const ProblemsTable = ({
       const currentTable = context?.currentTable;
       let toplevel = currentTable ? (tableStyleAccessor[currentTable] as keyof Report) : undefined;
 
-      if (!toplevel) {
+      if (!toplevel || currentTable === 'problems') {
         return column;
       }
 
@@ -354,33 +382,39 @@ export const ProblemsTable = ({
   const rowProps = React.useCallback(
     ({
       id,
-      original: { level },
+      original: { level, fileExists, bimFileExists },
     }): {
       status?: 'positive' | 'warning' | 'negative' | undefined;
-      className: string;
+      className?: string;
     } => {
-      const isActiveRow = id === context?.activeRow;
-      let statusConverted: 'positive' | 'warning' | 'negative' | undefined = undefined;
+      if (context?.currentTable === 'problems') {
+        const isActiveRow = id === context?.activeRow;
+        let statusConverted: 'positive' | 'warning' | 'negative' | undefined = undefined;
 
-      switch (level) {
-        case 'Critical':
-        case 'Error':
-        case 'Fatal':
-          statusConverted = 'negative';
-          break;
-        case 'Warning':
-          statusConverted = 'warning';
-          break;
-        default:
-          break;
+        switch (level) {
+          case 'Critical':
+          case 'Error':
+          case 'Fatal':
+            statusConverted = 'negative';
+            break;
+          case 'Warning':
+            statusConverted = 'warning';
+            break;
+          default:
+            break;
+        }
+
+        return {
+          status: statusConverted,
+          className: `table-row__${isActiveRow ? 'active' : ''}`,
+        };
+      } else if (context?.currentTable === 'files') {
+        return !fileExists && !bimFileExists ? { status: 'negative' } : {};
       }
 
-      return {
-        status: statusConverted,
-        className: `table-row__${isActiveRow ? 'active' : ''}`,
-      };
+      return { status: undefined };
     },
-    [context?.activeRow]
+    [context?.activeRow, context?.currentTable]
   );
 
   const onRowClick = React.useCallback(
@@ -392,12 +426,13 @@ export const ProblemsTable = ({
         context?.setCurrentAuditInfo({
           ...row.original,
           fileName: row.original.fileName ?? getFileNameFromId(row.original.fileId),
+          fileStatus: processedWithIssues[row.original.fileId],
         });
 
         context?.setActiveRow(row.id);
       }
     },
-    [context, getFileNameFromId]
+    [context, getFileNameFromId, processedWithIssues]
   );
 
   return (

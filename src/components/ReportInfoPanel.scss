@@ -6,10 +6,21 @@
 .isr-info-panel-body {
   display: flex;
   flex-direction: column;
-  gap: var(--iui-size-s);
+  gap: var(--iui-size-m);
   overflow-wrap: break-word;
 }
 
 :where(.iui-root, [data-iui-theme]) .iui-information-panel {
   position: fixed;
+}
+
+.isr-icon-inline {
+  display: flex;
+  align-items: center;
+
+  .isr-status-icon {
+    margin-right: var(--iui-size-xs);
+    width: var(--iui-size-m);
+    height: var(--iui-size-m);
+  }
 }

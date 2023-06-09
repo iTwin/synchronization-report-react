@@ -9,6 +9,7 @@ import { ReportContext, Tables } from './Report';
 const defaultDisplayStrings = {
   files: 'Files',
   problems: 'Issues',
+  categories: 'Category',
 };
 
 /**
@@ -43,8 +44,9 @@ export const ReportTableSelect = ({
       displayStyle='inline'
       options={
         options ?? [
-          { value: 'problems', label: displayStrings['problems'] },
+          { value: 'categories', label: displayStrings['categories'] },
           { value: 'files', label: displayStrings['files'] },
+          { value: 'problems', label: displayStrings['problems'] },
         ]
       }
       onChange={setCurrentTable}

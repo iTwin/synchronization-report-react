@@ -24,7 +24,7 @@ import { defaultWorkflowMapping } from './report-workflow-mapping';
 
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info' | 'All';
-export type Tables = 'files' | 'problems';
+export type Tables = 'files' | 'problems' | 'categories';
 
 type AuditInfo = Partial<{
   level: Levels;
@@ -32,7 +32,12 @@ type AuditInfo = Partial<{
   message: string;
   type: string;
   fileName: string;
-  filePath: string;
+  path: string;
+  fileId: string;
+  dataSource: string;
+  fileStatus: boolean;
+  fileExists: boolean;
+  bimFileExists: boolean;
 }>;
 
 export const ReportContext = React.createContext<
@@ -93,7 +98,7 @@ export const Report = ({
   className?: string;
   children?: React.ReactNode;
 }) => {
-  const [selectedTable, setSelectedTable] = React.useState<Tables>('problems');
+  const [selectedTable, setSelectedTable] = React.useState<Tables>('categories');
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
   const [focusedIssue, setFocusedIssue] = React.useState<Issues>('All');
   const [focusedWorkflows, setFocusedWorkflows] = React.useState<string[]>([]);
