@@ -5,22 +5,20 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { ProblemsTable } from './ProblemsTable';
-import { FilesTable } from './FilesTable';
 import { ReportData, WorkflowMapping } from './report-data-typings';
 import { ReportTitle } from './ReportTitle';
 import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';
 import { ReportTableSelect } from './ReportTableSelect';
-import { ReportTableView } from './ReportTableView';
 import { ReportTableSelectWrapper } from './ReportTableSelectWrapper';
 import { Label, ThemeProvider } from '@itwin/itwinui-react';
-import './Report.scss';
 import { ReportInfoPanel } from './ReportInfoPanel';
 import { ReportInfoPanelWrapper } from './ReportInfoPanelWrapper';
 import { ReportHeaderBannerWrapper } from './ReportHeaderBannerWrapper';
 import ReportDebugIds from './ReportDebugIds';
 import { ReportTitleWrapper } from './ReportTitleWrapper';
 import { defaultWorkflowMapping } from './report-workflow-mapping';
+import './Report.scss';
 
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info' | 'All';
@@ -146,10 +144,7 @@ export const Report = ({
                 <ReportTableSelect />
               </ReportTableSelectWrapper>
               <ReportInfoPanelWrapper>
-                <ReportTableView>
-                  <FilesTable />
-                  <ProblemsTable />
-                </ReportTableView>
+                <ProblemsTable />
                 <ReportInfoPanel />
               </ReportInfoPanelWrapper>
             </>

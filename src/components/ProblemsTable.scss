@@ -5,6 +5,8 @@
 
 .isr-problems-table {
   height: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
 .isr-problems-message {
