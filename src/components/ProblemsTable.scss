@@ -30,3 +30,9 @@
 .isr-table-row {
   cursor: pointer;
 }
+
+.isr-file-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
