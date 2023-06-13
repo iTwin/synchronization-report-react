@@ -130,7 +130,7 @@ export const Report = ({
             <>
               <ReportTitleWrapper>
                 <ReportTitle />
-                <ReportDebugIds />-
+                <ReportDebugIds />
               </ReportTitleWrapper>
               <ReportTimestamp />
               <ReportHeaderBannerWrapper>
