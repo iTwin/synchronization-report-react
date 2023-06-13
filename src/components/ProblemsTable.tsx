@@ -5,7 +5,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { Anchor, Badge, DefaultCell, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
-import { Issues, ReportContext } from './Report';
+import { Issues, ReportContext, Tables } from './Report';
 import { ClampWithTooltip, StatusIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
 import type { FileRecord, SourceFile, SourceFilesInfo } from './report-data-typings';
@@ -24,9 +24,22 @@ type Report = {
 };
 
 type Status = 'positive' | 'warning' | 'negative' | undefined;
+
 interface ExpandableFileReport extends SourceFile {
   subRows?: Report[];
 }
+
+const TableTypeNames: Record<'Files' | 'Categories' | 'Problems', Tables> = {
+  Files: 'files',
+  Categories: 'categories',
+  Problems: 'problems',
+};
+
+const tableStyleAccessor: Record<Tables, keyof Report | 'problems'> = {
+  problems: 'problems',
+  files: 'fileId',
+  categories: 'category',
+};
 
 const defaultDisplayStrings = {
   Fatal: 'Fatal Error',
@@ -40,12 +53,6 @@ const defaultDisplayStrings = {
   type: 'Type',
   message: 'Message',
   mainFile: 'master',
-};
-
-const tableStyleAccessor = {
-  problems: 'problems',
-  files: 'fileId',
-  categories: 'category',
 };
 
 const defaultFileTypeIcons = {
@@ -110,7 +117,7 @@ export const ProblemsTable = ({
       const expandableColumn = currentTable ? (tableStyleAccessor[currentTable] as keyof Report) : undefined;
       const isFileTable = expandableColumn === 'fileId';
 
-      if (!expandableColumn || context?.currentTable === 'problems') {
+      if (!expandableColumn || context?.currentTable === TableTypeNames.Problems) {
         return reports;
       }
 
@@ -249,7 +256,7 @@ export const ProblemsTable = ({
             <div>
               {row.row.subRows.length === 0 &&
               context?.currentTable &&
-              tableStyleAccessor[context?.currentTable] === 'category'
+              tableStyleAccessor[context?.currentTable] === tableStyleAccessor.categories
                 ? ''
                 : row.value}
             </div>
@@ -320,7 +327,7 @@ export const ProblemsTable = ({
 
             return cellProps.row.depth != 0 &&
               context?.currentTable &&
-              tableStyleAccessor[context?.currentTable] === 'fileId' ? (
+              tableStyleAccessor[context?.currentTable] === tableStyleAccessor.files ? (
               <div></div>
             ) : (
               <>
@@ -333,7 +340,7 @@ export const ProblemsTable = ({
                 </div>
                 <div className='isr-file-name'>
                   {cellProps.value}
-                  {context?.currentTable === 'files' && cellProps.row.original.mainFile && (
+                  {context?.currentTable === TableTypeNames.Files && cellProps.row.original.mainFile && (
                     <Badge backgroundColor='primary'>{displayStrings['mainFile']}</Badge>
                   )}
                 </div>
@@ -353,17 +360,16 @@ export const ProblemsTable = ({
       ] as Column<TableRow>[],
     [context, displayStrings, filetypeIcons, getFileNameFromId, sortByLevel]
   );
-
   const reorderColumn = React.useCallback(
     (column: Column<TableRow>[]) => {
       const currentTable = context?.currentTable;
       let toplevel = currentTable ? (tableStyleAccessor[currentTable] as keyof Report) : undefined;
 
-      if (!toplevel || currentTable === 'problems') {
+      if (!toplevel || currentTable === TableTypeNames.Problems) {
         return column;
       }
 
-      if (toplevel === 'fileId') {
+      if (toplevel === tableStyleAccessor.files) {
         toplevel = 'fileName';
       }
 
@@ -384,7 +390,7 @@ export const ProblemsTable = ({
       status?: Status;
       className?: string;
     } => {
-      if (context?.currentTable === 'problems') {
+      if (context?.currentTable === TableTypeNames.Problems) {
         const isActiveRow = id === context?.activeRow;
         let statusConverted = undefined;
 
@@ -405,7 +411,7 @@ export const ProblemsTable = ({
           status: statusConverted as Status,
           className: `isr-table-row table-row__${isActiveRow ? 'active' : 'inactive'}`,
         };
-      } else if (context?.currentTable === 'files') {
+      } else if (context?.currentTable === TableTypeNames.Files) {
         return !fileExists && !bimFileExists ? { status: 'negative' } : {};
       }
 
