@@ -23,6 +23,7 @@ type Report = {
   fileId: string | undefined;
 };
 
+type Status = 'positive' | 'warning' | 'negative' | undefined;
 interface ExpandableFileReport extends SourceFile {
   subRows?: Report[];
 }
@@ -380,12 +381,12 @@ export const ProblemsTable = ({
       id,
       original: { level, fileExists, bimFileExists },
     }): {
-      status?: 'positive' | 'warning' | 'negative' | undefined;
+      status?: Status;
       className?: string;
     } => {
       if (context?.currentTable === 'problems') {
         const isActiveRow = id === context?.activeRow;
-        let statusConverted: 'positive' | 'warning' | 'negative' | undefined = undefined;
+        let statusConverted = undefined;
 
         switch (level) {
           case 'Critical':
@@ -401,7 +402,7 @@ export const ProblemsTable = ({
         }
 
         return {
-          status: statusConverted,
+          status: statusConverted as Status,
           className: `isr-table-row table-row__${isActiveRow ? 'active' : 'inactive'}`,
         };
       } else if (context?.currentTable === 'files') {
