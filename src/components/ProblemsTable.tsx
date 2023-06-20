@@ -55,6 +55,13 @@ const defaultDisplayStrings = {
   mainFile: 'master',
 };
 
+const emptyTableDisplayStrings: Record<Issues, string> = {
+  Error: 'Errors',
+  Warning: 'Warnings',
+  Info: 'Info',
+  All: 'Issues',
+};
+
 const defaultFileTypeIcons = {
   dgn: <SvgFiletypeMicrostation />,
   dgnlib: <SvgFiletypeMicrostation />,
@@ -446,7 +453,7 @@ export const ProblemsTable = ({
       className={classnames('isr-problems-table', className)}
       columns={reorderColumn(columns)}
       data={data}
-      emptyTableContent={`No ${context?.focusedIssue} Data`}
+      emptyTableContent={`No ${context ? emptyTableDisplayStrings[context?.focusedIssue] : 'Data'}`}
       emptyFilteredTableContent='No results found. Clear or try another filter.'
       isSortable
       initialState={{ sortBy: [{ id: 'level' }] }}
