@@ -58,7 +58,7 @@ export const ReportTimestamp = ({
     };
     setDate(timestamp?.toLocaleDateString(undefined, options) ?? '');
 
-    options = { hour: 'numeric', minute: '2-digit' };
+    options = { hour: '2-digit', minute: '2-digit', hour12: false };
     setTime(timestamp?.toLocaleTimeString([], options) ?? '');
   }, [timestamp]);
 
