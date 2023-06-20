@@ -9,10 +9,11 @@ import { ReportContext, Tables } from './Report';
 const defaultDisplayStrings = {
   files: 'Files',
   problems: 'Issues',
+  categories: 'Category',
 };
 
 /**
- * `ReportTableSelect` shows the selection for different tables (only the table selection, not the panel content).
+ * `ReportTableSelect` shows the selection for different tables.
  * It should be used as a descendant of `Report`.
  *
  * Two `children` can be specified to show custom tab components.
@@ -43,8 +44,9 @@ export const ReportTableSelect = ({
       displayStyle='inline'
       options={
         options ?? [
-          { value: 'problems', label: displayStrings['problems'] },
+          { value: 'categories', label: displayStrings['categories'] },
           { value: 'files', label: displayStrings['files'] },
+          { value: 'problems', label: displayStrings['problems'] },
         ]
       }
       onChange={setCurrentTable}

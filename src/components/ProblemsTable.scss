@@ -5,6 +5,8 @@
 
 .isr-problems-table {
   height: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
 .isr-problems-message {
@@ -14,4 +16,23 @@
 
 .isr-info-panel-wrapper .isr-report-table-view .isr-problems-table .table-row__active > * {
   background-color: var(--iui-color-background-accent-muted);
+}
+
+.isr-table-cell-start-icon {
+  margin-right: var(--iui-size-xs);
+  fill: var(--_iui-table-cell-icon-fill);
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.isr-table-row {
+  cursor: pointer;
+}
+
+.isr-file-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }

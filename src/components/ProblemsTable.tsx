@@ -4,11 +4,11 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import { Anchor, DefaultCell, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
-import { Issues, ReportContext } from './Report';
+import { Anchor, Badge, DefaultCell, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
+import { Issues, ReportContext, Tables } from './Report';
 import { ClampWithTooltip, StatusIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
-import type { FileRecord, SourceFilesInfo } from './report-data-typings';
+import type { FileRecord, SourceFile, SourceFilesInfo } from './report-data-typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import './ProblemsTable.scss';
 import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
@@ -23,6 +23,24 @@ type Report = {
   fileId: string | undefined;
 };
 
+type Status = 'positive' | 'warning' | 'negative' | undefined;
+
+interface ExpandableFileReport extends SourceFile {
+  subRows?: Report[];
+}
+
+const TableTypeNames: Record<'Files' | 'Categories' | 'Problems', Tables> = {
+  Files: 'files',
+  Categories: 'categories',
+  Problems: 'problems',
+};
+
+const tableStyleAccessor: Record<Tables, keyof Report | 'problems'> = {
+  problems: 'problems',
+  files: 'fileId',
+  categories: 'category',
+};
+
 const defaultDisplayStrings = {
   Fatal: 'Fatal Error',
   Error: 'Error',
@@ -34,6 +52,7 @@ const defaultDisplayStrings = {
   category: 'Category',
   type: 'Type',
   message: 'Message',
+  mainFile: 'master',
 };
 
 const defaultFileTypeIcons = {
@@ -68,43 +87,109 @@ export const ProblemsTable = ({
     [userFileTypeIcons]
   );
 
-  const expandReports = (reports: Report[]): { category: string; subRows: Report[] }[] => {
-    const expandableReports: Record<string, Report[]> = {};
+  const getFileNameFromId = React.useCallback(
+    (id?: string) => {
+      const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
+      return filesInfo?.fileId === id
+        ? filesInfo?.fileName
+        : filesInfo?.Files?.find((file) => file.fileId === id)?.fileName;
+    },
+    [sourceFilesInfo, context?.reportData.sourceFilesInfo]
+  );
 
-    reports.forEach((report) => {
-      const category = report?.category;
+  const fileData = React.useMemo(() => {
+    const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
+    return [
+      { ...filesInfo, mainFile: true },
+      ...(filesInfo && filesInfo.Files ? filesInfo.Files.filter((file: SourceFile) => file.state !== 'Hidden') : []),
+    ];
+  }, [sourceFilesInfo, context?.reportData.sourceFilesInfo]);
 
-      if (!category) {
-        if (!Object.hasOwn(expandableReports, 'Others')) {
-          expandableReports.Others = [];
-        }
+  const fileDataHash = React.useMemo(() => {
+    return fileData.reduce((previousValue, currentValue) => {
+      return { ...previousValue, [currentValue.fileId as string]: currentValue };
+    }, {}) as { [fileId: string]: SourceFile };
+  }, [fileData]);
 
-        expandableReports.Others.push(report);
-      } else {
-        if (!Object.hasOwn(expandableReports, category)) {
-          expandableReports[category] = [];
-        }
+  const expandReports = React.useCallback(
+    (reports: Report[]) => {
+      const currentTable = context?.currentTable;
+      const expandableColumn = currentTable ? (tableStyleAccessor[currentTable] as keyof Report) : undefined;
+      const isFileTable = expandableColumn === 'fileId';
 
-        expandableReports[category].push(report);
+      if (!expandableColumn || context?.currentTable === TableTypeNames.Problems) {
+        return reports;
       }
-    });
 
-    const processedReports = [];
-    for (const category of Object.keys(expandableReports)) {
-      processedReports.push({
-        category: `${category} (${expandableReports[category].length})`,
-        subRows: expandableReports[category],
+      const expandableReports: Record<string, Report[]> = {};
+
+      reports.forEach((report) => {
+        const topLevel = report[expandableColumn];
+        if (!topLevel) {
+          if (!Object.hasOwn(expandableReports, 'Others')) {
+            expandableReports.Others = [];
+          }
+          expandableReports.Others.push(report);
+        } else {
+          if (!Object.hasOwn(expandableReports, topLevel)) {
+            expandableReports[topLevel] = [];
+          }
+          expandableReports[topLevel].push(report);
+        }
       });
-    }
 
-    return processedReports;
-  };
+      const processedReports = [];
+      for (const topLevel of Object.keys(expandableReports)) {
+        let processedReport: ExpandableFileReport = {
+          [expandableColumn as keyof Report]: topLevel,
+          subRows: expandableReports[topLevel],
+        };
+        if (isFileTable) {
+          processedReport = { ...processedReport, ...fileDataHash[topLevel] };
+        }
+        processedReports.push(processedReport);
+      }
+
+      if (isFileTable) {
+        const reportsFileNames = processedReports.map((report) => report.fileName as string);
+        fileData.forEach((file) => {
+          if (file.fileName && !reportsFileNames.includes(file.fileName)) {
+            processedReports.push(file);
+          }
+        });
+      }
+
+      return processedReports;
+    },
+    [context?.currentTable, fileData, fileDataHash]
+  );
+
+  const processedWithIssues = React.useMemo(() => {
+    const fileStatusEntries = fileData
+      .filter((sourceFile) => !!sourceFile.fileId)
+      .map(({ fileId }) => {
+        const hasIssue = fileRecords
+          ?.filter(({ file }) => file?.identifier === fileId)
+          .flatMap(({ auditrecords }) => auditrecords ?? [])
+          .some(({ auditinfo }) => ['Critical', 'Fatal', 'Warning', 'Error'].includes(auditinfo?.level ?? ''));
+        return [fileId, hasIssue] as const;
+      });
+
+    return Object.fromEntries(fileStatusEntries) as Record<string, boolean>;
+  }, [fileData, fileRecords]);
 
   const data = React.useMemo(() => {
     const files = fileRecords || context?.reportData.filerecords || [];
     const reports = files
       .flatMap(({ file, auditrecords }) =>
         (auditrecords ?? []).flatMap(({ auditinfo }) => {
+          const fileId = file?.identifier;
+          const filesInfo = fileId ? (fileDataHash[fileId] as SourceFile) : {};
+          const fileCollection = {
+            fileId,
+            ...filesInfo,
+            ...auditinfo,
+          };
           if (
             workflowMapping &&
             auditinfo?.category &&
@@ -112,14 +197,14 @@ export const ProblemsTable = ({
             Object.hasOwn(workflowMapping, auditinfo.category) &&
             Object.hasOwn(workflowMapping[auditinfo.category], auditinfo.type)
           ) {
-            if (!workflowMapping[auditinfo.category][auditinfo.type].some((w) => context.focusedWorkflows.includes(w)))
+            if (
+              !workflowMapping[auditinfo.category][auditinfo.type].some((w) => context.focusedWorkflows.includes(w))
+            ) {
               return [];
-            return {
-              fileId: file?.identifier,
-              ...auditinfo,
-            };
+            }
+            return fileCollection;
           } else if (context?.focusedWorkflows.includes('Unorganized')) {
-            return { fileId: file?.identifier, ...auditinfo };
+            return fileCollection;
           }
           return [];
         })
@@ -133,7 +218,15 @@ export const ProblemsTable = ({
       });
 
     return expandReports(reports);
-  }, [fileRecords, context?.reportData.filerecords, context?.focusedWorkflows, context?.focusedIssue, workflowMapping]);
+  }, [
+    fileRecords,
+    context?.reportData.filerecords,
+    context?.focusedWorkflows,
+    context?.focusedIssue,
+    fileDataHash,
+    expandReports,
+    workflowMapping,
+  ]);
 
   const displayStrings = React.useMemo(
     () => ({ ...defaultDisplayStrings, ...userDisplayStrings }),
@@ -141,16 +234,6 @@ export const ProblemsTable = ({
   );
 
   type TableRow = Partial<typeof data[number]> | Record<string, Report>;
-
-  const getFileNameFromId = React.useCallback(
-    (id?: string) => {
-      const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
-      return filesInfo?.fileId === id
-        ? filesInfo?.fileName
-        : filesInfo?.Files?.find((file) => file.fileId === id)?.fileName;
-    },
-    [sourceFilesInfo, context?.reportData.sourceFilesInfo]
-  );
 
   const sortByLevel = React.useCallback((rowA, rowB) => {
     const levelsOrder = ['Fatal', 'Error', 'Critical', 'Warning', 'Info'];
@@ -170,8 +253,13 @@ export const ProblemsTable = ({
           minWidth: 75,
           maxWidth: 250,
           Cell: (row: CellProps<TableRow>) => (
-            // Hide issue if a subrow
-            <div>{Object.hasOwn(row.row.original, 'subRows') ? row.value : ''}</div>
+            <div>
+              {row.row.subRows.length === 0 &&
+              context?.currentTable &&
+              tableStyleAccessor[context?.currentTable] === tableStyleAccessor.categories
+                ? ''
+                : row.value}
+            </div>
           ),
         },
         {
@@ -234,22 +322,29 @@ export const ProblemsTable = ({
           Header: displayStrings.fileName,
           Filter: tableFilters.TextFilter(),
           minWidth: 150,
-          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<TableRow>) => {
+          Cell: (cellProps: CellProps<TableRow & SourceFile>) => {
             const extension = cellProps.value?.substring(cellProps.value.lastIndexOf('.') + 1);
-            return (
-              <DefaultCell
-                cellElementProps={cellElementProps}
-                cellProps={cellProps}
-                startIcon={
-                  extension && extension in filetypeIcons ? (
+
+            return cellProps.row.depth != 0 &&
+              context?.currentTable &&
+              tableStyleAccessor[context?.currentTable] === tableStyleAccessor.files ? (
+              <div></div>
+            ) : (
+              <>
+                <div className='isr-table-cell-start-icon'>
+                  {extension && extension in filetypeIcons ? (
                     filetypeIcons[extension]
-                  ) : !cellProps.row.original.subRows ? (
+                  ) : !cellProps.row.subRows ? (
                     <SvgFiletypeDocument />
-                  ) : undefined
-                }
-              >
-                {cellProps.value}
-              </DefaultCell>
+                  ) : undefined}
+                </div>
+                <div className='isr-file-name'>
+                  {cellProps.value}
+                  {context?.currentTable === TableTypeNames.Files && cellProps.row.original.mainFile && (
+                    <Badge backgroundColor='primary'>{displayStrings['mainFile']}</Badge>
+                  )}
+                </div>
+              </>
             );
           },
         },
@@ -265,37 +360,64 @@ export const ProblemsTable = ({
       ] as Column<TableRow>[],
     [context, displayStrings, filetypeIcons, getFileNameFromId, sortByLevel]
   );
+  const reorderColumn = React.useCallback(
+    (column: Column<TableRow>[]) => {
+      const currentTable = context?.currentTable;
+      let toplevel = currentTable ? (tableStyleAccessor[currentTable] as keyof Report) : undefined;
+
+      if (!toplevel || currentTable === TableTypeNames.Problems) {
+        return column;
+      }
+
+      if (toplevel === tableStyleAccessor.files) {
+        toplevel = 'fileName';
+      }
+
+      const topPosition = column.findIndex((col) => col.id === toplevel);
+      const topCol = column.splice(topPosition, 1);
+      column.unshift(topCol[0]);
+
+      return column;
+    },
+    [context?.currentTable]
+  );
 
   const rowProps = React.useCallback(
     ({
       id,
-      original: { level },
+      original: { level, fileExists, bimFileExists },
     }): {
-      status?: 'positive' | 'warning' | 'negative' | undefined;
-      className: string;
+      status?: Status;
+      className?: string;
     } => {
-      const isActiveRow = id === context?.activeRow;
-      let statusConverted: 'positive' | 'warning' | 'negative' | undefined = undefined;
+      if (context?.currentTable === TableTypeNames.Problems) {
+        const isActiveRow = id === context?.activeRow;
+        let statusConverted = undefined;
 
-      switch (level) {
-        case 'Critical':
-        case 'Error':
-        case 'Fatal':
-          statusConverted = 'negative';
-          break;
-        case 'Warning':
-          statusConverted = 'warning';
-          break;
-        default:
-          break;
+        switch (level) {
+          case 'Critical':
+          case 'Error':
+          case 'Fatal':
+            statusConverted = 'negative';
+            break;
+          case 'Warning':
+            statusConverted = 'warning';
+            break;
+          default:
+            break;
+        }
+
+        return {
+          status: statusConverted as Status,
+          className: `isr-table-row table-row__${isActiveRow ? 'active' : 'inactive'}`,
+        };
+      } else if (context?.currentTable === TableTypeNames.Files) {
+        return !fileExists && !bimFileExists ? { status: 'negative' } : {};
       }
 
-      return {
-        status: statusConverted,
-        className: `table-row__${isActiveRow ? 'active' : ''}`,
-      };
+      return { status: undefined };
     },
-    [context?.activeRow]
+    [context?.activeRow, context?.currentTable]
   );
 
   const onRowClick = React.useCallback(
@@ -307,12 +429,13 @@ export const ProblemsTable = ({
         context?.setCurrentAuditInfo({
           ...row.original,
           fileName: row.original.fileName ?? getFileNameFromId(row.original.fileId),
+          fileStatus: processedWithIssues[row.original.fileId],
         });
 
         context?.setActiveRow(row.id);
       }
     },
-    [context, getFileNameFromId]
+    [context, getFileNameFromId, processedWithIssues]
   );
 
   return (
@@ -321,7 +444,7 @@ export const ProblemsTable = ({
       selectRowOnClick
       enableVirtualization
       className={classnames('isr-problems-table', className)}
-      columns={columns}
+      columns={reorderColumn(columns)}
       data={data}
       emptyTableContent={`No ${context?.focusedIssue} Data`}
       emptyFilteredTableContent='No results found. Clear or try another filter.'

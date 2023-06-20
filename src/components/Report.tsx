@@ -5,26 +5,24 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { ProblemsTable } from './ProblemsTable';
-import { FilesTable } from './FilesTable';
 import { ReportData, WorkflowMapping } from './report-data-typings';
 import { ReportTitle } from './ReportTitle';
 import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';
 import { ReportTableSelect } from './ReportTableSelect';
-import { ReportTableView } from './ReportTableView';
 import { ReportTableSelectWrapper } from './ReportTableSelectWrapper';
 import { Label, ThemeProvider } from '@itwin/itwinui-react';
-import './Report.scss';
 import { ReportInfoPanel } from './ReportInfoPanel';
 import { ReportInfoPanelWrapper } from './ReportInfoPanelWrapper';
 import { ReportHeaderBannerWrapper } from './ReportHeaderBannerWrapper';
 import ReportDebugIds from './ReportDebugIds';
 import { ReportTitleWrapper } from './ReportTitleWrapper';
 import { defaultWorkflowMapping } from './report-workflow-mapping';
+import './Report.scss';
 
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info' | 'All';
-export type Tables = 'files' | 'problems';
+export type Tables = 'files' | 'problems' | 'categories';
 
 type AuditInfo = Partial<{
   level: Levels;
@@ -32,7 +30,12 @@ type AuditInfo = Partial<{
   message: string;
   type: string;
   fileName: string;
-  filePath: string;
+  path: string;
+  fileId: string;
+  dataSource: string;
+  fileStatus: boolean;
+  fileExists: boolean;
+  bimFileExists: boolean;
 }>;
 
 export const ReportContext = React.createContext<
@@ -73,10 +76,7 @@ export const ReportContext = React.createContext<
  *   </div>
  *   <ReportTableSelect />
  *   <ReportInfoPanelWrapper>
- *     <ReportTableView>
- *       <FilesTable />
  *       <ProblemsTable />
- *     </ReportTableView>
  *     <ReportInfoPanel />
  *   </ReportInfoPanelWrapper>
  * </Report>
@@ -93,7 +93,7 @@ export const Report = ({
   className?: string;
   children?: React.ReactNode;
 }) => {
-  const [selectedTable, setSelectedTable] = React.useState<Tables>('problems');
+  const [selectedTable, setSelectedTable] = React.useState<Tables>('categories');
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
   const [focusedIssue, setFocusedIssue] = React.useState<Issues>('All');
   const [focusedWorkflows, setFocusedWorkflows] = React.useState<string[]>([]);
@@ -141,10 +141,7 @@ export const Report = ({
                 <ReportTableSelect />
               </ReportTableSelectWrapper>
               <ReportInfoPanelWrapper>
-                <ReportTableView>
-                  <FilesTable />
-                  <ProblemsTable />
-                </ReportTableView>
+                <ProblemsTable />
                 <ReportInfoPanel />
               </ReportInfoPanelWrapper>
             </>
