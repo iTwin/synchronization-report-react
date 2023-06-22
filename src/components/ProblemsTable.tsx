@@ -162,7 +162,7 @@ export const ProblemsTable = ({
       const processedReports = [];
       for (const topLevel of Object.keys(expandableReports)) {
         let processedReport: ExpandableFileReport = {
-          [expandableColumn as keyof Report]: topLevel,
+          [expandableColumn as keyof Report]: `${topLevel} (${expandableReports[topLevel].length})`,
           subRows: expandableReports[topLevel],
         };
         if (isFileTable) {
