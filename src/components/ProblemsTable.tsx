@@ -11,8 +11,16 @@ import type { TableProps } from '@itwin/itwinui-react';
 import type { FileRecord, SourceFile, SourceFilesInfo } from './report-data-typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import './ProblemsTable.scss';
-import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
-import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
+import {
+  SvgFiletypeRevit,
+  SvgFiletypeMicrostation,
+  SvgFiletypeDocument,
+  SvgFiletypeSketchup,
+  SvgFiletypeXls,
+  SvgFiletypeDwg,
+  SvgFiletypeAutocad,
+} from '@itwin/itwinui-icons-color-react';
+import { ReactComponent as SvgFiletypeIfc } from '../assets/IFC.svg';
 
 type Report = {
   level?: 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical' | undefined;
@@ -65,6 +73,12 @@ const emptyTableDisplayStrings: Record<Issues, string> = {
 const defaultFileTypeIcons = {
   dgn: <SvgFiletypeMicrostation />,
   dgnlib: <SvgFiletypeMicrostation />,
+  rvt: <SvgFiletypeRevit />,
+  skp: <SvgFiletypeSketchup />,
+  xls: <SvgFiletypeXls />,
+  dwg: <SvgFiletypeDwg />,
+  dxf: <SvgFiletypeAutocad />,
+  ifc: <SvgFiletypeIfc />,
 };
 
 /**
