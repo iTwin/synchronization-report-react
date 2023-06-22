@@ -17,6 +17,6 @@
     "declaration": true,
     "jsx": "react-jsx"
   },
-  "include": ["src/components"],
+  "include": ["src/components", "src/assets", "custom.d.ts"],
   "exclude": ["src/components/utils/"]
 }
