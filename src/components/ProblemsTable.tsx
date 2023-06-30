@@ -11,8 +11,16 @@ import type { TableProps } from '@itwin/itwinui-react';
 import type { FileRecord, SourceFile, SourceFilesInfo } from './report-data-typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import './ProblemsTable.scss';
-import SvgFiletypeDocument from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeDocument';
-import SvgFiletypeMicrostation from '@itwin/itwinui-icons-color-react/esm/icons/FiletypeMicrostation';
+import {
+  SvgFiletypeRevit,
+  SvgFiletypeMicrostation,
+  SvgFiletypeDocument,
+  SvgFiletypeSketchup,
+  SvgFiletypeXls,
+  SvgFiletypeDwg,
+  SvgFiletypeAutocad,
+} from '@itwin/itwinui-icons-color-react';
+import { ReactComponent as SvgFiletypeIfc } from '../assets/IFC.svg';
 
 type Report = {
   level?: 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical' | undefined;
@@ -55,9 +63,22 @@ const defaultDisplayStrings = {
   mainFile: 'master',
 };
 
+const emptyTableDisplayStrings: Record<Issues, string> = {
+  Error: 'Errors',
+  Warning: 'Warnings',
+  Info: 'Info',
+  All: 'Issues',
+};
+
 const defaultFileTypeIcons = {
   dgn: <SvgFiletypeMicrostation />,
   dgnlib: <SvgFiletypeMicrostation />,
+  rvt: <SvgFiletypeRevit />,
+  skp: <SvgFiletypeSketchup />,
+  xls: <SvgFiletypeXls />,
+  dwg: <SvgFiletypeDwg />,
+  dxf: <SvgFiletypeAutocad />,
+  ifc: <SvgFiletypeIfc />,
 };
 
 /**
@@ -141,7 +162,7 @@ export const ProblemsTable = ({
       const processedReports = [];
       for (const topLevel of Object.keys(expandableReports)) {
         let processedReport: ExpandableFileReport = {
-          [expandableColumn as keyof Report]: topLevel,
+          [expandableColumn as keyof Report]: `${topLevel} (${expandableReports[topLevel].length})`,
           subRows: expandableReports[topLevel],
         };
         if (isFileTable) {
@@ -446,7 +467,7 @@ export const ProblemsTable = ({
       className={classnames('isr-problems-table', className)}
       columns={reorderColumn(columns)}
       data={data}
-      emptyTableContent={`No ${context?.focusedIssue} Data`}
+      emptyTableContent={`No ${context ? emptyTableDisplayStrings[context?.focusedIssue] : 'Data'}`}
       emptyFilteredTableContent='No results found. Clear or try another filter.'
       isSortable
       initialState={{ sortBy: [{ id: 'level' }] }}

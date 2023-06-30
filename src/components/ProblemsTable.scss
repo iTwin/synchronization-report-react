@@ -25,6 +25,11 @@
   justify-content: center;
   align-items: center;
   display: flex;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
 }
 
 .isr-table-row {

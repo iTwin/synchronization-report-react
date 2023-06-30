@@ -4,10 +4,18 @@
  *--------------------------------------------------------------------------------------------*/
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import svgr from 'vite-plugin-svgr';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    svgr({
+      svgrOptions: {
+        // svgr options
+      },
+    }),
+  ],
   css: { preprocessorOptions: { css: { charset: false }, scss: { charset: false } } },
   build: {
     target: 'es2018',
@@ -27,7 +35,7 @@ export default defineConfig({
         'react-table',
         'classnames',
         'tippy.js',
-        '@tippyjs/react'
+        '@tippyjs/react',
       ],
       output: {
         globals: { react: 'React' },

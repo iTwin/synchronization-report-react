@@ -39,8 +39,9 @@ export const ReportTimestamp = ({
         'timestamp and numberOfFiles must be specified or ReportTimestamp and list of files must be used inside Report'
       );
     }
+
     timestamp = new Date(context.reportData.context?.timestamp ?? '');
-    filesCount = context.reportData.sourceFilesInfo?.Files?.length;
+    filesCount = [context.reportData.sourceFilesInfo, ...(context.reportData.sourceFilesInfo?.Files || [])].length;
   }
 
   const displayStrings = React.useMemo(
@@ -58,7 +59,7 @@ export const ReportTimestamp = ({
     };
     setDate(timestamp?.toLocaleDateString(undefined, options) ?? '');
 
-    options = { hour: 'numeric', minute: '2-digit' };
+    options = { hour: '2-digit', minute: '2-digit', hour12: false };
     setTime(timestamp?.toLocaleTimeString([], options) ?? '');
   }, [timestamp]);
 
@@ -72,12 +73,14 @@ export const ReportTimestamp = ({
     return [];
   }, [context?.reportData.sourceFilesInfo, filesProcessed]);
 
+  const processedFilesCount = allFilesProcessed.filter((file) => file.fileExists && file.bimFileExists).length;
+
   return (
     <div className='isr-timestamp-container'>
       <span>
         <Text>
           {' '}
-          <SvgClock /> {date} {time} {displayStrings.syncTime} | <SvgDocument /> {filesCount}/{allFilesProcessed.length}{' '}
+          <SvgClock /> {date} {time} {displayStrings.syncTime} | <SvgDocument /> {processedFilesCount}/{filesCount}{' '}
           {displayStrings.files}
         </Text>
       </span>
