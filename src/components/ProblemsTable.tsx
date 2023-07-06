@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import { Anchor, Badge, DefaultCell, Table, tableFilters, TablePaginator } from '@itwin/itwinui-react';
+import { Anchor, Badge, DefaultCell, Table, tableFilters } from '@itwin/itwinui-react';
 import { Issues, ReportContext, Tables } from './Report';
 import { ClampWithTooltip, StatusIcon } from './utils';
 import type { TableProps } from '@itwin/itwinui-react';
@@ -472,7 +472,6 @@ export const ProblemsTable = ({
       isSortable
       initialState={{ sortBy: [{ id: 'level' }] }}
       rowProps={rowProps}
-      paginatorRenderer={(props) => <TablePaginator pageSizeList={[10, 25, 50]} {...props} />}
       {...rest}
     />
   );
