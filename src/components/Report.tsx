@@ -93,7 +93,7 @@ export const Report = ({
   className?: string;
   children?: React.ReactNode;
 }) => {
-  const [selectedTable, setSelectedTable] = React.useState<Tables>('categories');
+  const [selectedTable, setSelectedTable] = React.useState<Tables>('problems');
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
   const [focusedIssue, setFocusedIssue] = React.useState<Issues>('All');
   const [focusedWorkflows, setFocusedWorkflows] = React.useState<string[]>([]);

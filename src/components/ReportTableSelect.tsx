@@ -40,7 +40,7 @@ export const ReportTableSelect = ({
 
   return (
     <LabeledSelect
-      label='Show by'
+      label='Show by:'
       displayStyle='inline'
       options={
         options ?? [
