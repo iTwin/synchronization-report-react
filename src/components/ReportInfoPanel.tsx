@@ -129,7 +129,9 @@ export const ReportInfoPanel = ({
         {currentAuditInfo?.path && (
           <span>
             <Label as='span'>{displayStrings['filePath']}</Label>
-            <Anchor>{currentAuditInfo?.path}</Anchor>
+            <Anchor href={currentAuditInfo?.path} target='_blank'>
+              {currentAuditInfo?.path}
+            </Anchor>
           </span>
         )}
         {currentAuditInfo?.fileId && (
