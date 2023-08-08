@@ -16,6 +16,7 @@
     "@itwin/itwinui-icons-react": "^2.0.0",
     "@itwin/itwinui-react": "^2.5.0",
     "classnames": "^2.3.1",
+    "copy-text-to-clipboard": "^3.2.0",
     "vite-plugin-svgr": "^3.2.0"
   },
   "devDependencies": {
