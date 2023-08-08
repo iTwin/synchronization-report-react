@@ -5,9 +5,11 @@
 import * as React from 'react';
 import './ReportDebugIds.scss';
 import { ReportContext } from './Report';
-import { Button, Label, Surface, Text } from '@itwin/itwinui-react';
+import { Button, LabeledTextarea, Modal } from '@itwin/itwinui-react';
 import { ReportDataContext } from './report-data-typings';
 import Tippy from '@tippyjs/react';
+import { SvgInfoCircularHollow } from '@itwin/itwinui-icons-react';
+import { CopyToClipboardButton } from './copyToClipboardButton';
 
 const defaultDisplayStrings = {
   activityid: 'Activity Id',
@@ -21,7 +23,7 @@ const defaultDisplayStrings = {
   modelName: 'Model Name',
   organizationName: 'Org. Name',
   userEmail: 'User Email',
-  idsForTechSupport: 'IDs for Tech Support',
+  reportAnIssue: 'Report an issue',
 };
 
 export type debugIdData = {
@@ -48,6 +50,7 @@ export type ReportDebugIdsProps = {
  * `children` can be specified to add more content in the menu.
  */
 export const ReportDebugIds = (props: ReportDebugIdsProps) => {
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const { data } = props;
 
   const context = React.useContext(ReportContext);
@@ -72,86 +75,44 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
     'User Email': data?.userEmail === '' ? 'No User Email' : data?.userEmail,
   };
 
+  const dataToInclude = `
+    ${displayStrings.jobRunID}: ${debugIds['Job Run Id']}
+    ${displayStrings.activityid}: ${debugIds['Activity Id']}
+    ${displayStrings.jobid}: ${debugIds['Job Id']}
+  `;
+
   return (
     <div className={props.className}>
       <Tippy
         content={
-          <Surface elevation={1} className='isr-support-debugIDWrapper'>
-            {debugIds['Activity Id'] && (
-              <div className='isr-support-debugID'>
-                <Label as='span'>{`${displayStrings.activityid}:`}</Label>
-                <Text>{debugIds['Activity Id']}</Text>
-              </div>
-            )}
-            {debugIds['Briefcase Id'] && (
-              <div className='isr-support-debugID'>
-                <Label as='span'>{`${displayStrings.briefcaseid}:`}</Label>
-                <Text>{debugIds['Briefcase Id']}</Text>
-              </div>
-            )}
-            {debugIds['Context Id'] && (
-              <div className='isr-support-debugID'>
-                <Label as='span'>{`${displayStrings.contextid}:`}</Label>
-                <Text>{debugIds['Context Id']}</Text>
-              </div>
-            )}
-            {debugIds['Ctx. Name'] && (
-              <div className='isr-support-debugID'>
-                <Label as='span'>{`${displayStrings.contextName}:`}</Label>
-                <Text>{debugIds['Ctx. Name']}</Text>
-              </div>
-            )}
-            {debugIds['Job Def. Id'] && (
-              <div className='isr-support-debugID'>
-                <Label as='span'>{`${displayStrings.jobDefID}:`}</Label>
-                <Text>{debugIds['Job Def. Id']}</Text>
-              </div>
-            )}
-            {debugIds['Job Id'] && (
-              <div className='isr-support-debugID'>
-                <Label as='span'>{`${displayStrings.jobid}:`}</Label>
-                <Text>{debugIds['Job Id']}</Text>
-              </div>
-            )}
-            {debugIds['Job Run Id'] && (
-              <div className='isr-support-debugID'>
-                <Label as='span'>`${displayStrings.jobRunID}:`</Label>
-                <Text>{debugIds['Job Run Id']}</Text>
-              </div>
-            )}
-            {debugIds['iModel Id'] && (
-              <div className='isr-support-debugID'>
-                <Label as='span'>{`${displayStrings.modelid}:`}</Label>
-                <Text>{debugIds['iModel Id']}</Text>
-              </div>
-            )}
-            {debugIds['iModel Name'] && (
-              <div className='isr-support-debugID'>
-                <Label as='span'>{`${displayStrings.modelName}:`}</Label>
-                <Text>{debugIds['iModel Name']}</Text>
-              </div>
-            )}
-            {debugIds['Org. Name'] && (
-              <div className='isr-support-debugID'>
-                <Label as='span'>{`${displayStrings.organizationName}:`}</Label>
-                <Text>{debugIds['Org. Name']}</Text>
-              </div>
-            )}
-            {debugIds['User Email'] && (
-              <div className='isr-support-debugID'>
-                <Label as='span'>{`${displayStrings.userEmail}:`}</Label>
-                <Text>{debugIds['User Email']}</Text>
-              </div>
-            )}
-            {props.children}
-          </Surface>
+          <Modal
+            className='report-issue-modal'
+            title={'Report an issue'}
+            isOpen={modalOpen}
+            onClose={() => setModalOpen(false)}
+          >
+            <LabeledTextarea
+              label={'Please include the following data in the report'}
+              value={dataToInclude}
+              onChange={() => null} // Ignore
+            />
+            <div className='modal-button__bottom-right'>
+              <CopyToClipboardButton value={dataToInclude} />
+            </div>
+          </Modal>
         }
         trigger='click'
         interactive={true}
         placement='auto-start'
       >
-        <Button className='isr-support-open' styleType='borderless' size='small'>
-          {displayStrings.idsForTechSupport}
+        <Button
+          className='isr-support-open'
+          styleType='borderless'
+          size='small'
+          onClick={() => setModalOpen(!modalOpen)}
+        >
+          <SvgInfoCircularHollow fill='rgb(0, 113, 184)' style={{ verticalAlign: 'text-bottom', marginRight: '4px' }} />
+          {displayStrings.reportAnIssue}
         </Button>
       </Tippy>
     </div>
