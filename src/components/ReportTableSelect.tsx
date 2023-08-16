@@ -10,6 +10,7 @@ const defaultDisplayStrings = {
   files: 'Files',
   problems: 'Issues',
   categories: 'Category',
+  issueId: 'ID',
 };
 
 /**
@@ -46,6 +47,7 @@ export const ReportTableSelect = ({
         options ?? [
           { value: 'categories', label: displayStrings['categories'] },
           { value: 'files', label: displayStrings['files'] },
+          { value: 'issueId', label: displayStrings['issueId'] },
           { value: 'problems', label: displayStrings['problems'] },
         ]
       }

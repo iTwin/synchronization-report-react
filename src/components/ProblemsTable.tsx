@@ -21,6 +21,7 @@ import {
   SvgFiletypeAutocad,
 } from '@itwin/itwinui-icons-color-react';
 import { ReactComponent as SvgFiletypeIfc } from '../assets/IFC.svg';
+import { getHelpArticleUrl, hasHelpArticle } from './help-articles';
 
 type Report = {
   level?: 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical' | undefined;
@@ -29,6 +30,7 @@ type Report = {
   type?: string | undefined;
   fileName?: string | undefined;
   fileId: string | undefined;
+  issueid?: string | undefined;
 };
 
 type Status = 'positive' | 'warning' | 'negative' | undefined;
@@ -37,16 +39,18 @@ interface ExpandableFileReport extends SourceFile {
   subRows?: Report[];
 }
 
-const TableTypeNames: Record<'Files' | 'Categories' | 'Problems', Tables> = {
+const TableTypeNames: Record<'Files' | 'Categories' | 'Problems' | 'IssueId', Tables> = {
   Files: 'files',
   Categories: 'categories',
   Problems: 'problems',
+  IssueId: 'issueId',
 };
 
 const tableStyleAccessor: Record<Tables, keyof Report | 'problems'> = {
   problems: 'problems',
   files: 'fileId',
   categories: 'category',
+  issueId: 'issueid',
 };
 
 const defaultDisplayStrings = {
@@ -61,6 +65,7 @@ const defaultDisplayStrings = {
   type: 'Type',
   message: 'Message',
   mainFile: 'master',
+  issueId: 'ID',
 };
 
 const emptyTableDisplayStrings: Record<Issues, string> = {
@@ -267,6 +272,38 @@ export const ProblemsTable = ({
     () =>
       [
         {
+          id: 'issueid',
+          accessor: 'issueid',
+          Header: displayStrings.issueId,
+          Filter: tableFilters.TextFilter(),
+          minWidth: 50,
+          maxWidth: 170,
+          Cell: (row: CellProps<Report>) => {
+            const [errorId, groupCount] = row.row.original.issueid
+              ? row.row.original.issueid.split(' ', 2)
+              : [undefined, undefined];
+            return (
+              <div>
+                {(row.row.subRows.length === 0 &&
+                  context?.currentTable &&
+                  tableStyleAccessor[context?.currentTable] === tableStyleAccessor.issueId) ||
+                !errorId ? (
+                  ''
+                ) : hasHelpArticle(errorId) ? (
+                  <>
+                    <Anchor href={getHelpArticleUrl(errorId)} target='_blank'>
+                      {errorId}
+                    </Anchor>
+                    {groupCount ? ` ${groupCount}` : ''}
+                  </>
+                ) : (
+                  row.value
+                )}
+              </div>
+            );
+          },
+        },
+        {
           id: 'category',
           accessor: 'category',
           Header: displayStrings.category,
@@ -291,18 +328,7 @@ export const ProblemsTable = ({
           minWidth: 50,
           maxWidth: 170,
           Cell: (row: CellProps<Report>) => {
-            return (
-              <Anchor
-                onClick={() => {
-                  context?.setCurrentAuditInfo({
-                    ...row.row.original,
-                    fileName: row.row.original?.fileName ?? getFileNameFromId(row.row.original?.fileId),
-                  });
-                }}
-              >
-                {row.value}
-              </Anchor>
-            );
+            return <div>{row.value}</div>;
           },
         },
         {
