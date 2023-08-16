@@ -77,6 +77,7 @@ export type AuditRecord = {
 };
 
 export type AuditInfo = {
+  issueid?: string;
   level?: 'Fatal' | 'Error' | 'Critical' | 'Warning' | 'Info';
   category?: string;
   message?: string;

@@ -70,6 +70,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dgn_9999',
             level: 'Fatal',
             category: 'MissingData',
             message: 'The file was not found - z:\\materials\\anisotropy\\anisotropy_crosshatched001.jpg',
@@ -79,6 +80,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dgn_1234',
             level: 'Error',
             category: 'MissingData',
             message: 'The file was not found - brick01_clean_g',
@@ -88,6 +90,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dgn_1234',
             level: 'Error',
             category: 'MissingData',
             message: 'The file was not found - concrete004_sketchy_g',
@@ -97,6 +100,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dgn_1234',
             level: 'Error',
             category: 'MissingData',
             message: 'The file was not found - tex03.jpg',
@@ -106,6 +110,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dgn_1234',
             level: 'Error',
             category: 'MissingData',
             message: 'The file was not found - wdfloor01_clean_g',
@@ -115,6 +120,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dgn_1234',
             level: 'Error',
             category: 'MissingData',
             message: 'The file was not found - border brescia_coral.jpg',
@@ -124,6 +130,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Revit_0025',
             level: 'Info',
             category: 'VisualFidelity',
             message:
@@ -134,6 +141,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Revit_0025',
             level: 'Info',
             category: 'VisualFidelity',
             message:
@@ -144,6 +152,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Revit_0025',
             level: 'Info',
             category: 'VisualFidelity',
             message:
@@ -154,6 +163,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Revit_0025',
             level: 'Info',
             category: 'VisualFidelity',
             message:
@@ -264,6 +274,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dgn_2468',
             level: 'Info',
             category: 'VisualFidelity',
             message:
@@ -274,6 +285,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dgn_2468',
             level: 'Info',
             category: 'VisualFidelity',
             message:
@@ -284,6 +296,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dgn_2468',
             level: 'Info',
             category: 'VisualFidelity',
             message:
@@ -884,6 +897,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dgn_0205',
             level: 'Error',
             category: 'MissingData',
             message: 'Reference model drawingseed.dgnlib is missing in Master model.',
@@ -893,6 +907,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dgn_0205',
             level: 'Error',
             category: 'MissingData',
             message: 'Reference model drawingseed.dgnlib is missing in Master model.',
@@ -902,6 +917,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dgn_0205',
             level: 'Error',
             category: 'MissingData',
             message: 'Reference model drawingseed.dgnlib is missing in Master model.',
@@ -991,6 +1007,7 @@ export const detailsTableData = [
   },
   {
     fileName: '053-AKB-02-00-MM.i.dgn',
+    issueid: 'Dgn_9999',
     level: 'Fatal',
     category: 'Missing data',
     type: 'Material',
