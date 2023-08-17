@@ -14,6 +14,7 @@ import React from 'react';
 import { ReportContext } from './Report';
 import './ReportInfoPanel.scss';
 import { StatusIcon } from './utils';
+import { getHelpArticleUrl, hasHelpArticle } from './help-articles';
 
 const defaultDisplayStrings = {
   status: 'Severity',
@@ -30,6 +31,7 @@ const defaultDisplayStrings = {
   failed: 'Failed',
   processedWithIssues: 'Processed with issues',
   processed: 'Processed',
+  learnMore: 'Learn more about this issue',
 };
 
 export const ReportInfoPanel = ({
@@ -58,7 +60,7 @@ export const ReportInfoPanel = ({
   return (
     <InformationPanel className={className} isOpen={!!currentAuditInfo} {...rest}>
       <InformationPanelHeader onClose={onClose}>
-        <Text variant='subheading'>{currentAuditInfo?.category ?? displayStrings['metadata']}</Text>
+        <Text variant='subheading'>{currentAuditInfo?.issueid ?? displayStrings['metadata']}</Text>
       </InformationPanelHeader>
       <InformationPanelBody className='isr-info-panel-body'>
         {currentAuditInfo?.category && (
@@ -97,6 +99,14 @@ export const ReportInfoPanel = ({
           <span>
             <Label as='span'>{displayStrings['message']}</Label>
             {currentAuditInfo?.message}
+            {hasHelpArticle(currentAuditInfo?.issueid) && (
+              <>
+                <br />{' '}
+                <Anchor href={getHelpArticleUrl(currentAuditInfo?.issueid || '')} target='_blank'>
+                  {displayStrings['learnMore']}
+                </Anchor>
+              </>
+            )}
           </span>
         )}
         {currentAuditInfo?.fileName && (

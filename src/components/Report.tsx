@@ -22,9 +22,10 @@ import './Report.scss';
 
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info' | 'All';
-export type Tables = 'files' | 'problems' | 'categories';
+export type Tables = 'files' | 'problems' | 'categories' | 'issueId';
 
 type AuditInfo = Partial<{
+  issueid: string;
   level: Levels;
   category: string;
   message: string;
