@@ -12,13 +12,13 @@ import { SvgInfoCircularHollow } from '@itwin/itwinui-icons-react';
 import { CopyToClipboardButton } from './copyToClipboardButton';
 
 const defaultDisplayStrings = {
-  activityid: 'Activity Id',
+  activityid: 'taskId',
   briefcaseid: 'Briefcase Id',
   contextid: 'Context Id',
   contextName: 'Ctx. Name',
   jobDefID: 'Job Def. Id',
-  jobid: 'Job Id',
-  jobRunID: 'Job Run Id',
+  jobid: 'jobId',
+  jobRunId: 'runId',
   modelid: 'Model Id',
   modelName: 'Model Name',
   organizationName: 'Org. Name',
@@ -30,7 +30,7 @@ export type debugIdData = {
   reportData?: ReportDataContext;
   contextName?: string;
   jobDefID?: string;
-  jobRunID?: string;
+  jobRunId?: string;
   modelName?: string;
   organizationName?: string;
   userEmail?: string;
@@ -62,13 +62,13 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
   );
 
   const debugIds = {
-    'Activity Id': reportData?.activityid === '' ? 'No Activity Id' : reportData?.activityid,
+    taskId: reportData?.activityid === '' ? 'No taskId' : reportData?.activityid,
     'Briefcase Id': reportData?.briefcaseid === '' ? 'No Briefcase Id' : reportData?.briefcaseid,
     'Context Id': reportData?.contextid === '' ? 'No Context Id' : reportData?.contextid,
     'Ctx. Name': data?.contextName === '' ? 'No Context Name' : data?.contextName,
     'Job Def. Id': data?.jobDefID === '' ? 'No Job Definition Id' : data?.jobDefID,
-    'Job Id': reportData?.jobid === '' ? 'No Job Id' : reportData?.jobid,
-    'Job Run Id': data?.jobRunID === '' ? 'No Job Run Id' : data?.jobRunID,
+    jobId: reportData?.jobid === '' ? 'No jobId' : reportData?.jobid,
+    runId: data?.jobRunId === '' ? 'No runId' : data?.jobRunId,
     'iModel Id': reportData?.imodelid === '' ? 'No iModel Id' : reportData?.imodelid,
     'iModel Name': data?.modelName === '' ? 'No Model Name' : data?.modelName,
     'Org. Name': data?.organizationName === '' ? 'No Organization Name' : data?.organizationName,
@@ -76,9 +76,9 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
   };
 
   const dataToInclude = `
-    ${displayStrings.jobRunID}: ${debugIds['Job Run Id']}
-    ${displayStrings.activityid}: ${debugIds['Activity Id']}
-    ${displayStrings.jobid}: ${debugIds['Job Id']}
+    ${displayStrings.jobRunId}: ${debugIds['runId']}
+    ${displayStrings.activityid}: ${debugIds['taskId']}
+    ${displayStrings.jobid}: ${debugIds['jobId']}
   `;
 
   return (
