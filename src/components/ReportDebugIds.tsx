@@ -77,8 +77,8 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
 
   const dataToInclude = `
     ${displayStrings.jobRunId}: ${debugIds['runId']}
-    ${displayStrings.activityid}: ${debugIds['taskId']}
     ${displayStrings.jobid}: ${debugIds['jobId']}
+    ${displayStrings.activityid}: ${debugIds['taskId']}
   `;
 
   return (
