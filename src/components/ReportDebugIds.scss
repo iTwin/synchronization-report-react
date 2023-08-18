@@ -18,3 +18,21 @@
   display: flex;
   gap: var(--iui-size-xs);
 }
+
+.report-issue-modal {
+  textarea {
+    height: 150px;
+    min-width: 450px;
+  }
+
+  .modal-button__bottom-right {
+    display: flex;
+    justify-content: end;
+    height: fit-content;
+
+    button {
+      position: absolute;
+      transform: translateY(-100%);
+    }
+  }
+}
