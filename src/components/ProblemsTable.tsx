@@ -177,7 +177,7 @@ export const ProblemsTable = ({
       }
 
       if (isFileTable) {
-        const reportsFileNames = processedReports.map((report) => report.fileName || (report.fileId as string));
+        const reportsFileNames = processedReports.map((report) => report.fileName as string);
         fileData.forEach((file) => {
           if (file.fileName && !reportsFileNames.includes(file.fileName)) {
             processedReports.push(file);
