@@ -785,7 +785,6 @@ __metadata:
     "@vitejs/plugin-react": ^1.0.0
     beautiful-react-hooks: ^1.0.2
     classnames: ^2.3.1
-    copy-text-to-clipboard: ^3.2.0
     cypress: ^9.1.0
     eslint: ^8.3.0
     eslint-config-prettier: ^8.3.0
@@ -2131,13 +2130,6 @@ __metadata:
   version: 0.1.1
   resolution: "copy-descriptor@npm:0.1.1"
   checksum: d4b7b57b14f1d256bb9aa0b479241048afd7f5bcf22035fc7b94e8af757adeae247ea23c1a774fe44869fd5694efba4a969b88d966766c5245fdee59837fe45b
-  languageName: node
-  linkType: hard
-
-"copy-text-to-clipboard@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "copy-text-to-clipboard@npm:3.2.0"
-  checksum: df7115c197a166d51f59e4e20ab2a68a855ae8746d25ff149b5465c694d9a405c7e6684b73a9f87ba8d653070164e229c15dfdb9fd77c30be1ff0da569661060
   languageName: node
   linkType: hard
 
