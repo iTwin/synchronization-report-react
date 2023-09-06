@@ -36,10 +36,12 @@ const defaultDisplayStrings = {
 
 export const ReportInfoPanel = ({
   displayStrings: userDisplayStrings,
+  onIssueArticleOpened,
   className,
   ...rest
 }: {
   displayStrings?: Partial<typeof defaultDisplayStrings>;
+  onIssueArticleOpened?: (issueId: string) => void;
   className?: string;
 }) => {
   const context = React.useContext(ReportContext);
@@ -102,7 +104,11 @@ export const ReportInfoPanel = ({
             {hasHelpArticle(currentAuditInfo?.issueid) && (
               <>
                 <br />{' '}
-                <Anchor href={getHelpArticleUrl(currentAuditInfo?.issueid || '')} target='_blank'>
+                <Anchor
+                  href={getHelpArticleUrl(currentAuditInfo?.issueid || '')}
+                  onClick={() => currentAuditInfo?.issueid && onIssueArticleOpened?.(currentAuditInfo.issueid)}
+                  target='_blank'
+                >
                   {displayStrings['learnMore']}
                 </Anchor>
               </>
