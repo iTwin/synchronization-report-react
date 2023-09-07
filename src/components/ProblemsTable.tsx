@@ -98,12 +98,14 @@ export const ProblemsTable = ({
   fileTypeIcons: userFileTypeIcons,
   sourceFilesInfo,
   className,
+  onIssueArticleOpened,
   ...rest
 }: {
   fileRecords?: FileRecord[];
   fileTypeIcons?: Record<string, JSX.Element>;
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   sourceFilesInfo?: SourceFilesInfo;
+  onIssueArticleOpened?: (issueId: string) => void;
 } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
   const workflowMapping = context?.workflowMapping;
@@ -291,7 +293,11 @@ export const ProblemsTable = ({
                   ''
                 ) : hasHelpArticle(errorId) ? (
                   <>
-                    <Anchor href={getHelpArticleUrl(errorId)} target='_blank'>
+                    <Anchor
+                      href={getHelpArticleUrl(errorId)}
+                      target='_blank'
+                      onClick={() => onIssueArticleOpened?.(errorId)}
+                    >
                       {errorId}
                     </Anchor>
                     {groupCount ? ` ${groupCount}` : ''}
