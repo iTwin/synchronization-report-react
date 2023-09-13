@@ -90,7 +90,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
-            issueid: 'Dgn_1234',
+            issueid: 'Dgn_0000',
             level: 'Error',
             category: 'MissingData',
             message: 'The file was not found - concrete004_sketchy_g',
@@ -100,7 +100,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
-            issueid: 'Dgn_1234',
+            issueid: 'Dgn_0066',
             level: 'Error',
             category: 'MissingData',
             message: 'The file was not found - tex03.jpg',
@@ -110,7 +110,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
-            issueid: 'Dgn_1234',
+            issueid: 'Dgn_0199',
             level: 'Error',
             category: 'MissingData',
             message: 'The file was not found - wdfloor01_clean_g',
@@ -120,7 +120,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
-            issueid: 'Dgn_1234',
+            issueid: 'Dgn_0203',
             level: 'Error',
             category: 'MissingData',
             message: 'The file was not found - border brescia_coral.jpg',
@@ -141,7 +141,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
-            issueid: 'Revit_0025',
+            issueid: 'Revit_0002',
             level: 'Info',
             category: 'VisualFidelity',
             message:
@@ -152,7 +152,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
-            issueid: 'Revit_0025',
+            issueid: 'Dwg_0203',
             level: 'Info',
             category: 'VisualFidelity',
             message:
@@ -163,7 +163,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
-            issueid: 'Revit_0025',
+            issueid: 'Dgn_0214',
             level: 'Info',
             category: 'VisualFidelity',
             message:
@@ -174,6 +174,7 @@ export const testReport = {
         {
           elementinfo: { ecinstanceid: '', sourceid: '' },
           auditinfo: {
+            issueid: 'Dwg_0199',
             level: 'Info',
             category: 'VisualFidelity',
             message:
