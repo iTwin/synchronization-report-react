@@ -14,8 +14,8 @@
   justify-content: space-between;
 }
 
-.isr-info-panel-wrapper .isr-report-table-view .isr-problems-table .table-row__active > * {
-  background-color: var(--iui-color-background-accent-muted);
+.table-row__active > * {
+  background-color: var(--iui-color-background-accent-muted) !important;
 }
 
 .isr-table-cell-start-icon {
