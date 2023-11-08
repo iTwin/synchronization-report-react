@@ -35,6 +35,8 @@ type Report = {
 
 type Status = 'positive' | 'warning' | 'negative' | undefined;
 
+type DisplayDetailsColumn = true | false;
+
 interface ExpandableFileReport extends SourceFile {
   subRows?: Report[];
 }
@@ -66,6 +68,7 @@ const defaultDisplayStrings = {
   message: 'Message',
   mainFile: 'master',
   issueId: 'ID',
+  details: 'Details',
 };
 
 const emptyTableDisplayStrings: Record<Issues, string> = {
@@ -98,6 +101,7 @@ export const ProblemsTable = ({
   fileTypeIcons: userFileTypeIcons,
   sourceFilesInfo,
   className,
+  displayDetailsColumn,
   onIssueArticleOpened,
   ...rest
 }: {
@@ -105,6 +109,7 @@ export const ProblemsTable = ({
   fileTypeIcons?: Record<string, JSX.Element>;
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   sourceFilesInfo?: SourceFilesInfo;
+  displayDetailsColumn?: DisplayDetailsColumn;
   onIssueArticleOpened?: (issueId: string) => void;
 } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
@@ -281,30 +286,15 @@ export const ProblemsTable = ({
           minWidth: 50,
           maxWidth: 170,
           Cell: (row: CellProps<Report>) => {
-            const [errorId, groupCount] = row.row.original.issueid
-              ? row.row.original.issueid.split(' ', 2)
-              : [undefined, undefined];
+            const [errorId] = row.row.original.issueid ? row.row.original.issueid.split(' ', 2) : [undefined];
             return (
               <div>
                 {(row.row.subRows.length === 0 &&
                   context?.currentTable &&
                   tableStyleAccessor[context?.currentTable] === tableStyleAccessor.issueId) ||
-                !errorId ? (
-                  ''
-                ) : hasHelpArticle(errorId) ? (
-                  <>
-                    <Anchor
-                      href={getHelpArticleUrl(errorId)}
-                      target='_blank'
-                      onClick={() => onIssueArticleOpened?.(errorId)}
-                    >
-                      {errorId}
-                    </Anchor>
-                    {groupCount ? ` ${groupCount}` : ''}
-                  </>
-                ) : (
-                  row.value
-                )}
+                !errorId
+                  ? ''
+                  : row.value}
               </div>
             );
           },
@@ -369,6 +359,41 @@ export const ProblemsTable = ({
             );
           },
         },
+        displayDetailsColumn
+          ? {
+              id: 'details',
+              accessor: 'details',
+              Header: displayStrings.details,
+              Filter: tableFilters.TextFilter(),
+              minWidth: 50,
+              maxWidth: 170,
+              Cell: (row: CellProps<Report>) => {
+                const [errorId] = row.row.original.issueid ? row.row.original.issueid.split(' ', 2) : [undefined];
+                return (
+                  <div>
+                    {(row.row.subRows.length === 0 &&
+                      context?.currentTable &&
+                      tableStyleAccessor[context?.currentTable] === tableStyleAccessor.issueId) ||
+                    !errorId ? (
+                      ''
+                    ) : hasHelpArticle(errorId) ? (
+                      <>
+                        <Anchor
+                          href={getHelpArticleUrl(errorId)}
+                          target='_blank'
+                          onClick={() => onIssueArticleOpened?.(errorId)}
+                        >
+                          More...
+                        </Anchor>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                );
+              },
+            }
+          : null,
         {
           id: 'fileName',
           accessor: ({ fileName, fileId }: Partial<Report>) => fileName ?? getFileNameFromId(fileId),
@@ -410,7 +435,7 @@ export const ProblemsTable = ({
           cellClassName: 'isr-problems-message',
           Cell: ({ value }: CellProps<TableRow>) => <ClampWithTooltip>{value}</ClampWithTooltip>,
         },
-      ] as Column<TableRow>[],
+      ].filter(Boolean) as Column<TableRow>[],
     [context, displayStrings, filetypeIcons, getFileNameFromId, sortByLevel]
   );
   const reorderColumn = React.useCallback(
