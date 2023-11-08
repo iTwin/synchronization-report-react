@@ -286,15 +286,30 @@ export const ProblemsTable = ({
           minWidth: 50,
           maxWidth: 170,
           Cell: (row: CellProps<Report>) => {
-            const [errorId] = row.row.original.issueid ? row.row.original.issueid.split(' ', 2) : [undefined];
+            const [errorId, groupCount] = row.row.original.issueid
+              ? row.row.original.issueid.split(' ', 2)
+              : [undefined, undefined];
             return (
               <div>
                 {(row.row.subRows.length === 0 &&
                   context?.currentTable &&
                   tableStyleAccessor[context?.currentTable] === tableStyleAccessor.issueId) ||
-                !errorId
-                  ? ''
-                  : row.value}
+                !errorId ? (
+                  ''
+                ) : hasHelpArticle(errorId) && !displayDetailsColumn ? (
+                  <>
+                    <Anchor
+                      href={getHelpArticleUrl(errorId)}
+                      target='_blank'
+                      onClick={() => onIssueArticleOpened?.(errorId)}
+                    >
+                      {errorId}
+                    </Anchor>
+                    {groupCount ? ` ${groupCount}` : ''}
+                  </>
+                ) : (
+                  row.value
+                )}
               </div>
             );
           },
