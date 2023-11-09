@@ -35,8 +35,6 @@ type Report = {
 
 type Status = 'positive' | 'warning' | 'negative' | undefined;
 
-type DisplayDetailsColumn = true | false;
-
 interface ExpandableFileReport extends SourceFile {
   subRows?: Report[];
 }
@@ -109,7 +107,7 @@ export const ProblemsTable = ({
   fileTypeIcons?: Record<string, JSX.Element>;
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   sourceFilesInfo?: SourceFilesInfo;
-  displayDetailsColumn?: DisplayDetailsColumn;
+  displayDetailsColumn?: boolean;
   onIssueArticleOpened?: (issueId: string) => void;
 } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
@@ -374,41 +372,35 @@ export const ProblemsTable = ({
             );
           },
         },
-        displayDetailsColumn
-          ? {
-              id: 'details',
-              accessor: 'details',
-              Header: displayStrings.details,
-              Filter: tableFilters.TextFilter(),
-              minWidth: 50,
-              maxWidth: 170,
-              Cell: (row: CellProps<Report>) => {
-                const [errorId] = row.row.original.issueid ? row.row.original.issueid.split(' ', 2) : [undefined];
-                return (
-                  <div>
-                    {(row.row.subRows.length === 0 &&
-                      context?.currentTable &&
-                      tableStyleAccessor[context?.currentTable] === tableStyleAccessor.issueId) ||
-                    !errorId ? (
-                      ''
-                    ) : hasHelpArticle(errorId) ? (
-                      <>
-                        <Anchor
-                          href={getHelpArticleUrl(errorId)}
-                          target='_blank'
-                          onClick={() => onIssueArticleOpened?.(errorId)}
-                        >
-                          More...
-                        </Anchor>
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                );
-              },
-            }
-          : null,
+        {
+          id: 'details',
+          Header: displayStrings.details,
+          Filter: tableFilters.TextFilter(),
+          minWidth: 50,
+          maxWidth: 170,
+          Cell: (row: CellProps<Report>) => {
+            const [errorId] = row.row.original.issueid ? row.row.original.issueid.split(' ', 2) : [undefined];
+            return (
+              <div>
+                {(row.row.subRows.length === 0 &&
+                  context?.currentTable &&
+                  tableStyleAccessor[context?.currentTable] === tableStyleAccessor.issueId) ||
+                !errorId ||
+                !hasHelpArticle(errorId) ? (
+                  <></>
+                ) : (
+                  <Anchor
+                    href={getHelpArticleUrl(errorId!)}
+                    target='_blank'
+                    onClick={() => onIssueArticleOpened?.(errorId!)}
+                  >
+                    More...
+                  </Anchor>
+                )}
+              </div>
+            );
+          },
+        },
         {
           id: 'fileName',
           accessor: ({ fileName, fileId }: Partial<Report>) => fileName ?? getFileNameFromId(fileId),
@@ -450,7 +442,7 @@ export const ProblemsTable = ({
           cellClassName: 'isr-problems-message',
           Cell: ({ value }: CellProps<TableRow>) => <ClampWithTooltip>{value}</ClampWithTooltip>,
         },
-      ].filter(Boolean) as Column<TableRow>[],
+      ] as Column<TableRow>[],
     [context, displayStrings, filetypeIcons, getFileNameFromId, sortByLevel]
   );
   const reorderColumn = React.useCallback(
@@ -542,7 +534,7 @@ export const ProblemsTable = ({
       emptyTableContent={`No ${context ? emptyTableDisplayStrings[context?.focusedIssue] : 'Data'}`}
       emptyFilteredTableContent='No results found. Clear or try another filter.'
       isSortable
-      initialState={{ sortBy: [{ id: 'level' }] }}
+      initialState={{ sortBy: [{ id: 'level' }], hiddenColumns: !displayDetailsColumn ? ['details'] : [] }}
       rowProps={rowProps}
       {...rest}
     />
