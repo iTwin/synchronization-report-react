@@ -66,6 +66,7 @@ const defaultDisplayStrings = {
   message: 'Message',
   mainFile: 'master',
   issueId: 'ID',
+  details: 'Details',
 };
 
 const emptyTableDisplayStrings: Record<Issues, string> = {
@@ -98,6 +99,7 @@ export const ProblemsTable = ({
   fileTypeIcons: userFileTypeIcons,
   sourceFilesInfo,
   className,
+  displayDetailsColumn,
   onIssueArticleOpened,
   ...rest
 }: {
@@ -105,6 +107,7 @@ export const ProblemsTable = ({
   fileTypeIcons?: Record<string, JSX.Element>;
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   sourceFilesInfo?: SourceFilesInfo;
+  displayDetailsColumn?: boolean;
   onIssueArticleOpened?: (issueId: string) => void;
 } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
@@ -291,7 +294,7 @@ export const ProblemsTable = ({
                   tableStyleAccessor[context?.currentTable] === tableStyleAccessor.issueId) ||
                 !errorId ? (
                   ''
-                ) : hasHelpArticle(errorId) ? (
+                ) : hasHelpArticle(errorId) && !displayDetailsColumn ? (
                   <>
                     <Anchor
                       href={getHelpArticleUrl(errorId)}
@@ -366,6 +369,35 @@ export const ProblemsTable = ({
               >
                 {level}
               </DefaultCell>
+            );
+          },
+        },
+        {
+          id: 'details',
+          Header: displayStrings.details,
+          Filter: tableFilters.TextFilter(),
+          minWidth: 50,
+          maxWidth: 170,
+          Cell: (row: CellProps<Report>) => {
+            const [errorId] = row.row.original.issueid ? row.row.original.issueid.split(' ', 2) : [undefined];
+            return (
+              <div>
+                {(row.row.subRows.length === 0 &&
+                  context?.currentTable &&
+                  tableStyleAccessor[context?.currentTable] === tableStyleAccessor.issueId) ||
+                !errorId ||
+                !hasHelpArticle(errorId) ? (
+                  <></>
+                ) : (
+                  <Anchor
+                    href={getHelpArticleUrl(errorId!)}
+                    target='_blank'
+                    onClick={() => onIssueArticleOpened?.(errorId!)}
+                  >
+                    Learn More...
+                  </Anchor>
+                )}
+              </div>
             );
           },
         },
@@ -502,7 +534,7 @@ export const ProblemsTable = ({
       emptyTableContent={`No ${context ? emptyTableDisplayStrings[context?.focusedIssue] : 'Data'}`}
       emptyFilteredTableContent='No results found. Clear or try another filter.'
       isSortable
-      initialState={{ sortBy: [{ id: 'level' }] }}
+      initialState={{ sortBy: [{ id: 'level' }], hiddenColumns: !displayDetailsColumn ? ['details'] : [] }}
       rowProps={rowProps}
       {...rest}
     />
