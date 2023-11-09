@@ -394,7 +394,7 @@ export const ProblemsTable = ({
                     target='_blank'
                     onClick={() => onIssueArticleOpened?.(errorId!)}
                   >
-                    More...
+                    Learn More...
                   </Anchor>
                 )}
               </div>
