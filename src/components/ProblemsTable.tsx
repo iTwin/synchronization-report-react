@@ -373,35 +373,6 @@ export const ProblemsTable = ({
           },
         },
         {
-          id: 'details',
-          Header: displayStrings.details,
-          Filter: tableFilters.TextFilter(),
-          minWidth: 50,
-          maxWidth: 170,
-          Cell: (row: CellProps<Report>) => {
-            const [errorId] = row.row.original.issueid ? row.row.original.issueid.split(' ', 2) : [undefined];
-            return (
-              <div>
-                {(row.row.subRows.length === 0 &&
-                  context?.currentTable &&
-                  tableStyleAccessor[context?.currentTable] === tableStyleAccessor.issueId) ||
-                !errorId ||
-                !hasHelpArticle(errorId) ? (
-                  <></>
-                ) : (
-                  <Anchor
-                    href={getHelpArticleUrl(errorId!)}
-                    target='_blank'
-                    onClick={() => onIssueArticleOpened?.(errorId!)}
-                  >
-                    Learn More...
-                  </Anchor>
-                )}
-              </div>
-            );
-          },
-        },
-        {
           id: 'fileName',
           accessor: ({ fileName, fileId }: Partial<Report>) => fileName ?? getFileNameFromId(fileId),
           Header: displayStrings.fileName,
@@ -441,6 +412,35 @@ export const ProblemsTable = ({
           minWidth: 200,
           cellClassName: 'isr-problems-message',
           Cell: ({ value }: CellProps<TableRow>) => <ClampWithTooltip>{value}</ClampWithTooltip>,
+        },
+        {
+          id: 'details',
+          Header: displayStrings.details,
+          Filter: tableFilters.TextFilter(),
+          minWidth: 50,
+          maxWidth: 170,
+          Cell: (row: CellProps<Report>) => {
+            const [errorId] = row.row.original.issueid ? row.row.original.issueid.split(' ', 2) : [undefined];
+            return (
+              <div>
+                {(row.row.subRows.length === 0 &&
+                  context?.currentTable &&
+                  tableStyleAccessor[context?.currentTable] === tableStyleAccessor.issueId) ||
+                !errorId ||
+                !hasHelpArticle(errorId) ? (
+                  <></>
+                ) : (
+                  <Anchor
+                    href={getHelpArticleUrl(errorId!)}
+                    target='_blank'
+                    onClick={() => onIssueArticleOpened?.(errorId!)}
+                  >
+                    Learn More...
+                  </Anchor>
+                )}
+              </div>
+            );
+          },
         },
       ] as Column<TableRow>[],
     [context, displayStrings, filetypeIcons, getFileNameFromId, sortByLevel]
