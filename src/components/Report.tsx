@@ -19,7 +19,9 @@ import ReportDebugIds from './ReportDebugIds';
 import { ReportTitleWrapper } from './ReportTitleWrapper';
 import { defaultWorkflowMapping } from './report-workflow-mapping';
 import './Report.scss';
-
+import { useCallback, useEffect, useRef } from 'react';
+import { ApplicationInsightService } from './ApplicationInsightService';
+import { hasHelpArticle } from './help-articles';
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info' | 'All';
 export type Tables = 'files' | 'problems' | 'categories' | 'issueId';
@@ -39,6 +41,23 @@ type AuditInfo = Partial<{
   bimFileExists: boolean;
 }>;
 
+export interface customEventdataType {
+  name: string;
+  value: string;
+}
+
+export interface SyncReportOpenedEventDataType {
+  data?: customEventdataType[];
+  onSyncReportOpenEventPerform?: () => void;
+}
+export interface IssueArticleOpenEventDataType {
+  data?: customEventdataType[];
+  onIssueArticleOpenEventPerform?: () => void;
+}
+type TotalIssueCount = {
+  issueCount?: number;
+  linkedIssueCount?: number;
+};
 export const ReportContext = React.createContext<
   | {
       reportData: ReportData;
@@ -87,9 +106,15 @@ export const Report = ({
   workflowMapping = defaultWorkflowMapping,
   children,
   className,
+  applicationInsightConnectionString,
+  SyncReportOpenedEventData,
+  issueArticleOpenEventData,
 }: {
   /** The report data should be compatible with the type definitions. */
   data: ReportData;
+  applicationInsightConnectionString?: string;
+  SyncReportOpenedEventData?: SyncReportOpenedEventDataType;
+  issueArticleOpenEventData?: IssueArticleOpenEventDataType;
   workflowMapping?: WorkflowMapping;
   className?: string;
   children?: React.ReactNode;
@@ -99,6 +124,25 @@ export const Report = ({
   const [focusedIssue, setFocusedIssue] = React.useState<Issues>('All');
   const [focusedWorkflows, setFocusedWorkflows] = React.useState<string[]>([]);
   const [activeRow, setActiveRow] = React.useState<string>('');
+  const shouldRunAIEvent = useRef<boolean>(true);
+  const issueLinksClicked = useRef(false);
+  const valueRef = useRef<TotalIssueCount>();
+  const issueLinkClickCount = useRef<number>(0);
+  let issueCount = 0;
+  let issueLinkedCount = 0;
+
+  React.useEffect(() => {
+    window.addEventListener('beforeunload', triggerEvent);
+    return () => {
+      window.removeEventListener('beforeunload', triggerEvent);
+    };
+  });
+
+  useEffect(() => {
+    return () => {
+      triggerSyncReportOpenedEvent();
+    };
+  }, [data]);
 
   React.useEffect(() => {
     if (!workflowMapping) return;
@@ -107,6 +151,84 @@ export const Report = ({
     );
     setFocusedWorkflows([...allWorkflows, 'Unorganized']);
   }, [workflowMapping]);
+
+  useEffect(() => {
+    data?.filerecords?.map((filterRecord: any) => {
+      issueCount = issueCount + filterRecord.auditrecords.length;
+      filterRecord.auditrecords.map((auditRecord: any) => {
+        const issueId = auditRecord.auditinfo.issueid;
+        if (hasHelpArticle(issueId)) issueLinkedCount += 1;
+      });
+    });
+
+    valueRef.current = {
+      issueCount: issueCount,
+      linkedIssueCount: issueLinkedCount,
+    };
+  }, [data]);
+
+  const triggerEvent = (event: any) => {
+    triggerSyncReportOpenedEvent();
+    event.returnValue = '';
+  };
+
+  const triggerSyncReportOpenedEvent = useCallback(() => {
+    if (data != null && shouldRunAIEvent.current && applicationInsightConnectionString) {
+      shouldRunAIEvent.current = false;
+      const syncReportOpenPropsData = SyncReportOpenedEventData?.data ? SyncReportOpenedEventData?.data : [];
+      const syncReportOpenEventData = [
+        {
+          name: 'countOfIssueIds',
+          value: valueRef.current?.issueCount?.toString() || '',
+        },
+        {
+          name: 'countOfIssueIdLinks',
+          value: valueRef.current?.linkedIssueCount?.toString() || '',
+        },
+        {
+          name: 'countOfIssueIdLinksClicked',
+          value: issueLinkClickCount.current.toString() || '',
+        },
+        {
+          name: 'issueLinksClicked',
+          value: issueLinksClicked.current.toString(),
+        },
+      ];
+
+      const totalSyncReportOpenData = [...syncReportOpenPropsData, ...syncReportOpenEventData];
+      const customSyncReportOpenData = Object.fromEntries(
+        totalSyncReportOpenData.map((item) => [item.name, item.value])
+      );
+
+      ApplicationInsightService({
+        connectionString: applicationInsightConnectionString,
+        customEventProperties: customSyncReportOpenData,
+        customEventName: 'SyncReportOpenedEvent',
+      });
+
+      if (SyncReportOpenedEventData?.onSyncReportOpenEventPerform)
+        SyncReportOpenedEventData.onSyncReportOpenEventPerform();
+    }
+  }, [data]);
+
+  const onIssueArticleOpened = useCallback((clickedIssueId: string) => {
+    issueLinkClickCount.current += 1;
+    if (applicationInsightConnectionString) {
+      const issueArticlePropsData = issueArticleOpenEventData?.data ? issueArticleOpenEventData?.data : [];
+      const issueArticleEventData = [{ name: 'issueId', value: clickedIssueId }];
+      const totalIssueArticleData = [...issueArticlePropsData, ...issueArticleEventData];
+      const customIssueArticleData = Object.fromEntries(totalIssueArticleData.map((item) => [item.name, item.value]));
+
+      ApplicationInsightService({
+        connectionString: applicationInsightConnectionString,
+        customEventProperties: customIssueArticleData,
+        customEventName: 'IssueArticleOpenedEvent',
+      });
+    }
+    issueLinksClicked.current = true;
+    if (issueArticleOpenEventData?.onIssueArticleOpenEventPerform)
+      issueArticleOpenEventData.onIssueArticleOpenEventPerform();
+  }, []);
 
   return (
     <ThemeProvider theme='inherit'>
@@ -142,8 +264,8 @@ export const Report = ({
                 <ReportTableSelect />
               </ReportTableSelectWrapper>
               <ReportInfoPanelWrapper>
-                <ProblemsTable />
-                <ReportInfoPanel />
+                <ProblemsTable onIssueArticleOpened={onIssueArticleOpened} />
+                <ReportInfoPanel onIssueArticleOpened={onIssueArticleOpened} />
               </ReportInfoPanelWrapper>
             </>
           )}
