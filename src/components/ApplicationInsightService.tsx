@@ -1,29 +1,25 @@
-import { ApplicationInsights, ITelemetryItem } from '@microsoft/applicationinsights-web';
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *--------------------------------------------------------------------------------------------*/
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { ReactPlugin } from '@microsoft/applicationinsights-react-js';
 
-interface ApplicationInsightProps {
-  connectionString: string;
-  customEventProperties?: {};
-  customEventName: string;
-}
-
-export const ApplicationInsightService = (props: ApplicationInsightProps) => {
-  const { connectionString, customEventName, customEventProperties } = props;
-
-  const reactPlugin = new ReactPlugin();
-  if (connectionString) {
-    const appInsights = new ApplicationInsights({
+export class ApplicationInsightService {
+  private appInsight: ApplicationInsights;
+  constructor(connectionString: string) {
+    const reactPlugin = new ReactPlugin();
+    this.appInsight = new ApplicationInsights({
       config: {
         connectionString: connectionString,
         extensions: [reactPlugin],
       },
     });
-
-    appInsights.loadAppInsights();
-
-    if (props.customEventProperties) {
-      appInsights.trackEvent({ name: customEventName }, customEventProperties);
-      appInsights.flush();
-    }
+    this.appInsight.loadAppInsights();
   }
-};
+
+  async trackCustomEvent(customEventName: string, customEventProperties?: Record<string, unknown>) {
+    this.appInsight.trackEvent({ name: customEventName }, customEventProperties);
+    await this.appInsight.flush();
+  }
+}

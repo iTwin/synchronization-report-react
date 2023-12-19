@@ -130,14 +130,23 @@ export const Report = ({
   const issueLinkClickCount = useRef<number>(0);
   let issueCount = 0;
   let issueLinkedCount = 0;
-
+  const applicationInsight = useRef<ApplicationInsightService>();
   React.useEffect(() => {
-    window.addEventListener('beforeunload', triggerEvent);
+    window.addEventListener('beforeunload', () => {
+      return triggerSyncReportOpenedEvent();
+    });
     return () => {
-      window.removeEventListener('beforeunload', triggerEvent);
+      window.removeEventListener('beforeunload', () => {
+        return triggerSyncReportOpenedEvent();
+      });
     };
   });
 
+  useEffect(() => {
+    if (applicationInsightConnectionString) {
+      applicationInsight.current = new ApplicationInsightService(applicationInsightConnectionString);
+    }
+  }, []);
   useEffect(() => {
     return () => {
       triggerSyncReportOpenedEvent();
@@ -167,11 +176,6 @@ export const Report = ({
     };
   }, [data]);
 
-  const triggerEvent = (event: any) => {
-    triggerSyncReportOpenedEvent();
-    event.returnValue = '';
-  };
-
   const triggerSyncReportOpenedEvent = useCallback(() => {
     if (data != null && shouldRunAIEvent.current && applicationInsightConnectionString) {
       shouldRunAIEvent.current = false;
@@ -200,11 +204,9 @@ export const Report = ({
         totalSyncReportOpenData.map((item) => [item.name, item.value])
       );
 
-      ApplicationInsightService({
-        connectionString: applicationInsightConnectionString,
-        customEventProperties: customSyncReportOpenData,
-        customEventName: 'SyncReportOpenedEvent',
-      });
+      if (applicationInsight.current) {
+        applicationInsight.current.trackCustomEvent('SyncReportOpenedEvent', customSyncReportOpenData);
+      }
 
       if (SyncReportOpenedEventData?.onSyncReportOpenEventPerform)
         SyncReportOpenedEventData.onSyncReportOpenEventPerform();
@@ -218,13 +220,11 @@ export const Report = ({
       const issueArticleEventData = [{ name: 'issueId', value: clickedIssueId }];
       const totalIssueArticleData = [...issueArticlePropsData, ...issueArticleEventData];
       const customIssueArticleData = Object.fromEntries(totalIssueArticleData.map((item) => [item.name, item.value]));
-
-      ApplicationInsightService({
-        connectionString: applicationInsightConnectionString,
-        customEventProperties: customIssueArticleData,
-        customEventName: 'IssueArticleOpenedEvent',
-      });
+      if (applicationInsight.current) {
+        applicationInsight.current.trackCustomEvent('IssueArticleOpenedEvent', customIssueArticleData);
+      }
     }
+
     issueLinksClicked.current = true;
     if (issueArticleOpenEventData?.onIssueArticleOpenEventPerform)
       issueArticleOpenEventData.onIssueArticleOpenEventPerform();
