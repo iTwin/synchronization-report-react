@@ -5,7 +5,12 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { ProblemsTable } from './ProblemsTable';
-import { ReportData, WorkflowMapping } from './report-data-typings';
+import {
+  IssueArticleOpenEventDataType,
+  ReportData,
+  SyncReportOpenedEventDataType,
+  WorkflowMapping,
+} from './report-data-typings';
 import { ReportTitle } from './ReportTitle';
 import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';
@@ -22,6 +27,7 @@ import './Report.scss';
 import { useCallback, useEffect, useRef } from 'react';
 import { ApplicationInsightService } from './ApplicationInsightService';
 import { hasHelpArticle } from './help-articles';
+import { runSyncReportOpenEvent, runIssueArticleOpenEvent } from './ApplicationInsightCustomEvent';
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info' | 'All';
 export type Tables = 'files' | 'problems' | 'categories' | 'issueId';
@@ -41,23 +47,11 @@ type AuditInfo = Partial<{
   bimFileExists: boolean;
 }>;
 
-export interface customEventdataType {
-  name: string;
-  value: string;
-}
-
-export interface SyncReportOpenedEventDataType {
-  data?: customEventdataType[];
-  onSyncReportOpenEventPerform?: () => void;
-}
-export interface IssueArticleOpenEventDataType {
-  data?: customEventdataType[];
-  onIssueArticleOpenEventPerform?: () => void;
-}
-type TotalIssueCount = {
+export type TotalIssueCount = {
   issueCount?: number;
   linkedIssueCount?: number;
 };
+
 export const ReportContext = React.createContext<
   | {
       reportData: ReportData;
@@ -107,14 +101,14 @@ export const Report = ({
   children,
   className,
   applicationInsightConnectionString,
-  SyncReportOpenedEventData,
-  issueArticleOpenEventData,
+  SyncReportOpenedEventProps,
+  issueArticleOpenEventProps,
 }: {
   /** The report data should be compatible with the type definitions. */
   data: ReportData;
   applicationInsightConnectionString?: string;
-  SyncReportOpenedEventData?: SyncReportOpenedEventDataType;
-  issueArticleOpenEventData?: IssueArticleOpenEventDataType;
+  SyncReportOpenedEventProps?: SyncReportOpenedEventDataType;
+  issueArticleOpenEventProps?: IssueArticleOpenEventDataType;
   workflowMapping?: WorkflowMapping;
   className?: string;
   children?: React.ReactNode;
@@ -131,13 +125,14 @@ export const Report = ({
   let issueCount = 0;
   let issueLinkedCount = 0;
   const applicationInsight = useRef<ApplicationInsightService>();
+
   React.useEffect(() => {
     window.addEventListener('beforeunload', () => {
-      return triggerSyncReportOpenedEvent();
+      return onSyncReportClose();
     });
     return () => {
       window.removeEventListener('beforeunload', () => {
-        return triggerSyncReportOpenedEvent();
+        return onSyncReportClose();
       });
     };
   });
@@ -147,9 +142,10 @@ export const Report = ({
       applicationInsight.current = new ApplicationInsightService(applicationInsightConnectionString);
     }
   }, []);
+
   useEffect(() => {
     return () => {
-      triggerSyncReportOpenedEvent();
+      onSyncReportClose();
     };
   }, [data]);
 
@@ -176,58 +172,29 @@ export const Report = ({
     };
   }, [data]);
 
-  const triggerSyncReportOpenedEvent = useCallback(() => {
+  const onSyncReportClose = useCallback(() => {
     if (data != null && shouldRunAIEvent.current && applicationInsightConnectionString) {
       shouldRunAIEvent.current = false;
-      const syncReportOpenPropsData = SyncReportOpenedEventData?.data ? SyncReportOpenedEventData?.data : [];
-      const syncReportOpenEventData = [
-        {
-          name: 'countOfIssueIds',
-          value: valueRef.current?.issueCount?.toString() || '',
-        },
-        {
-          name: 'countOfIssueIdLinks',
-          value: valueRef.current?.linkedIssueCount?.toString() || '',
-        },
-        {
-          name: 'countOfIssueIdLinksClicked',
-          value: issueLinkClickCount.current.toString() || '',
-        },
-        {
-          name: 'issueLinksClicked',
-          value: issueLinksClicked.current.toString(),
-        },
-      ];
-
-      const totalSyncReportOpenData = [...syncReportOpenPropsData, ...syncReportOpenEventData];
-      const customSyncReportOpenData = Object.fromEntries(
-        totalSyncReportOpenData.map((item) => [item.name, item.value])
+      runSyncReportOpenEvent(
+        applicationInsight.current,
+        SyncReportOpenedEventProps?.syncReportOpenTelemetry,
+        valueRef.current,
+        issueLinkClickCount.current,
+        issueLinksClicked.current,
+        SyncReportOpenedEventProps?.onSyncReportOpenEventPerform
       );
-
-      if (applicationInsight.current) {
-        applicationInsight.current.trackCustomEvent('SyncReportOpenedEvent', customSyncReportOpenData);
-      }
-
-      if (SyncReportOpenedEventData?.onSyncReportOpenEventPerform)
-        SyncReportOpenedEventData.onSyncReportOpenEventPerform();
     }
   }, [data]);
 
   const onIssueArticleOpened = useCallback((clickedIssueId: string) => {
     issueLinkClickCount.current += 1;
-    if (applicationInsightConnectionString) {
-      const issueArticlePropsData = issueArticleOpenEventData?.data ? issueArticleOpenEventData?.data : [];
-      const issueArticleEventData = [{ name: 'issueId', value: clickedIssueId }];
-      const totalIssueArticleData = [...issueArticlePropsData, ...issueArticleEventData];
-      const customIssueArticleData = Object.fromEntries(totalIssueArticleData.map((item) => [item.name, item.value]));
-      if (applicationInsight.current) {
-        applicationInsight.current.trackCustomEvent('IssueArticleOpenedEvent', customIssueArticleData);
-      }
-    }
-
     issueLinksClicked.current = true;
-    if (issueArticleOpenEventData?.onIssueArticleOpenEventPerform)
-      issueArticleOpenEventData.onIssueArticleOpenEventPerform();
+    runIssueArticleOpenEvent(
+      applicationInsight.current,
+      clickedIssueId,
+      issueArticleOpenEventProps?.issueArticleOpenTelemetry,
+      issueArticleOpenEventProps?.onIssueArticleOpenEventPerform
+    );
   }, []);
 
   return (
