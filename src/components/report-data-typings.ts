@@ -85,3 +85,37 @@ export type AuditInfo = {
   fileName?: string;
   [k: string]: unknown;
 };
+
+export interface SyncReportOpenedEventDataType {
+  syncReportOpenTelemetry?: syncReportOpenTelemetryDataType;
+  onSyncReportOpenEventPerform?: () => void;
+}
+
+export interface IssueArticleOpenEventDataType {
+  issueArticleOpenTelemetry?: issueArticleOpenTelemetryDataType;
+  onIssueArticleOpenEventPerform?: () => void;
+}
+
+export interface syncReportOpenTelemetryDataType {
+  iModelId?: string;
+  projectId?: string;
+  userEmail?: string;
+  runStatus?: string;
+  taskStatus?: string;
+  connectionId?: string;
+  runId?: string;
+  reportId?: string;
+  ultimateId?: string;
+}
+
+export interface issueArticleOpenTelemetryDataType {
+  iModelId?: string;
+  projectId?: string;
+  userEmail?: string;
+  connectionId?: string;
+  runId?: string;
+  reportId?: string;
+  isDetailsColumnEnabled?: string;
+  ultimateId?: string;
+}
+// e
