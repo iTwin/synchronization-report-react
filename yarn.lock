@@ -773,13 +773,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@itwin/itwinui-css@npm:^0.53.2":
-  version: 0.53.3
-  resolution: "@itwin/itwinui-css@npm:0.53.3"
-  checksum: 3b7c6413a58f93ea1544ab1b52b2358ded434ca7d70fb873c3a909eb4e5926cacc21fa899a2345a7ccc06aeeec8465a27c1487dbd8f7ca72c2ccca46d1eac03a
-  languageName: node
-  linkType: hard
-
 "@itwin/itwinui-css@npm:^1.6.0":
   version: 1.6.0
   resolution: "@itwin/itwinui-css@npm:1.6.0"
@@ -850,7 +843,6 @@ __metadata:
   dependencies:
     "@cypress/react": ^8.0.0
     "@cypress/vite-dev-server": ^2.2.1
-    "@itwin/itwinui-css": ^0.53.2
     "@itwin/itwinui-icons-color-react": ^2.0.0
     "@itwin/itwinui-icons-react": ^2.0.0
     "@itwin/itwinui-react": ^2.5.0
