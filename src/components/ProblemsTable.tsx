@@ -116,6 +116,7 @@ export const ProblemsTable = ({
   const context = React.useContext(ReportContext);
   const workflowMapping = context?.workflowMapping;
   const [tour, setTour] = React.useState(false);
+  const [displayDialogBox, setDisplayDialogBox] = React.useState(false);
   const onlyLast = React.useRef(false);
   const errorLinkFound = React.useRef(false);
   const filetypeIcons = React.useMemo(
@@ -133,6 +134,12 @@ export const ProblemsTable = ({
     [sourceFilesInfo, context?.reportData.sourceFilesInfo]
   );
 
+  React.useEffect(() => {
+    if (!localStorage.getItem('firstTimeVisit') || localStorage.getItem('firstTimeVisit') === 'false') {
+      setDisplayDialogBox(true);
+      localStorage.setItem('firstTimeVisit', 'true');
+    }
+  }, []);
   const fileData = React.useMemo(() => {
     const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
     return [
@@ -520,8 +527,11 @@ export const ProblemsTable = ({
   );
 
   window.onload = () => {
-    if (displayCalloutBox) {
+    if (displayDialogBox) {
       const target = document.querySelector('#first-error-link');
+      if (!errorLinkFound.current) {
+        localStorage.setItem('firstTimeVisit', 'false');
+      }
       setTour(true);
       target?.scrollIntoView({ block: 'center' });
     }
@@ -566,7 +576,7 @@ export const ProblemsTable = ({
 
   return (
     <>
-      {!displayDetailsColumn && displayCalloutBox && errorLinkFound.current && (
+      {!displayDetailsColumn && displayDialogBox && errorLinkFound.current && (
         <Tour
           steps={Steps}
           isOpen={tour}
