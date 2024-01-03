@@ -106,7 +106,7 @@ export const ReportInfoPanel = ({
                 <br />{' '}
                 <Anchor
                   href={getHelpArticleUrl(currentAuditInfo?.issueid || '')}
-                  onClick={() => currentAuditInfo?.issueid && onIssueArticleOpened?.(currentAuditInfo.issueid)}
+                  onClick={() => currentAuditInfo?.issueid && context?.onIssueArticleOpened?.(currentAuditInfo.issueid)}
                   target='_blank'
                 >
                   {displayStrings['learnMore']}

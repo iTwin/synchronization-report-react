@@ -39,6 +39,7 @@ export function runIssueArticleOpenEvent(
 
   if (applicationInsight) {
     applicationInsight.trackCustomEvent('IssueArticleOpenedEvent', completeTelemtry);
+    applicationInsight.flushEvent();
   }
   onIssueArticleOpenEventPerform?.();
 }

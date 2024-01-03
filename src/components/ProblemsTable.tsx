@@ -307,7 +307,6 @@ export const ProblemsTable = ({
               errorLinkFound.current = true;
             }
             indexValue += 1;
-            console.log('Row Count: ', indexValue);
             return (
               <div id={`${hasHelpArticle(errorId) ? 'first-error-link' : ''}`}>
                 {(row.row.subRows.length === 0 &&
@@ -320,7 +319,7 @@ export const ProblemsTable = ({
                     <Anchor
                       href={getHelpArticleUrl(errorId)}
                       target='_blank'
-                      onClick={() => onIssueArticleOpened?.(errorId)}
+                      onClick={() => context?.onIssueArticleOpened?.(errorId)}
                     >
                       {errorId}
                     </Anchor>
@@ -454,7 +453,7 @@ export const ProblemsTable = ({
                   <Anchor
                     href={getHelpArticleUrl(errorId!)}
                     target='_blank'
-                    onClick={() => onIssueArticleOpened?.(errorId!)}
+                    onClick={() => context?.onIssueArticleOpened?.(errorId!)}
                   >
                     Learn More...
                   </Anchor>

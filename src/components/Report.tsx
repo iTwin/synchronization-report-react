@@ -66,6 +66,7 @@ export const ReportContext = React.createContext<
       setFocusedWorkflows: (issues: string[] | ((issues: string[]) => string[])) => void;
       activeRow: string;
       setActiveRow: React.Dispatch<React.SetStateAction<string>>;
+      onIssueArticleOpened?: (issueId: string) => void;
     }
   | undefined
 >(undefined);
@@ -127,13 +128,14 @@ export const Report = ({
   const applicationInsight = useRef<ApplicationInsightService>();
 
   React.useEffect(() => {
-    window.addEventListener('beforeunload', () => {
+    window.addEventListener('unload', () => {
       return onSyncReportClose();
     });
     return () => {
-      window.removeEventListener('beforeunload', () => {
+      window.removeEventListener('unload', () => {
         return onSyncReportClose();
       });
+      applicationInsight.current?.flushEvent();
     };
   });
 
@@ -142,12 +144,6 @@ export const Report = ({
       applicationInsight.current = new ApplicationInsightService(applicationInsightConnectionString);
     }
   }, []);
-
-  useEffect(() => {
-    return () => {
-      onSyncReportClose();
-    };
-  }, [data]);
 
   React.useEffect(() => {
     if (!workflowMapping) return;
@@ -213,6 +209,7 @@ export const Report = ({
           setFocusedWorkflows: setFocusedWorkflows,
           activeRow: activeRow,
           setActiveRow: setActiveRow,
+          onIssueArticleOpened: onIssueArticleOpened,
         }}
       >
         <div className={classnames('isr-report-main', className)}>
@@ -231,8 +228,8 @@ export const Report = ({
                 <ReportTableSelect />
               </ReportTableSelectWrapper>
               <ReportInfoPanelWrapper>
-                <ProblemsTable onIssueArticleOpened={onIssueArticleOpened} />
-                <ReportInfoPanel onIssueArticleOpened={onIssueArticleOpened} />
+                <ProblemsTable />
+                <ReportInfoPanel />
               </ReportInfoPanelWrapper>
             </>
           )}
