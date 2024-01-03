@@ -41,3 +41,75 @@
   align-items: center;
   gap: 0.5rem;
 }
+
+#___reactour {
+  .reactour__helper {
+    padding: 0px;
+    min-width: 360px;
+    border-radius: 2px;
+    top: -6%;
+    .tour-Container {
+      padding: 12px 12px 12px 12px;
+      .tour-arrow-left {
+        position: absolute;
+        background: #fff;
+        top: 50%;
+        left: 0.5%;
+      }
+
+      .tour-arrow-left-last {
+        position: absolute;
+        background: #fff;
+        top: 91%;
+        left: 0.5%;
+      }
+
+      .tour-arrow-left-last:after {
+        right: 100%;
+        top: 50%;
+        border: solid transparent;
+        content: '';
+        position: absolute;
+        border-right-color: #fff;
+        border-width: 12px;
+        margin-top: -12px;
+      }
+
+      .tour-arrow-left:after {
+        right: 100%;
+        top: 50%;
+        border: solid transparent;
+        content: '';
+        position: absolute;
+        border-right-color: #fff;
+        border-width: 12px;
+        margin-top: -12px;
+      }
+      .tour-Got-It {
+        padding: 10px 10px 10px 10px;
+        border: none;
+        background-color: #fff;
+        margin-left: 80%;
+        font-size: 16px;
+        cursor: pointer;
+        color: #31ccbf;
+      }
+    }
+
+    [data-tour-elem='badge'] {
+      display: none;
+    }
+
+    [data-tour-elem='controls'] {
+      display: none;
+    }
+
+    [data-tour-elem='navigation'] {
+      display: none;
+    }
+
+    .reactour__close {
+      display: none;
+    }
+  }
+}

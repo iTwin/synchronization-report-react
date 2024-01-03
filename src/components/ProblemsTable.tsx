@@ -11,6 +11,7 @@ import type { TableProps } from '@itwin/itwinui-react';
 import type { FileRecord, SourceFile, SourceFilesInfo } from './report-data-typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import './ProblemsTable.scss';
+import Tour from 'reactour';
 import {
   SvgFiletypeRevit,
   SvgFiletypeMicrostation,
@@ -100,6 +101,7 @@ export const ProblemsTable = ({
   sourceFilesInfo,
   className,
   displayDetailsColumn,
+  displayCalloutBox,
   onIssueArticleOpened,
   ...rest
 }: {
@@ -108,11 +110,15 @@ export const ProblemsTable = ({
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   sourceFilesInfo?: SourceFilesInfo;
   displayDetailsColumn?: boolean;
+  displayCalloutBox?: boolean;
   onIssueArticleOpened?: (issueId: string) => void;
 } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
   const workflowMapping = context?.workflowMapping;
-
+  const [tour, setTour] = React.useState(false);
+  const [displayDialogBox, setDisplayDialogBox] = React.useState(false);
+  const onlyLast = React.useRef(false);
+  const errorLinkFound = React.useRef(false);
   const filetypeIcons = React.useMemo(
     () => ({ ...defaultFileTypeIcons, ...userFileTypeIcons } as Record<string, JSX.Element>),
     [userFileTypeIcons]
@@ -128,6 +134,12 @@ export const ProblemsTable = ({
     [sourceFilesInfo, context?.reportData.sourceFilesInfo]
   );
 
+  React.useEffect(() => {
+    if (!localStorage.getItem('firstTimeVisit') || localStorage.getItem('firstTimeVisit') === 'false') {
+      setDisplayDialogBox(true);
+      localStorage.setItem('firstTimeVisit', 'true');
+    }
+  }, []);
   const fileData = React.useMemo(() => {
     const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
     return [
@@ -273,6 +285,7 @@ export const ProblemsTable = ({
     return indexA > indexB ? 1 : -1;
   }, []);
 
+  let indexValue = 0;
   const columns = React.useMemo(
     () =>
       [
@@ -287,8 +300,16 @@ export const ProblemsTable = ({
             const [errorId, groupCount] = row.row.original.issueid
               ? row.row.original.issueid.split(' ', 2)
               : [undefined, undefined];
+            if (!errorLinkFound.current && hasHelpArticle(errorId)) {
+              if (indexValue == data.length - 1) {
+                onlyLast.current = true;
+              }
+              errorLinkFound.current = true;
+            }
+            indexValue += 1;
+            console.log('Row Count: ', indexValue);
             return (
-              <div>
+              <div id={`${hasHelpArticle(errorId) ? 'first-error-link' : ''}`}>
                 {(row.row.subRows.length === 0 &&
                   context?.currentTable &&
                   tableStyleAccessor[context?.currentTable] === tableStyleAccessor.issueId) ||
@@ -505,6 +526,17 @@ export const ProblemsTable = ({
     [context?.activeRow, context?.currentTable]
   );
 
+  window.onload = () => {
+    if (displayDialogBox) {
+      const target = document.querySelector('#first-error-link');
+      if (!errorLinkFound.current) {
+        localStorage.setItem('firstTimeVisit', 'false');
+      }
+      setTour(true);
+      target?.scrollIntoView({ block: 'center' });
+    }
+  };
+
   const onRowClick = React.useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (event: React.MouseEvent<Element, MouseEvent>, row: Row<Record<string, any>>): void => {
@@ -522,22 +554,54 @@ export const ProblemsTable = ({
     },
     [context, getFileNameFromId, processedWithIssues]
   );
+  const Steps = [
+    {
+      content: function customTemplate() {
+        return (
+          <div className='tour-Container'>
+            {/* <span className='tour-arrow-left'></span> */}
+            <span className={`${onlyLast.current ? 'tour-arrow-left-last' : 'tour-arrow-left'}`}></span>
+            <span className='tour-Content'>
+              We now have articles to explain the issue and provide potential solution. Click on the ID to access them
+            </span>
+            <button className='tour-Got-It' onClick={() => setTour(false)}>
+              Got It!
+            </button>
+          </div>
+        );
+      },
+      selector: '#first-error-link',
+    },
+  ];
 
   return (
-    <Table
-      onRowClick={onRowClick}
-      selectRowOnClick
-      enableVirtualization
-      className={classnames('isr-problems-table', className)}
-      columns={reorderColumn(columns)}
-      data={data}
-      emptyTableContent={`No ${context ? emptyTableDisplayStrings[context?.focusedIssue] : 'Data'}`}
-      emptyFilteredTableContent='No results found. Clear or try another filter.'
-      isSortable
-      initialState={{ sortBy: [{ id: 'level' }], hiddenColumns: !displayDetailsColumn ? ['details'] : [] }}
-      rowProps={rowProps}
-      {...rest}
-    />
+    <>
+      {!displayDetailsColumn && displayDialogBox && errorLinkFound.current && (
+        <Tour
+          steps={Steps}
+          isOpen={tour}
+          disableInteraction={true}
+          onRequestClose={() => {
+            setTour(false);
+          }}
+        />
+      )}
+
+      <Table
+        onRowClick={onRowClick}
+        selectRowOnClick
+        enableVirtualization
+        className={classnames('isr-problems-table', className)}
+        columns={reorderColumn(columns)}
+        data={data}
+        emptyTableContent={`No ${context ? emptyTableDisplayStrings[context?.focusedIssue] : 'Data'}`}
+        emptyFilteredTableContent='No results found. Clear or try another filter.'
+        isSortable
+        initialState={{ sortBy: [{ id: 'level' }], hiddenColumns: !displayDetailsColumn ? ['details'] : [] }}
+        rowProps={rowProps}
+        {...rest}
+      />
+    </>
   );
 };
 
