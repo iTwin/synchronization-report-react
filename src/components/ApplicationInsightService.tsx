@@ -18,8 +18,11 @@ export class ApplicationInsightService {
     this.appInsight.loadAppInsights();
   }
 
-  async trackCustomEvent(customEventName: string, customEventProperties?: Record<string, unknown>) {
+  trackCustomEvent(customEventName: string, customEventProperties?: Record<string, unknown>) {
     this.appInsight.trackEvent({ name: customEventName }, customEventProperties);
-    await this.appInsight.flush();
+  }
+
+  flushEvent() {
+    this.appInsight.flush();
   }
 }
