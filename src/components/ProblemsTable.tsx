@@ -101,7 +101,6 @@ export const ProblemsTable = ({
   sourceFilesInfo,
   className,
   displayDetailsColumn,
-  displayCalloutBox,
   onIssueArticleOpened,
   ...rest
 }: {
@@ -110,7 +109,6 @@ export const ProblemsTable = ({
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   sourceFilesInfo?: SourceFilesInfo;
   displayDetailsColumn?: boolean;
-  displayCalloutBox?: boolean;
   onIssueArticleOpened?: (issueId: string) => void;
 } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
@@ -136,6 +134,7 @@ export const ProblemsTable = ({
 
   React.useEffect(() => {
     if (!localStorage.getItem('firstTimeVisit') || localStorage.getItem('firstTimeVisit') === 'false') {
+      console.log('Visiting first time. So enabling dialog box');
       setDisplayDialogBox(true);
       localStorage.setItem('firstTimeVisit', 'true');
     }
@@ -302,11 +301,14 @@ export const ProblemsTable = ({
               : [undefined, undefined];
             if (!errorLinkFound.current && hasHelpArticle(errorId)) {
               if (indexValue == data.length - 1) {
+                console.log('Found the only last data');
                 onlyLast.current = true;
               }
               errorLinkFound.current = true;
+              console.log('Found one error link');
             }
             indexValue += 1;
+            console.log('Row Count: ', indexValue);
             return (
               <div id={`${hasHelpArticle(errorId) ? 'first-error-link' : ''}`}>
                 {(row.row.subRows.length === 0 &&
@@ -526,9 +528,15 @@ export const ProblemsTable = ({
   );
 
   window.onload = () => {
+    console.log('Window Loaded');
+    console.log('Error link found: ', errorLinkFound.current);
+    console.log('Dialog Box show: ', displayDialogBox);
+    console.log('Details column enabled: ', displayDetailsColumn);
     if (displayDialogBox) {
+      console.log('Dialog box is true. So starting the tour');
       const target = document.querySelector('#first-error-link');
       if (!errorLinkFound.current) {
+        console.log('No Error link present.');
         localStorage.setItem('firstTimeVisit', 'false');
       }
       setTour(true);
