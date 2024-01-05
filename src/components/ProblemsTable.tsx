@@ -117,6 +117,7 @@ export const ProblemsTable = ({
   const [displayDialogBox, setDisplayDialogBox] = React.useState(false);
   const onlyLast = React.useRef(false);
   const errorLinkFound = React.useRef(false);
+  const [dataLoaded, setDataLoaded] = React.useState(false);
   const filetypeIcons = React.useMemo(
     () => ({ ...defaultFileTypeIcons, ...userFileTypeIcons } as Record<string, JSX.Element>),
     [userFileTypeIcons]
@@ -309,6 +310,10 @@ export const ProblemsTable = ({
             }
             indexValue += 1;
             console.log('Row Count: ', indexValue);
+            if (indexValue == data.length - 1) {
+              console.log('Last record');
+              setDataLoaded(true);
+            }
             return (
               <div id={`${hasHelpArticle(errorId) ? 'first-error-link' : ''}`}>
                 {(row.row.subRows.length === 0 &&
@@ -527,22 +532,22 @@ export const ProblemsTable = ({
     [context?.activeRow, context?.currentTable]
   );
 
-  window.onload = () => {
-    console.log('Window Loaded');
-    console.log('Error link found: ', errorLinkFound.current);
-    console.log('Dialog Box show: ', displayDialogBox);
-    console.log('Details column enabled: ', displayDetailsColumn);
-    if (displayDialogBox) {
-      console.log('Dialog box is true. So starting the tour');
-      const target = document.querySelector('#first-error-link');
-      if (!errorLinkFound.current) {
-        console.log('No Error link present.');
-        localStorage.setItem('firstTimeVisit', 'false');
-      }
-      setTour(true);
-      target?.scrollIntoView({ block: 'center' });
-    }
-  };
+  // window.onload = () => {
+  //   console.log('Window Loaded');
+  //   console.log('Error link found: ', errorLinkFound.current);
+  //   console.log('Dialog Box show: ', displayDialogBox);
+  //   console.log('Details column enabled: ', displayDetailsColumn);
+  //   if (displayDialogBox) {
+  //     console.log('Dialog box is true. So starting the tour');
+  //     const target = document.querySelector('#first-error-link');
+  //     if (!errorLinkFound.current) {
+  //       console.log('No Error link present.');
+  //       localStorage.setItem('firstTimeVisit', 'false');
+  //     }
+  //     setTour(true);
+  //     target?.scrollIntoView({ block: 'center' });
+  //   }
+  // };
 
   const onRowClick = React.useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -581,6 +586,22 @@ export const ProblemsTable = ({
     },
   ];
 
+  React.useEffect(() => {
+    console.log('Window Loaded');
+    console.log('Error link found: ', errorLinkFound.current);
+    console.log('Dialog Box show: ', displayDialogBox);
+    console.log('Details column enabled: ', displayDetailsColumn);
+    if (displayDialogBox) {
+      console.log('Dialog box is true. So starting the tour');
+      const target = document.querySelector('#first-error-link');
+      if (!errorLinkFound.current) {
+        console.log('No Error link present.');
+        localStorage.setItem('firstTimeVisit', 'false');
+      }
+      setTour(true);
+      target?.scrollIntoView({ block: 'center' });
+    }
+  }, [dataLoaded]);
   return (
     <>
       {!displayDetailsColumn && displayDialogBox && errorLinkFound.current && (
