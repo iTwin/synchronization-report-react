@@ -114,7 +114,7 @@ export const ProblemsTable = ({
   const context = React.useContext(ReportContext);
   const workflowMapping = context?.workflowMapping;
   const [tour, setTour] = React.useState(false);
-  const [displayDialogBox, setDisplayDialogBox] = React.useState(false);
+  const dialog = React.useRef(false);
   const onlyLast = React.useRef(false);
   const errorLinkFound = React.useRef(false);
   const [dataLoaded, setDataLoaded] = React.useState(false);
@@ -136,7 +136,7 @@ export const ProblemsTable = ({
   React.useEffect(() => {
     if (!localStorage.getItem('firstTimeVisit') || localStorage.getItem('firstTimeVisit') === 'false') {
       console.log('Visiting first time. So enabling dialog box');
-      setDisplayDialogBox(true);
+      dialog.current = true;
       localStorage.setItem('firstTimeVisit', 'true');
     }
   }, []);
@@ -589,11 +589,15 @@ export const ProblemsTable = ({
   React.useEffect(() => {
     console.log('Window Loaded');
     console.log('Error link found: ', errorLinkFound.current);
-    console.log('Dialog Box show: ', displayDialogBox);
+    console.log('Dialog Box show: ', dialog.current);
     console.log('Details column enabled: ', displayDetailsColumn);
-    if (displayDialogBox) {
+    if (dialog.current) {
       console.log('Dialog box is true. So starting the tour');
       const target = document.querySelector('#first-error-link');
+      if (errorLinkFound.current && localStorage.getItem('firstTimeVisit') == 'false') {
+        console.log('here is the deal');
+        localStorage.setItem('firstTimeVisit', 'true');
+      }
       if (!errorLinkFound.current) {
         console.log('No Error link present.');
         localStorage.setItem('firstTimeVisit', 'false');
@@ -604,7 +608,7 @@ export const ProblemsTable = ({
   }, [dataLoaded]);
   return (
     <>
-      {!displayDetailsColumn && displayDialogBox && errorLinkFound.current && (
+      {!displayDetailsColumn && dialog.current && errorLinkFound.current && (
         <Tour
           steps={Steps}
           isOpen={tour}
@@ -618,7 +622,6 @@ export const ProblemsTable = ({
       <Table
         onRowClick={onRowClick}
         selectRowOnClick
-        enableVirtualization
         className={classnames('isr-problems-table', className)}
         columns={reorderColumn(columns)}
         data={data}
