@@ -101,7 +101,6 @@ export const ProblemsTable = ({
   sourceFilesInfo,
   className,
   displayDetailsColumn,
-  displayCalloutBox,
   onIssueArticleOpened,
   ...rest
 }: {
@@ -110,15 +109,15 @@ export const ProblemsTable = ({
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   sourceFilesInfo?: SourceFilesInfo;
   displayDetailsColumn?: boolean;
-  displayCalloutBox?: boolean;
   onIssueArticleOpened?: (issueId: string) => void;
 } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
   const workflowMapping = context?.workflowMapping;
   const [tour, setTour] = React.useState(false);
-  const [displayDialogBox, setDisplayDialogBox] = React.useState(false);
+  const dialog = React.useRef(false);
   const onlyLast = React.useRef(false);
   const errorLinkFound = React.useRef(false);
+  const [dataLoaded, setDataLoaded] = React.useState(false);
   const filetypeIcons = React.useMemo(
     () => ({ ...defaultFileTypeIcons, ...userFileTypeIcons } as Record<string, JSX.Element>),
     [userFileTypeIcons]
@@ -136,7 +135,8 @@ export const ProblemsTable = ({
 
   React.useEffect(() => {
     if (!localStorage.getItem('firstTimeVisit') || localStorage.getItem('firstTimeVisit') === 'false') {
-      setDisplayDialogBox(true);
+      console.log('Visiting first time. So enabling dialog box');
+      dialog.current = true;
       localStorage.setItem('firstTimeVisit', 'true');
     }
   }, []);
@@ -302,11 +302,18 @@ export const ProblemsTable = ({
               : [undefined, undefined];
             if (!errorLinkFound.current && hasHelpArticle(errorId)) {
               if (indexValue == data.length - 1) {
+                console.log('Found the only last data');
                 onlyLast.current = true;
               }
               errorLinkFound.current = true;
+              console.log('Found one error link');
             }
             indexValue += 1;
+            console.log('Row Count: ', indexValue);
+            if (indexValue == data.length - 1) {
+              console.log('Last record');
+              setDataLoaded(true);
+            }
             return (
               <div id={`${hasHelpArticle(errorId) ? 'first-error-link' : ''}`}>
                 {(row.row.subRows.length === 0 &&
@@ -525,16 +532,22 @@ export const ProblemsTable = ({
     [context?.activeRow, context?.currentTable]
   );
 
-  window.onload = () => {
-    if (displayDialogBox) {
-      const target = document.querySelector('#first-error-link');
-      if (!errorLinkFound.current) {
-        localStorage.setItem('firstTimeVisit', 'false');
-      }
-      setTour(true);
-      target?.scrollIntoView({ block: 'center' });
-    }
-  };
+  // window.onload = () => {
+  //   console.log('Window Loaded');
+  //   console.log('Error link found: ', errorLinkFound.current);
+  //   console.log('Dialog Box show: ', displayDialogBox);
+  //   console.log('Details column enabled: ', displayDetailsColumn);
+  //   if (displayDialogBox) {
+  //     console.log('Dialog box is true. So starting the tour');
+  //     const target = document.querySelector('#first-error-link');
+  //     if (!errorLinkFound.current) {
+  //       console.log('No Error link present.');
+  //       localStorage.setItem('firstTimeVisit', 'false');
+  //     }
+  //     setTour(true);
+  //     target?.scrollIntoView({ block: 'center' });
+  //   }
+  // };
 
   const onRowClick = React.useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -573,9 +586,29 @@ export const ProblemsTable = ({
     },
   ];
 
+  React.useEffect(() => {
+    console.log('Window Loaded');
+    console.log('Error link found: ', errorLinkFound.current);
+    console.log('Dialog Box show: ', dialog.current);
+    console.log('Details column enabled: ', displayDetailsColumn);
+    if (dialog.current) {
+      console.log('Dialog box is true. So starting the tour');
+      const target = document.querySelector('#first-error-link');
+      if (errorLinkFound.current && localStorage.getItem('firstTimeVisit') == 'false') {
+        console.log('here is the deal');
+        localStorage.setItem('firstTimeVisit', 'true');
+      }
+      if (!errorLinkFound.current) {
+        console.log('No Error link present.');
+        localStorage.setItem('firstTimeVisit', 'false');
+      }
+      setTour(true);
+      target?.scrollIntoView({ block: 'center' });
+    }
+  }, [dataLoaded]);
   return (
     <>
-      {!displayDetailsColumn && displayDialogBox && errorLinkFound.current && (
+      {!displayDetailsColumn && dialog.current && errorLinkFound.current && (
         <Tour
           steps={Steps}
           isOpen={tour}
@@ -589,7 +622,6 @@ export const ProblemsTable = ({
       <Table
         onRowClick={onRowClick}
         selectRowOnClick
-        enableVirtualization
         className={classnames('isr-problems-table', className)}
         columns={reorderColumn(columns)}
         data={data}
