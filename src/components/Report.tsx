@@ -140,6 +140,12 @@ export const Report = ({
   });
 
   useEffect(() => {
+    return () => {
+      onSyncReportClose();
+    };
+  }, [data]);
+
+  useEffect(() => {
     if (applicationInsightConnectionString) {
       applicationInsight.current = new ApplicationInsightService(applicationInsightConnectionString);
     }
