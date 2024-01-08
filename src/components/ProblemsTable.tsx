@@ -135,7 +135,6 @@ export const ProblemsTable = ({
 
   React.useEffect(() => {
     if (!localStorage.getItem('firstTimeVisit') || localStorage.getItem('firstTimeVisit') === 'false') {
-      console.log('Visiting first time. So enabling dialog box');
       dialog.current = true;
       localStorage.setItem('firstTimeVisit', 'true');
     }
@@ -302,16 +301,12 @@ export const ProblemsTable = ({
               : [undefined, undefined];
             if (!errorLinkFound.current && hasHelpArticle(errorId)) {
               if (indexValue == data.length - 1) {
-                console.log('Found the only last data');
                 onlyLast.current = true;
               }
               errorLinkFound.current = true;
-              console.log('Found one error link');
             }
             indexValue += 1;
-            console.log('Row Count: ', indexValue);
             if (indexValue == data.length - 1) {
-              console.log('Last record');
               setDataLoaded(true);
             }
             return (
@@ -532,23 +527,6 @@ export const ProblemsTable = ({
     [context?.activeRow, context?.currentTable]
   );
 
-  // window.onload = () => {
-  //   console.log('Window Loaded');
-  //   console.log('Error link found: ', errorLinkFound.current);
-  //   console.log('Dialog Box show: ', displayDialogBox);
-  //   console.log('Details column enabled: ', displayDetailsColumn);
-  //   if (displayDialogBox) {
-  //     console.log('Dialog box is true. So starting the tour');
-  //     const target = document.querySelector('#first-error-link');
-  //     if (!errorLinkFound.current) {
-  //       console.log('No Error link present.');
-  //       localStorage.setItem('firstTimeVisit', 'false');
-  //     }
-  //     setTour(true);
-  //     target?.scrollIntoView({ block: 'center' });
-  //   }
-  // };
-
   const onRowClick = React.useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (event: React.MouseEvent<Element, MouseEvent>, row: Row<Record<string, any>>): void => {
@@ -587,19 +565,12 @@ export const ProblemsTable = ({
   ];
 
   React.useEffect(() => {
-    console.log('Window Loaded');
-    console.log('Error link found: ', errorLinkFound.current);
-    console.log('Dialog Box show: ', dialog.current);
-    console.log('Details column enabled: ', displayDetailsColumn);
     if (dialog.current) {
-      console.log('Dialog box is true. So starting the tour');
       const target = document.querySelector('#first-error-link');
       if (errorLinkFound.current && localStorage.getItem('firstTimeVisit') == 'false') {
-        console.log('here is the deal');
         localStorage.setItem('firstTimeVisit', 'true');
       }
       if (!errorLinkFound.current) {
-        console.log('No Error link present.');
         localStorage.setItem('firstTimeVisit', 'false');
       }
       setTour(true);
