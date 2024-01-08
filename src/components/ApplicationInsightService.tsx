@@ -13,6 +13,8 @@ export class ApplicationInsightService {
       config: {
         connectionString: connectionString,
         extensions: [reactPlugin],
+        maxBatchInterval: 0,
+        isStorageUseDisabled: true,
       },
     });
     this.appInsight.loadAppInsights();

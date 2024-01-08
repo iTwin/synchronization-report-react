@@ -93,7 +93,7 @@ export interface SyncReportOpenedEventDataType {
 
 export interface IssueArticleOpenEventDataType {
   issueArticleOpenTelemetry?: issueArticleOpenTelemetryDataType;
-  onIssueArticleOpenEventPerform?: () => void;
+  onIssueArticleOpenEventPerform?: (issueId: string) => void;
 }
 
 export interface syncReportOpenTelemetryDataType {
@@ -118,4 +118,3 @@ export interface issueArticleOpenTelemetryDataType {
   isDetailsColumnEnabled?: string;
   ultimateId?: string;
 }
-// e

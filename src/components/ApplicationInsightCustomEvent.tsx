@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 import { ApplicationInsightService } from './ApplicationInsightService';
 import { TotalIssueCount } from './Report';
-import { syncReportOpenTelemetryDataType } from './report-data-typings';
+import { issueArticleOpenTelemetryDataType, syncReportOpenTelemetryDataType } from './report-data-typings';
 
 export function runSyncReportOpenEvent(
   applicationInsight?: ApplicationInsightService,
@@ -31,15 +31,14 @@ export function runSyncReportOpenEvent(
 export function runIssueArticleOpenEvent(
   applicationInsight?: ApplicationInsightService,
   clickedIssueId?: string,
-  issueArticlePropsData?: any,
-  onIssueArticleOpenEventPerform?: () => void
+  issueArticlePropsData?: issueArticleOpenTelemetryDataType,
+  onIssueArticleOpenEventPerform?: (issueId: string) => void
 ) {
   const issueArticleEventData = { issueId: clickedIssueId };
   const completeTelemtry = { ...issueArticlePropsData, ...issueArticleEventData };
 
   if (applicationInsight) {
     applicationInsight.trackCustomEvent('IssueArticleOpenedEvent', completeTelemtry);
-    applicationInsight.flushEvent();
   }
-  onIssueArticleOpenEventPerform?.();
+  onIssueArticleOpenEventPerform?.(clickedIssueId ? clickedIssueId : '');
 }
