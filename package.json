@@ -1,6 +1,6 @@
 {
   "name": "@itwin/synchronization-report-react",
-  "version": "2.1.12-dev.2",
+  "version": "2.1.12",
   "files": [
     "dist"
   ],
