@@ -105,6 +105,7 @@ export interface syncReportOpenTelemetryDataType {
   connectionId?: string;
   runId?: string;
   reportId?: string;
+  isDetailsColumnEnabled?: string;
   ultimateId?: string;
 }
 
