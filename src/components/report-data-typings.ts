@@ -106,6 +106,7 @@ export interface syncReportOpenTelemetryDataType {
   runId?: string;
   reportId?: string;
   isDetailsColumnEnabled?: string;
+  consumedApplicationName?: string;
   ultimateId?: string;
 }
 
@@ -117,5 +118,6 @@ export interface issueArticleOpenTelemetryDataType {
   runId?: string;
   reportId?: string;
   isDetailsColumnEnabled?: string;
+  consumedApplicationName?: string;
   ultimateId?: string;
 }
