@@ -7,11 +7,12 @@ import { ReactPlugin } from '@microsoft/applicationinsights-react-js';
 
 export class ApplicationInsightService {
   private appInsight: ApplicationInsights;
-  constructor(connectionString: string) {
+  constructor(connectionString?: string, instrumentationKey?: string) {
     const reactPlugin = new ReactPlugin();
     this.appInsight = new ApplicationInsights({
       config: {
         connectionString: connectionString,
+        instrumentationKey: instrumentationKey,
         extensions: [reactPlugin],
         maxBatchInterval: 0,
         isStorageUseDisabled: true,

@@ -102,12 +102,14 @@ export const Report = ({
   children,
   className,
   applicationInsightConnectionString,
+  applicationInsightInstrumentationKey,
   SyncReportOpenedEventProps,
   issueArticleOpenEventProps,
 }: {
   /** The report data should be compatible with the type definitions. */
   data: ReportData;
   applicationInsightConnectionString?: string;
+  applicationInsightInstrumentationKey?: string;
   SyncReportOpenedEventProps?: SyncReportOpenedEventDataType;
   issueArticleOpenEventProps?: IssueArticleOpenEventDataType;
   workflowMapping?: WorkflowMapping;
@@ -146,8 +148,11 @@ export const Report = ({
   }, [data]);
 
   useEffect(() => {
-    if (applicationInsightConnectionString) {
-      applicationInsight.current = new ApplicationInsightService(applicationInsightConnectionString);
+    if (applicationInsightConnectionString || applicationInsightInstrumentationKey) {
+      applicationInsight.current = new ApplicationInsightService(
+        applicationInsightConnectionString,
+        applicationInsightInstrumentationKey
+      );
     }
   }, []);
 
@@ -175,7 +180,11 @@ export const Report = ({
   }, [data]);
 
   const onSyncReportClose = useCallback(() => {
-    if (data != null && shouldRunAIEvent.current && applicationInsightConnectionString) {
+    if (
+      data != null &&
+      shouldRunAIEvent.current &&
+      (applicationInsightConnectionString || applicationInsightInstrumentationKey)
+    ) {
       shouldRunAIEvent.current = false;
       runSyncReportOpenEvent(
         applicationInsight.current,
