@@ -11,7 +11,6 @@ import type { TableProps } from '@itwin/itwinui-react';
 import type { FileRecord, SourceFile, SourceFilesInfo } from './report-data-typings';
 import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
 import './ProblemsTable.scss';
-import Tour from 'reactour';
 import {
   SvgFiletypeRevit,
   SvgFiletypeMicrostation,
@@ -100,7 +99,6 @@ export const ProblemsTable = ({
   fileTypeIcons: userFileTypeIcons,
   sourceFilesInfo,
   className,
-  displayDetailsColumn,
   onIssueArticleOpened,
   ...rest
 }: {
@@ -108,16 +106,10 @@ export const ProblemsTable = ({
   fileTypeIcons?: Record<string, JSX.Element>;
   displayStrings?: Partial<typeof defaultDisplayStrings>;
   sourceFilesInfo?: SourceFilesInfo;
-  displayDetailsColumn?: boolean;
   onIssueArticleOpened?: (issueId: string) => void;
 } & Partial<TableProps>) => {
   const context = React.useContext(ReportContext);
   const workflowMapping = context?.workflowMapping;
-  const [tour, setTour] = React.useState(false);
-  const dialog = React.useRef(false);
-  const onlyLast = React.useRef(false);
-  const errorLinkFound = React.useRef(false);
-  const [dataLoaded, setDataLoaded] = React.useState(false);
   const filetypeIcons = React.useMemo(
     () => ({ ...defaultFileTypeIcons, ...userFileTypeIcons } as Record<string, JSX.Element>),
     [userFileTypeIcons]
@@ -133,12 +125,6 @@ export const ProblemsTable = ({
     [sourceFilesInfo, context?.reportData.sourceFilesInfo]
   );
 
-  React.useEffect(() => {
-    if (!localStorage.getItem('firstTimeVisit') || localStorage.getItem('firstTimeVisit') === 'false') {
-      dialog.current = true;
-      localStorage.setItem('firstTimeVisit', 'true');
-    }
-  }, []);
   const fileData = React.useMemo(() => {
     const filesInfo = sourceFilesInfo || context?.reportData.sourceFilesInfo;
     return [
@@ -284,7 +270,7 @@ export const ProblemsTable = ({
     return indexA > indexB ? 1 : -1;
   }, []);
 
-  let indexValue = 0;
+  const indexValue = 0;
   const columns = React.useMemo(
     () =>
       [
@@ -295,44 +281,7 @@ export const ProblemsTable = ({
           Filter: tableFilters.TextFilter(),
           minWidth: 50,
           maxWidth: 170,
-          Cell: (row: CellProps<Report>) => {
-            const [errorId, groupCount] = row.row.original.issueid
-              ? row.row.original.issueid.split(' ', 2)
-              : [undefined, undefined];
-            if (!errorLinkFound.current && hasHelpArticle(errorId)) {
-              if (indexValue == data.length - 1) {
-                onlyLast.current = true;
-              }
-              errorLinkFound.current = true;
-            }
-            indexValue += 1;
-            if (indexValue == data.length - 1) {
-              setDataLoaded(true);
-            }
-            return (
-              <div id={`${hasHelpArticle(errorId) ? 'first-error-link' : ''}`}>
-                {(row.row.subRows.length === 0 &&
-                  context?.currentTable &&
-                  tableStyleAccessor[context?.currentTable] === tableStyleAccessor.issueId) ||
-                !errorId ? (
-                  ''
-                ) : hasHelpArticle(errorId) && !displayDetailsColumn ? (
-                  <>
-                    <Anchor
-                      href={getHelpArticleUrl(errorId)}
-                      target='_blank'
-                      onClick={() => context?.onIssueArticleOpened?.(errorId)}
-                    >
-                      {errorId}
-                    </Anchor>
-                    {groupCount ? ` ${groupCount}` : ''}
-                  </>
-                ) : (
-                  row.value
-                )}
-              </div>
-            );
-          },
+          Cell: (row: CellProps<Report>) => <div>{row.value}</div>,
         },
         {
           id: 'category',
@@ -544,52 +493,9 @@ export const ProblemsTable = ({
     },
     [context, getFileNameFromId, processedWithIssues]
   );
-  const Steps = [
-    {
-      content: function customTemplate() {
-        return (
-          <div className='tour-Container'>
-            {/* <span className='tour-arrow-left'></span> */}
-            <span className={`${onlyLast.current ? 'tour-arrow-left-last' : 'tour-arrow-left'}`}></span>
-            <span className='tour-Content'>
-              We now have articles to explain the issue and provide potential solution. Click on the ID to access them
-            </span>
-            <button className='tour-Got-It' onClick={() => setTour(false)}>
-              Got It!
-            </button>
-          </div>
-        );
-      },
-      selector: '#first-error-link',
-    },
-  ];
 
-  React.useEffect(() => {
-    if (dialog.current) {
-      const target = document.querySelector('#first-error-link');
-      if (errorLinkFound.current && localStorage.getItem('firstTimeVisit') == 'false') {
-        localStorage.setItem('firstTimeVisit', 'true');
-      }
-      if (!errorLinkFound.current) {
-        localStorage.setItem('firstTimeVisit', 'false');
-      }
-      setTour(true);
-      target?.scrollIntoView({ block: 'center' });
-    }
-  }, [dataLoaded]);
   return (
     <>
-      {!displayDetailsColumn && dialog.current && errorLinkFound.current && (
-        <Tour
-          steps={Steps}
-          isOpen={tour}
-          disableInteraction={true}
-          onRequestClose={() => {
-            setTour(false);
-          }}
-        />
-      )}
-
       <Table
         onRowClick={onRowClick}
         selectRowOnClick
@@ -599,7 +505,7 @@ export const ProblemsTable = ({
         emptyTableContent={`No ${context ? emptyTableDisplayStrings[context?.focusedIssue] : 'Data'}`}
         emptyFilteredTableContent='No results found. Clear or try another filter.'
         isSortable
-        initialState={{ sortBy: [{ id: 'level' }], hiddenColumns: !displayDetailsColumn ? ['details'] : [] }}
+        initialState={{ sortBy: [{ id: 'level' }] }}
         rowProps={rowProps}
         {...rest}
       />
