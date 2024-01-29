@@ -32,6 +32,12 @@ const helpArticles: { [issueId: string]: string } = {
   Ifc_0048: `${SyncWikiBaseUrl}/68292/inconsistent-data/#Ifc_0048`,
   SPPID_0001: `${SyncWikiBaseUrl}/68521/unexpected-data/#SPPID_0001`,
   SPPID_0002: `${SyncWikiBaseUrl}/68521/unexpected-data/#SPPID_0002`,
+  Dgn_0188: `${SyncWikiBaseUrl}/68291/missing-data/#Dgn_0188`,
+  Dwg_0162: `${SyncWikiBaseUrl}/68522/data-access#Dwg_0162`,
+  Civil_0004: `${SyncWikiBaseUrl}/68291/missing-data/#Civil_0004`,
+  Civil_0010: `${SyncWikiBaseUrl}/68291/missing-data/#Civil_0010`,
+  DgnV8_0046: `${SyncWikiBaseUrl}/68291/missing-data/#DgnV8_0046`,
+  DgnV8_0057: `${SyncWikiBaseUrl}/69202/visual-fidelity/#DgnV8_0057`,
 };
 
 export function hasHelpArticle(issueId: string | undefined): boolean {
