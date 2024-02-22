@@ -270,7 +270,6 @@ export const ProblemsTable = ({
     return indexA > indexB ? 1 : -1;
   }, []);
 
-  const indexValue = 0;
   const columns = React.useMemo(
     () =>
       [
