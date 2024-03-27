@@ -1,0 +1,90 @@
+trigger:
+  - main
+
+pr:
+  - main
+
+name: $(date:yyyy.MM.dd)$(Rev:.r)
+
+resources:
+  repositories:
+    - repository: build-pipeline-scripts
+      type: git
+      name: iModelTechnologies/imodeljs-build-pipeline-scripts
+
+stages:
+  - stage: Build
+    displayName: Build
+    jobs:
+      - job: Build
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - checkout: self
+            clean: all
+
+          - task: NodeTool@0
+            displayName: Use Node 14.x
+            inputs:
+              versionSpec: 14.x
+              latest: true
+
+          - task: npmAuthenticate@0
+            inputs:
+              workingFile: .npmrc
+
+          - script: npm install
+            displayName: npm install
+
+          - script: npm audit
+            displayName: npm audit
+
+          - script: npm run build
+            displayName: npm build
+
+          - script: npm run build:package
+            displayName: npm build package
+
+          - bash: |
+              pkgName=$(node -p "require('./package.json').name")
+              pkgVer=$(node -p "require('./package.json').version")
+              ver=$(npm view $pkgName version)
+              if [ -z "$ver" ]; then
+                ver=0.0.0
+                echo "\$ver is empty"
+              fi
+              echo "Server version found: $ver"
+              echo "Local version found: $pkgVer"
+              if [ "$ver" != "$pkgVer" ] && [ "$(printf '%s\n' "$ver" "$pkgVer" | sort -V | head -n1)" = "$ver" ]; then
+                newer=true
+              else
+                newer=false
+              fi
+              echo "##vso[task.setvariable variable=shouldPublish;isOutput=true]$newer"
+              echo "##vso[task.setvariable variable=version;isOutput=true]$pkgVer"
+              echo "Should publish: $newer"
+            name: checkPublish
+            displayName: Check if should publish
+            condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'))
+
+          - bash: npm pack
+            displayName: npm pack
+            condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['checkPublish.shouldPublish'], 'true'))
+
+          - publish: itwin-synchronization-report-datatypes-$(checkPublish.version).tgz
+            artifact: tarball
+            displayName: Publish packed file
+            condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['checkPublish.shouldPublish'], 'true'))
+
+  - stage: PublishNpmjs
+    displayName: Publish to Npmjs
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'IndividualCI'), eq(dependencies.Build.outputs['Build.checkPublish.shouldPublish'], 'true'))
+    variables:
+      version: $[ stageDependencies.Build.Build.outputs['checkPublish.version'] ]
+
+    jobs:
+      - template: templates/npmjs-publish-deployment.yaml@build-pipeline-scripts
+        parameters:
+          path: itwin-synchronization-report-datatypes-$(checkPublish.version).tgz
+          artifactName: tarball

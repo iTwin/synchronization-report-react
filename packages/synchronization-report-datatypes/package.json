@@ -1,0 +1,25 @@
+{
+  "name": "@itwin/synchronization-report-datatypes",
+  "version": "1.0.0-dev.0",
+  "description": "Synchronization report datatypes",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "type": "module",
+  "author": "Sneha.Inamdar@bentley.com",
+  "files": [
+    "build/**/*"
+  ],
+  "devDependencies": {
+    "typescript": "5.3.3",
+    "rimraf": "^3.0.2"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf build && rimraf node_modules",
+    "reinstall": "npm run clean && npm install",
+    "rebuild": "npm run clean && npm install && npm run build",
+    "build:types": "tsc --emitDeclarationOnly --outDir dist",
+    "build:package": "npm run clean && npm run build && npm run build:types"
+  }
+}
+

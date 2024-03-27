@@ -1,0 +1,12 @@
+{
+    "exclude": ["node_modules", "build"],
+    "include": ["src"],
+    "compilerOptions": {
+        "module": "CommonJS",
+        "target": "es5",
+        "declaration": true,
+        "outDir": "build",
+        "skipLibCheck": true,
+        "strict": true
+    }
+}
