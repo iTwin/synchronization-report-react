@@ -2,11 +2,18 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
+export type AdditionalPropsType = {
+  propertyName: string;
+  value: unknown;
+};
+
 export type ReportData = {
   context?: ReportDataContext;
   sourceFilesInfo?: SourceFilesInfo;
   filerecords?: FileRecord[];
   elementRecords?: ElementRecord[];
+  [k: string]: unknown;
+  additionalPropsForUI?: AdditionalPropsType[]; // We will use this only if we need to show some additional properties in the UI and it applies same for all other datatypes.
 };
 
 export type Workflow = string;
@@ -23,6 +30,8 @@ export type ElementRecord = {
   elementids?: string;
   reason?: string;
   repositorylinkId?: string;
+  [k: string]: unknown;
+  additionalPropsForUI?: AdditionalPropsType[];
 };
 
 export type SourceFilesInfo = {
@@ -34,6 +43,8 @@ export type SourceFilesInfo = {
   fileExists?: boolean;
   bimFileExists?: boolean;
   Files?: SourceFile[];
+  [k: string]: unknown;
+  additionalPropsForUI?: AdditionalPropsType[];
 };
 
 export type SourceFile = {
@@ -46,6 +57,7 @@ export type SourceFile = {
   iModelFileId?: string;
   failureReason?: string;
   [k: string]: unknown;
+  additionalPropsForUI?: AdditionalPropsType[];
 };
 
 export type ReportDataContext = {
@@ -57,6 +69,8 @@ export type ReportDataContext = {
   activityid?: string;
   briefcaseid?: string;
   timestamp?: string;
+  [k: string]: unknown;
+  additionalPropsForUI?: AdditionalPropsType[];
 };
 
 export type FileRecord = {
@@ -65,15 +79,17 @@ export type FileRecord = {
     identifier?: string;
     path?: string;
     [k: string]: unknown;
+    additionalPropsForUI?: AdditionalPropsType[];
   };
+  [k: string]: unknown;
+  additionalPropsForUI?: AdditionalPropsType[];
 };
 
 export type AuditRecord = {
   auditinfo?: AuditInfo;
-  elementinfo?: {
-    ecinstanceid?: string;
-    sourceid?: string;
-  };
+  elementinfo?: ElementInfo;
+  [k: string]: unknown;
+  additionalPropsForUI?: AdditionalPropsType[];
 };
 
 export type AuditInfo = {
@@ -84,6 +100,14 @@ export type AuditInfo = {
   type?: string;
   fileName?: string;
   [k: string]: unknown;
+  additionalPropsForUI?: AdditionalPropsType[];
+};
+
+export type ElementInfo = {
+  ecinstanceid?: string;
+  sourceid?: string;
+  [k: string]: unknown;
+  additionalPropsForUI?: AdditionalPropsType[];
 };
 
 export interface SyncReportOpenedEventDataType {
@@ -108,6 +132,8 @@ export interface syncReportOpenTelemetryDataType {
   isDetailsColumnEnabled?: string;
   consumedApplicationName?: string;
   ultimateId?: string;
+  [k: string]: unknown;
+  additionalPropsForAppInsights?: AdditionalPropsType[]; // We will use this only if we need to show multiple additional properties in Application Insights
 }
 
 export interface issueArticleOpenTelemetryDataType {
@@ -120,4 +146,6 @@ export interface issueArticleOpenTelemetryDataType {
   isDetailsColumnEnabled?: string;
   consumedApplicationName?: string;
   ultimateId?: string;
+  [k: string]: unknown;
+  additionalPropsForAppInsights?: AdditionalPropsType[]; // We will use this only if we need to show multiple additional properties in Application Insights .
 }
