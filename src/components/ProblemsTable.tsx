@@ -484,7 +484,6 @@ export const ProblemsTable = ({
         context?.setCurrentAuditInfo({
           ...row.original,
           fileName: row.original.fileName ?? getFileNameFromId(row.original.fileId),
-          fileStatus: processedWithIssues[row.original.fileId],
         });
 
         context?.setActiveRow(row.id);
