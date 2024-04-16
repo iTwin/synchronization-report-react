@@ -36,11 +36,13 @@ const defaultDisplayStrings = {
 
 export const ReportInfoPanel = ({
   displayStrings: userDisplayStrings,
+  showFileStatus,
   onIssueArticleOpened,
   className,
   ...rest
 }: {
   displayStrings?: Partial<typeof defaultDisplayStrings>;
+  showFileStatus?: boolean;
   onIssueArticleOpened?: (issueId: string) => void;
   className?: string;
 }) => {
@@ -121,27 +123,29 @@ export const ReportInfoPanel = ({
             {currentAuditInfo.fileName}
           </span>
         )}
-        <span>
-          <Label as='span'>{displayStrings['fileStatus']}</Label>
-          <span className='isr-icon-inline'>
-            {!currentAuditInfo?.fileExists && !currentAuditInfo?.bimFileExists ? (
-              <>
-                <StatusIcon status='error' />
-                {displayStrings['failed']}
-              </>
-            ) : currentAuditInfo.fileId && currentAuditInfo.fileStatus ? (
-              <>
-                <StatusIcon status='warning' />
-                {displayStrings['processedWithIssues']}
-              </>
-            ) : (
-              <>
-                <StatusIcon status='success' />
-                {displayStrings['processed']}
-              </>
-            )}
+        {showFileStatus && (
+          <span>
+            <Label as='span'>{displayStrings['fileStatus']}</Label>
+            <span className='isr-icon-inline'>
+              {!currentAuditInfo?.fileExists && !currentAuditInfo?.bimFileExists ? (
+                <>
+                  <StatusIcon status='error' />
+                  {displayStrings['failed']}
+                </>
+              ) : currentAuditInfo.fileId && currentAuditInfo.fileStatus ? (
+                <>
+                  <StatusIcon status='warning' />
+                  {displayStrings['processedWithIssues']}
+                </>
+              ) : (
+                <>
+                  <StatusIcon status='success' />
+                  {displayStrings['processed']}
+                </>
+              )}
+            </span>
           </span>
-        </span>
+        )}
         {currentAuditInfo?.path && (
           <span>
             <Label as='span'>{displayStrings['filePath']}</Label>
