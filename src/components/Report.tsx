@@ -42,7 +42,6 @@ type AuditInfo = Partial<{
   path: string;
   fileId: string;
   dataSource: string;
-  fileStatus: boolean;
   fileExists: boolean;
   bimFileExists: boolean;
 }>;
