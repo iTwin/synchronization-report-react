@@ -8,7 +8,7 @@ import { Text } from '@itwin/itwinui-react';
 import SvgClock from '@itwin/itwinui-icons-react/cjs/icons/Clock';
 import './ReportTimestamp.scss';
 import SvgDocument from '@itwin/itwinui-icons-react/cjs/icons/Document';
-import { SourceFile } from './report-data-typings';
+import { ReportType, SourceFile } from './report-data-typings';
 
 const defaultDisplayStrings = {
   syncTime: 'Sync Time',
@@ -32,7 +32,7 @@ export const ReportTimestamp = ({
   className?: string;
 }) => {
   const context = React.useContext(ReportContext);
-
+  const reportType = context?.reportData.context?.reportType;
   if (!timestamp && !filesCount) {
     if (!context) {
       throw new Error(
@@ -80,8 +80,12 @@ export const ReportTimestamp = ({
       <span>
         <Text>
           {' '}
-          <SvgClock /> {date} {time} {displayStrings.syncTime} | <SvgDocument /> {processedFilesCount}/{filesCount}{' '}
-          {displayStrings.files}
+          <SvgClock /> {date} {time} {displayStrings.syncTime}
+          {reportType !== ReportType.TransformationReport ? (
+            <>
+              | <SvgDocument /> {processedFilesCount}/{filesCount} {displayStrings.files}
+            </>
+          ) : null}
         </Text>
       </span>
     </div>

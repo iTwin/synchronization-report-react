@@ -22,6 +22,11 @@ export type Type = {
   [type: string]: Workflow[];
 };
 
+export enum ReportType {
+  TransformationReport = 'TransformationUserReport',
+  SynchronizationDetailReport = 'detailReport',
+  SynchronizationSummaryReport = 'summaryReport',
+}
 export type WorkflowMapping = {
   [category: string]: Type;
 };
@@ -61,7 +66,7 @@ export type SourceFile = {
 };
 
 export type ReportDataContext = {
-  reportType?: string;
+  reportType?: ReportType;
   operationType?: string;
   jobid?: string;
   contextid?: string;
