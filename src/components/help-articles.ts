@@ -2,8 +2,8 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-const SyncWikiBaseUrl =
-  'https://communities.bentley.com/products/digital-twin-cloud-services/itwin-services/w/synchronization-wiki';
+// const SyncWikiBaseUrl =
+//   'https://communities.bentley.com/products/digital-twin-cloud-services/itwin-services/w/synchronization-wiki';
 
 const NewKBArticleBaseUrl = 'https://bentleysystems.service-now.com/community?id=kb_article_view&sysparm_article=';
 
@@ -23,7 +23,6 @@ const helpArticles: { [issueId: string]: string } = {
   Dgn_0214: `${NewKBArticleBaseUrl}KB0098314#Dgn_0214`,
   Dgn_0215: `${NewKBArticleBaseUrl}KB0098322#Dgn_0215`,
   Dgn_0060: `${NewKBArticleBaseUrl}KB0098355#Dgn_0060`,
-  Dgn_0022: `${SyncWikiBaseUrl}/69202/visual-fidelity/#DGN_0022`,
   Dgn_0188: `${NewKBArticleBaseUrl}KB0098314#Dgn_0188`,
   Dgn_0200: `${NewKBArticleBaseUrl}KB0098322#Dgn_0200`,
   DgnV8_0005: `${NewKBArticleBaseUrl}KB0098329#DgnV8_0005`,
