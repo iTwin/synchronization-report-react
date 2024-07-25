@@ -19,7 +19,7 @@ const helpArticles: { [issueId: string]: string } = {
   Dgn_0204: `${NewKBArticleBaseUrl}KB0098322#Dgn_0204`,
   Dgn_0066: `${NewKBArticleBaseUrl}KB0098331#Dgn_0066`,
   Dgn_0199: `${NewKBArticleBaseUrl}KB0098331#dgn_0199`,
-  Dgn_0205: `${NewKBArticleBaseUrl}KB0098322#Dgn_0205`,
+  Dgn_0205: `${NewKBArticleBaseUrl}KB0098322#OutlierElements`,
   Dgn_0214: `${NewKBArticleBaseUrl}KB0098314#Dgn_0214`,
   Dgn_0215: `${NewKBArticleBaseUrl}KB0098322#Dgn_0215`,
   Dgn_0060: `${NewKBArticleBaseUrl}KB0098355#Dgn_0060`,
