@@ -1,6 +1,6 @@
 {
   "name": "@itwin/synchronization-report-react",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "files": [
     "dist"
   ],
@@ -17,8 +17,7 @@
     "@itwin/itwinui-react": "^2.5.0",
     "@microsoft/applicationinsights-react-js": "^17.0.2",
     "@microsoft/applicationinsights-web": "^3.0.5",
-    "classnames": "^2.3.1",
-    "vite-plugin-svgr": "^3.2.0"
+    "classnames": "^2.3.1"
   },
   "devDependencies": {
     "@cypress/react": "^8.0.0",
@@ -46,7 +45,8 @@
     "rimraf": "^3.0.2",
     "sass": "^1.43.4",
     "typescript": "^4.8.4",
-    "vite": "^3.2.7"
+    "vite": "^3.2.7",
+    "vite-plugin-svgr": "^3.2.0"
   },
   "scripts": {
     "start": "vite",
