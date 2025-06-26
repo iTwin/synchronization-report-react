@@ -18,7 +18,7 @@ export default defineConfig({
   ],
   css: { preprocessorOptions: { css: { charset: false }, scss: { charset: false } } },
   build: {
-    target: 'es2018',
+    target: 'es2020',
     lib: {
       entry: path.resolve(__dirname, 'src/components/index.tsx'),
       name: '@itwin/synchronization-report-react',
@@ -26,17 +26,7 @@ export default defineConfig({
       fileName: () => 'index.js',
     },
     rollupOptions: {
-      external: [
-        'react',
-        'react-dom',
-        '@itwin/itwinui-react',
-        '@itwin/itwinui-css',
-        '@itwin/itwinui-variables',
-        'react-table',
-        'classnames',
-        'tippy.js',
-        '@tippyjs/react',
-      ],
+      external: ['react', 'react-dom', '@itwin/itwinui-react', 'react-table', 'classnames'],
       output: {
         globals: { react: 'React' },
       },

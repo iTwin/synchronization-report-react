@@ -7,9 +7,8 @@ import classnames from 'classnames';
 import { Anchor, Badge, DefaultCell, Table, tableFilters } from '@itwin/itwinui-react';
 import { Issues, ReportContext, Tables } from './Report';
 import { ClampWithTooltip, StatusIcon } from './utils';
-import type { TableProps } from '@itwin/itwinui-react';
 import type { FileRecord, SourceFile, SourceFilesInfo } from './report-data-typings';
-import type { Column, Row, CellProps, CellRendererProps } from 'react-table';
+import type { Column, Row, CellProps, CellRendererProps, TableProps } from '@itwin/itwinui-react/react-table';
 import './ProblemsTable.scss';
 import {
   SvgFiletypeRevit,
@@ -356,7 +355,7 @@ export const ProblemsTable = ({
               tableStyleAccessor[context?.currentTable] === tableStyleAccessor.files ? (
               <div></div>
             ) : (
-              <>
+              <div className='isr-file-name-container'>
                 <div className='isr-table-cell-start-icon'>
                   {extension && extension in filetypeIcons ? (
                     filetypeIcons[extension]
@@ -370,7 +369,7 @@ export const ProblemsTable = ({
                     <Badge backgroundColor='primary'>{displayStrings['mainFile']}</Badge>
                   )}
                 </div>
-              </>
+              </div>
             );
           },
         },
@@ -498,7 +497,7 @@ export const ProblemsTable = ({
         onRowClick={onRowClick}
         selectRowOnClick
         className={classnames('isr-problems-table', className)}
-        columns={reorderColumn(columns)}
+        columns={reorderColumn(columns) as Column<Record<string, any>>[]}
         data={data}
         emptyTableContent={`No ${context ? emptyTableDisplayStrings[context?.focusedIssue] : 'Data'}`}
         emptyFilteredTableContent='No results found. Clear or try another filter.'

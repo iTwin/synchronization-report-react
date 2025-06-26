@@ -16,7 +16,7 @@ import { ReportTimestamp } from './ReportTimestamp';
 import { ReportBanner } from './ReportBanner';
 import { ReportTableSelect } from './ReportTableSelect';
 import { ReportTableSelectWrapper } from './ReportTableSelectWrapper';
-import { Label, ThemeProvider } from '@itwin/itwinui-react';
+import { Label } from '@itwin/itwinui-react';
 import { ReportInfoPanel } from './ReportInfoPanel';
 import { ReportInfoPanelWrapper } from './ReportInfoPanelWrapper';
 import { ReportHeaderBannerWrapper } from './ReportHeaderBannerWrapper';
@@ -208,48 +208,46 @@ export const Report = ({
   }, []);
 
   return (
-    <ThemeProvider theme='inherit'>
-      <ReportContext.Provider
-        value={{
-          reportData: data,
-          workflowMapping,
-          currentTable: selectedTable,
-          setCurrentTable: setSelectedTable,
-          currentAuditInfo,
-          setCurrentAuditInfo,
-          focusedIssue: focusedIssue,
-          setFocusedIssue: setFocusedIssue,
-          focusedWorkflows: focusedWorkflows,
-          setFocusedWorkflows: setFocusedWorkflows,
-          activeRow: activeRow,
-          setActiveRow: setActiveRow,
-          onIssueArticleOpened: onIssueArticleOpened,
-        }}
-      >
-        <div className={classnames('isr-report-main', className)}>
-          {children ?? (
-            <>
-              <ReportTitleWrapper>
-                <ReportTitle />
-                <ReportDebugIds />
-              </ReportTitleWrapper>
-              <ReportTimestamp />
-              <ReportHeaderBannerWrapper>
-                <Label as='span'>Issues found by severity</Label>
-                <ReportBanner />
-              </ReportHeaderBannerWrapper>
-              <ReportTableSelectWrapper>
-                <ReportTableSelect />
-              </ReportTableSelectWrapper>
-              <ReportInfoPanelWrapper>
-                <ProblemsTable />
-                <ReportInfoPanel />
-              </ReportInfoPanelWrapper>
-            </>
-          )}
-        </div>
-      </ReportContext.Provider>
-    </ThemeProvider>
+    <ReportContext.Provider
+      value={{
+        reportData: data,
+        workflowMapping,
+        currentTable: selectedTable,
+        setCurrentTable: setSelectedTable,
+        currentAuditInfo,
+        setCurrentAuditInfo,
+        focusedIssue: focusedIssue,
+        setFocusedIssue: setFocusedIssue,
+        focusedWorkflows: focusedWorkflows,
+        setFocusedWorkflows: setFocusedWorkflows,
+        activeRow: activeRow,
+        setActiveRow: setActiveRow,
+        onIssueArticleOpened: onIssueArticleOpened,
+      }}
+    >
+      <div className={classnames('isr-report-main', className)}>
+        {children ?? (
+          <>
+            <ReportTitleWrapper>
+              <ReportTitle />
+              <ReportDebugIds />
+            </ReportTitleWrapper>
+            <ReportTimestamp />
+            <ReportHeaderBannerWrapper>
+              <Label as='span'>Issues found by severity</Label>
+              <ReportBanner />
+            </ReportHeaderBannerWrapper>
+            <ReportTableSelectWrapper>
+              <ReportTableSelect />
+            </ReportTableSelectWrapper>
+            <ReportInfoPanelWrapper>
+              <ProblemsTable />
+              <ReportInfoPanel />
+            </ReportInfoPanelWrapper>
+          </>
+        )}
+      </div>
+    </ReportContext.Provider>
   );
 };
 

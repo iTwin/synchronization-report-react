@@ -5,9 +5,8 @@
 import * as React from 'react';
 import './ReportDebugIds.scss';
 import { ReportContext } from './Report';
-import { Button, Label, Surface, Text } from '@itwin/itwinui-react';
+import { Button, Label, Surface, Text, Popover } from '@itwin/itwinui-react';
 import { ReportDataContext } from './report-data-typings';
-import Tippy from '@tippyjs/react';
 
 const defaultDisplayStrings = {
   activityid: 'Activity Id',
@@ -49,6 +48,7 @@ export type ReportDebugIdsProps = {
  */
 export const ReportDebugIds = (props: ReportDebugIdsProps) => {
   const { data } = props;
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const context = React.useContext(ReportContext);
   const reportData = props.data?.reportData || context?.reportData.context;
@@ -74,7 +74,7 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
 
   return (
     <div className={props.className}>
-      <Tippy
+      <Popover
         content={
           <Surface elevation={1} className='isr-support-debugIDWrapper'>
             {debugIds['Activity Id'] && (
@@ -146,14 +146,14 @@ export const ReportDebugIds = (props: ReportDebugIdsProps) => {
             {props.children}
           </Surface>
         }
-        trigger='click'
-        interactive={true}
-        placement='auto-start'
+        visible={isOpen}
+        onVisibleChange={setIsOpen}
+        placement='left-start'
       >
-        <Button className='isr-support-open' styleType='borderless' size='small'>
+        <Button className='isr-support-open' styleType='borderless' size='small' onClick={() => setIsOpen(!isOpen)}>
           {displayStrings.idsForTechSupport}
         </Button>
-      </Tippy>
+      </Popover>
     </div>
   );
 };
