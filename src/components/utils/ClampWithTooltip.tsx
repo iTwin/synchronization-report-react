@@ -16,7 +16,7 @@ export const ClampWithTooltip = ({
   className?: string;
 }) => {
   return (
-    <Tooltip content={children} appendTo={() => document.body}>
+    <Tooltip content={children}>
       <span className={classnames('isr-line-clamp', className)} {...rest}>
         {children}
       </span>
