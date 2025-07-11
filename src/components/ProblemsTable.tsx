@@ -439,7 +439,7 @@ export const ProblemsTable = ({
   const rowProps = React.useCallback(
     ({
       id,
-      original: { level, fileExists, bimFileExists },
+      original: { level, fileExists },
     }): {
       status?: Status;
       className?: string;
@@ -466,7 +466,7 @@ export const ProblemsTable = ({
           className: `isr-table-row table-row__${isActiveRow ? 'active' : 'inactive'}`,
         };
       } else if (context?.currentTable === TableTypeNames.Files) {
-        return !fileExists && !bimFileExists ? { status: 'negative' } : {};
+        return !fileExists ? { status: 'negative' } : {};
       }
 
       return { status: undefined };

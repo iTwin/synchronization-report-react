@@ -73,7 +73,7 @@ export const ReportTimestamp = ({
     return [];
   }, [context?.reportData.sourceFilesInfo, filesProcessed]);
 
-  const processedFilesCount = allFilesProcessed.filter((file) => file.fileExists && file.bimFileExists).length;
+  const processedFilesCount = allFilesProcessed.filter((file) => file.fileExists).length;
 
   return (
     <div className='isr-timestamp-container'>
