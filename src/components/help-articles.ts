@@ -56,6 +56,7 @@ const helpArticles: { [issueId: string]: string } = {
   Ifc_0034: `${NewKBArticleBaseUrl}KB0098314#Ifc_0034`,
   Ifc_0042: `${NewKBArticleBaseUrl}KB0098331#Ifc_0042`,
   Ifc_0038: `${NewKBArticleBaseUrl}KB0098314#Ifc_0038`,
+  IfcFl_0063: `${NewKBArticleBaseUrl}KB0098325#IfcFl_0063`,
   Nwd_0010: `${NewKBArticleBaseUrl}KB0098325#Nwd_0010`,
   NWD_0012: `${NewKBArticleBaseUrl}KB0098314#NWD_0012`,
   Revit_0002: `${NewKBArticleBaseUrl}KB0098314#Revit0002`,
