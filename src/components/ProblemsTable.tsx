@@ -167,14 +167,38 @@ export const ProblemsTable = ({
 
       const processedReports = [];
       for (const topLevel of Object.keys(expandableReports)) {
-        let processedReport: ExpandableFileReport = {
-          [expandableColumn as keyof Report]: `${topLevel} (${expandableReports[topLevel].length})`,
-          subRows: expandableReports[topLevel],
-        };
+        const groupRows = expandableReports[topLevel];
+
         if (isFileTable) {
-          processedReport = { ...processedReport, ...fileDataHash[topLevel] };
+          const fileId = topLevel;
+          const fileInfo = fileDataHash[fileId];
+          const fileName = fileInfo?.fileName ?? getFileNameFromId(fileId) ?? fileId;
+
+          // Compute highest severity among file issues as file can have Error, Warning and Info.
+          const severityOrder: Report['level'][] = ['Fatal', 'Error', 'Critical', 'Warning', 'Info'];
+          const highestSeverityLevel = groupRows.reduce<Report['level'] | undefined>((currentSeverityLevel, row) => {
+            if (!row.level) return currentSeverityLevel;
+            if (!currentSeverityLevel) return row.level;
+            const currentIndex = severityOrder.indexOf(currentSeverityLevel);
+            const newIndex = severityOrder.indexOf(row.level);
+            return newIndex !== -1 && (currentIndex === -1 || newIndex < currentIndex)
+              ? row.level
+              : currentSeverityLevel;
+          }, undefined);
+
+          processedReports.push({
+            ...(fileInfo ?? ({} as SourceFile)),
+            fileId,
+            fileName,
+            level: highestSeverityLevel,
+            subRows: groupRows,
+          });
+        } else {
+          processedReports.push({
+            [expandableColumn as keyof Report]: `${topLevel} (${groupRows.length})`,
+            subRows: groupRows,
+          } as ExpandableFileReport);
         }
-        processedReports.push(processedReport);
       }
 
       if (isFileTable) {
@@ -444,29 +468,28 @@ export const ProblemsTable = ({
       status?: Status;
       className?: string;
     } => {
-      if (context?.currentTable === TableTypeNames.Problems) {
-        const isActiveRow = id === context?.activeRow;
-        let statusConverted = undefined;
-
+      const getStatusFromLevel = (level?: Report['level']): Status | undefined => {
         switch (level) {
           case 'Critical':
           case 'Error':
           case 'Fatal':
-            statusConverted = 'negative';
-            break;
+            return 'negative';
           case 'Warning':
-            statusConverted = 'warning';
-            break;
+            return 'warning';
           default:
             break;
         }
-
+      };
+      if (context?.currentTable === TableTypeNames.Problems) {
+        const isActiveRow = id === context?.activeRow;
         return {
-          status: statusConverted as Status,
+          status: getStatusFromLevel(level),
           className: `isr-table-row table-row__${isActiveRow ? 'active' : 'inactive'}`,
         };
       } else if (context?.currentTable === TableTypeNames.Files) {
-        return !fileExists ? { status: 'negative' } : {};
+        return {
+          status: getStatusFromLevel(level),
+        };
       }
 
       return { status: undefined };
