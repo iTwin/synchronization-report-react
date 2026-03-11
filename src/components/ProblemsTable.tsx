@@ -297,6 +297,38 @@ export const ProblemsTable = ({
     () =>
       [
         {
+          id: 'level',
+          accessor: 'level',
+          Header: displayStrings.level,
+          Filter: tableFilters.TextFilter(),
+          minWidth: 50,
+          maxWidth: 170,
+          sortType: sortByLevel,
+          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<Report>) => {
+            const level = cellProps.row.original.level;
+            const _isError = level === 'Error' || level === 'Fatal' || level === 'Critical';
+            const _isWarning = level === 'Warning';
+
+            return (
+              <DefaultCell
+                cellElementProps={cellElementProps}
+                cellProps={cellProps}
+                startIcon={
+                  _isError ? (
+                    <StatusIcon status='error' />
+                  ) : _isWarning ? (
+                    <StatusIcon status='warning' />
+                  ) : level ? (
+                    <StatusIcon status='informational' />
+                  ) : undefined
+                }
+              >
+                {level}
+              </DefaultCell>
+            );
+          },
+        },
+        {
           id: 'issueid',
           accessor: 'issueid',
           Header: displayStrings.issueId,
@@ -331,38 +363,6 @@ export const ProblemsTable = ({
           maxWidth: 170,
           Cell: (row: CellProps<Report>) => {
             return <div>{row.value}</div>;
-          },
-        },
-        {
-          id: 'level',
-          accessor: 'level',
-          Header: displayStrings.level,
-          Filter: tableFilters.TextFilter(),
-          minWidth: 50,
-          maxWidth: 170,
-          sortType: sortByLevel,
-          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<Report>) => {
-            const level = cellProps.row.original.level;
-            const _isError = level === 'Error' || level === 'Fatal' || level === 'Critical';
-            const _isWarning = level === 'Warning';
-
-            return (
-              <DefaultCell
-                cellElementProps={cellElementProps}
-                cellProps={cellProps}
-                startIcon={
-                  _isError ? (
-                    <StatusIcon status='error' />
-                  ) : _isWarning ? (
-                    <StatusIcon status='warning' />
-                  ) : level ? (
-                    <StatusIcon status='informational' />
-                  ) : undefined
-                }
-              >
-                {level}
-              </DefaultCell>
-            );
           },
         },
         {
@@ -519,6 +519,7 @@ export const ProblemsTable = ({
       <Table
         onRowClick={onRowClick}
         selectRowOnClick
+        density='condensed'
         className={classnames('isr-problems-table', className)}
         columns={reorderColumn(columns) as Column<Record<string, any>>[]}
         data={data}

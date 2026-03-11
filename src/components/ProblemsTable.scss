@@ -7,6 +7,47 @@
   height: 100%;
   flex: 1;
   min-height: 0;
+
+  [class*='table-header'] [class*='table-cell'] {
+    min-height: 32px;
+    padding-block: 4px;
+  }
+
+  // Hide filter button by default, show on hover
+  [class*='table-header-actions-container'] button,
+  .iui-table-header-actions-container button {
+    &[class*='table-filter-button'],
+    &.iui-table-filter-button {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+  }
+
+  // Show filter button when hovering over the header cell
+  [class*='table-header'] [class*='table-cell']:hover,
+  thead th:hover {
+    [class*='table-header-actions-container'] button,
+    .iui-table-header-actions-container button {
+      &[class*='table-filter-button'],
+      &.iui-table-filter-button {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  // Keep filter button visible when it's active
+  [class*='table-header-actions-container'] button[data-iui-active='true'],
+  .iui-table-header-actions-container button[data-iui-active='true'],
+  [class*='table-header-actions-container'] button:focus-visible,
+  .iui-table-header-actions-container button:focus-visible {
+    &[class*='table-filter-button'],
+    &.iui-table-filter-button {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
 }
 
 .isr-problems-message {
@@ -53,8 +94,10 @@
     min-width: 360px;
     border-radius: 2px;
     top: -6%;
+
     .tour-Container {
       padding: 12px 12px 12px 12px;
+
       .tour-arrow-left {
         position: absolute;
         background: #fff;
@@ -90,6 +133,7 @@
         border-width: 12px;
         margin-top: -12px;
       }
+
       .tour-Got-It {
         padding: 10px 10px 10px 10px;
         border: none;
