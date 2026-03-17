@@ -237,9 +237,6 @@ export const Report = ({
               <Label as='span'>Issues found by severity</Label>
               <ReportBanner />
             </ReportHeaderBannerWrapper>
-            <ReportTableSelectWrapper>
-              <ReportTableSelect />
-            </ReportTableSelectWrapper>
             <ReportInfoPanelWrapper>
               <ProblemsTable />
               <ReportInfoPanel />
