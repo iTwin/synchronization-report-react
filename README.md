@@ -50,6 +50,14 @@ export const App = () => {
 };
 ```
 
+#### Group-by selector
+
+By default, the "Show by:" dropdown (which groups issues by file, category, ID, or type) is visible. Pass `showGroupBySelector={false}` to hide it:
+
+```tsx
+<Report data={report} workflowMapping={mapping} showGroupBySelector={false} />
+```
+
 ### 4. Advanced usage
 
 This package uses a composition approach to provide extreme flexibility. Smaller components are exported and can be passed as `children` of `Report`, which
