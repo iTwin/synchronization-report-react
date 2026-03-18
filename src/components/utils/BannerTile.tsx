@@ -28,7 +28,7 @@ export const BannerTile = (props: BannerTileProps) => {
     >
       {icon && <div className='isr-banner-tile-icon'>{icon}</div>}
       <span className='isr-banner-tile-body'>{children[0]}</span>
-      <span className='isr-banner-tile-footer'>{children[1]}</span>
+      <span className='isr-banner-tile-footer'>({children[1]})</span>
     </div>
   );
 };
