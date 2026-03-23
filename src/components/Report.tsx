@@ -104,6 +104,7 @@ export const Report = ({
   applicationInsightInstrumentationKey,
   SyncReportOpenedEventProps,
   issueArticleOpenEventProps,
+  showGroupBySelector = true,
 }: {
   /** The report data should be compatible with the type definitions. */
   data: ReportData;
@@ -114,6 +115,8 @@ export const Report = ({
   workflowMapping?: WorkflowMapping;
   className?: string;
   children?: React.ReactNode;
+  /** When false, hides the "Show by:" group-by dropdown. Defaults to true. */
+  showGroupBySelector?: boolean;
 }) => {
   const [selectedTable, setSelectedTable] = React.useState<Tables>('problems');
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
@@ -237,9 +240,11 @@ export const Report = ({
               <Label as='span'>Issues found by severity</Label>
               <ReportBanner />
             </ReportHeaderBannerWrapper>
-            <ReportTableSelectWrapper>
-              <ReportTableSelect />
-            </ReportTableSelectWrapper>
+            {showGroupBySelector && (
+              <ReportTableSelectWrapper>
+                <ReportTableSelect />
+              </ReportTableSelectWrapper>
+            )}
             <ReportInfoPanelWrapper>
               <ProblemsTable />
               <ReportInfoPanel />

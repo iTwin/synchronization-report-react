@@ -7,7 +7,7 @@ import { FileRecord, SourceFile } from './report-data-typings';
 import './ReportBanner.scss';
 import { BannerTile, StatusIcon } from './utils';
 import { Issues, ReportContext } from './Report';
-import { Surface, Text } from '@itwin/itwinui-react';
+import { Surface } from '@itwin/itwinui-react';
 import SvgFlag from '@itwin/itwinui-icons-react/esm/icons/Flag';
 
 const defaultDisplayStrings = {
@@ -124,45 +124,35 @@ export const ReportBanner = (props: ReportBannerProps) => {
   const onClickIssue = React.useCallback((issue: Issues) => context?.setFocusedIssue(issue), [context]);
 
   return (
-    <Surface elevation={1} className='isr-banner-container'>
-      <>
-        <BannerTile icon={<SvgFlag />} onClick={() => onClickIssue('All')} selected={context?.focusedIssue === 'All'}>
-          <Text variant='title' style={{ fontWeight: 'bold' }}>
-            {issuesCount}
-          </Text>
-          <Text variant='small'>{displayStrings.totalIssues}</Text>
-        </BannerTile>
-        <BannerTile
-          onClick={() => onClickIssue('Error')}
-          selected={context?.focusedIssue === 'Error'}
-          icon={<StatusIcon status='error' />}
-        >
-          <Text variant='title' style={{ fontWeight: 'bold' }}>
-            {errorCount}
-          </Text>
-          <Text variant='small'>{displayStrings.errors}</Text>
-        </BannerTile>
-        <BannerTile
-          onClick={() => onClickIssue('Warning')}
-          selected={context?.focusedIssue === 'Warning'}
-          icon={<StatusIcon status='warning' />}
-        >
-          <Text variant='title' style={{ fontWeight: 'bold' }}>
-            {warningCount}
-          </Text>
-          <Text variant='small'>{displayStrings.warnings}</Text>
-        </BannerTile>
-        <BannerTile
-          onClick={() => onClickIssue('Info')}
-          selected={context?.focusedIssue === 'Info'}
-          icon={<StatusIcon status='informational' />}
-        >
-          <Text variant='title' style={{ fontWeight: 'bold' }}>
-            {infoCount}
-          </Text>
-          <Text variant='small'>{displayStrings.otherIssues}</Text>
-        </BannerTile>
-      </>
-    </Surface>
+    <div className='isr-banner-container'>
+      <BannerTile icon={<SvgFlag />} onClick={() => onClickIssue('All')} selected={context?.focusedIssue === 'All'}>
+        {displayStrings.totalIssues}
+        {issuesCount}
+      </BannerTile>
+      <BannerTile
+        onClick={() => onClickIssue('Error')}
+        selected={context?.focusedIssue === 'Error'}
+        icon={<StatusIcon status='error' />}
+      >
+        {displayStrings.errors}
+        {errorCount}
+      </BannerTile>
+      <BannerTile
+        onClick={() => onClickIssue('Warning')}
+        selected={context?.focusedIssue === 'Warning'}
+        icon={<StatusIcon status='warning' />}
+      >
+        {displayStrings.warnings}
+        {warningCount}
+      </BannerTile>
+      <BannerTile
+        onClick={() => onClickIssue('Info')}
+        selected={context?.focusedIssue === 'Info'}
+        icon={<StatusIcon status='informational' />}
+      >
+        {displayStrings.otherIssues}
+        {infoCount}
+      </BannerTile>
+    </div>
   );
 };
