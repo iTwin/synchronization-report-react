@@ -118,7 +118,7 @@ export const ReportBanner = (props: ReportBannerProps) => {
     setErrorCount(error);
     setWarningCount(warning);
     setInfoCount(info);
-    setIssuesCount(error);
+    setIssuesCount(error + warning + info);
   }, [context?.focusedIssue, context?.focusedWorkflows, context?.workflowMapping, fileRecords]);
 
   const onClickIssue = React.useCallback((issue: Issues) => context?.setFocusedIssue(issue), [context]);
