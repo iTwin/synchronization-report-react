@@ -79,6 +79,8 @@ const helpArticles: { [issueId: string]: string } = {
   SPPID_0002: `${NewKBArticleBaseUrl}KB0098320#SPPID_0002`,
   SPx_0002: `${NewKBArticleBaseUrl}KB0098322#SPx_0002`,
   SPPID_0015: `${NewKBArticleBaseUrl}KB0098350#SPPID_0015`,
+  Refscan_0001: `${NewKBArticleBaseUrl}KB0098314#Refscan_0001`,
+  Refscan_0002: `${NewKBArticleBaseUrl}KB0098314#Refscan_0002`,
 };
 
 export function hasHelpArticle(issueId: string | undefined): boolean {
