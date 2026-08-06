@@ -30,7 +30,7 @@ import { hasHelpArticle } from './help-articles';
 import { runSyncReportOpenEvent, runIssueArticleOpenEvent } from './ApplicationInsightCustomEvent';
 type Levels = 'Error' | 'Warning' | 'Info' | 'Fatal' | 'Critical';
 export type Issues = 'Error' | 'Warning' | 'Info' | 'All';
-export type Tables = 'files' | 'problems' | 'categories' | 'issueId';
+export type Tables = 'files' | 'problems' | 'categories' | 'issueId' | 'severity';
 
 type AuditInfo = Partial<{
   issueid: string;
@@ -118,7 +118,7 @@ export const Report = ({
   /** When false, hides the "Show by:" group-by dropdown. Defaults to true. */
   showGroupBySelector?: boolean;
 }) => {
-  const [selectedTable, setSelectedTable] = React.useState<Tables>('problems');
+  const [selectedTable, setSelectedTable] = React.useState<Tables>('severity');
   const [currentAuditInfo, setCurrentAuditInfo] = React.useState<AuditInfo | undefined>();
   const [focusedIssue, setFocusedIssue] = React.useState<Issues>('All');
   const [focusedWorkflows, setFocusedWorkflows] = React.useState<string[]>([]);

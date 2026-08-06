@@ -11,6 +11,7 @@ const defaultDisplayStrings = {
   problems: 'Issues',
   categories: 'Category',
   issueId: 'ID',
+  severity: 'Severity',
 };
 
 /**
@@ -45,6 +46,7 @@ export const ReportTableSelect = ({
       displayStyle='inline'
       options={
         options ?? [
+          { value: 'severity', label: displayStrings['severity'] },
           { value: 'categories', label: displayStrings['categories'] },
           { value: 'files', label: displayStrings['files'] },
           { value: 'issueId', label: displayStrings['issueId'] },

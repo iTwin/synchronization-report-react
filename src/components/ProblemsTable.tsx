@@ -4,11 +4,11 @@
  *--------------------------------------------------------------------------------------------*/
 import * as React from 'react';
 import classnames from 'classnames';
-import { Anchor, Badge, DefaultCell, Table, tableFilters } from '@itwin/itwinui-react';
+import { Anchor, Badge, Table, tableFilters } from '@itwin/itwinui-react';
 import { Issues, ReportContext, Tables } from './Report';
 import { ClampWithTooltip, StatusIcon } from './utils';
 import type { FileRecord, SourceFile, SourceFilesInfo } from './report-data-typings';
-import type { Column, Row, CellProps, CellRendererProps, TableProps } from '@itwin/itwinui-react/react-table';
+import type { Column, Row, CellProps, TableProps } from '@itwin/itwinui-react/react-table';
 import './ProblemsTable.scss';
 import {
   SvgFiletypeRevit,
@@ -38,11 +38,12 @@ interface ExpandableFileReport extends SourceFile {
   subRows?: Report[];
 }
 
-const TableTypeNames: Record<'Files' | 'Categories' | 'Problems' | 'IssueId', Tables> = {
+const TableTypeNames: Record<'Files' | 'Categories' | 'Problems' | 'IssueId' | 'Severity', Tables> = {
   Files: 'files',
   Categories: 'categories',
   Problems: 'problems',
   IssueId: 'issueId',
+  Severity: 'severity',
 };
 
 const tableStyleAccessor: Record<Tables, keyof Report | 'problems'> = {
@@ -50,6 +51,7 @@ const tableStyleAccessor: Record<Tables, keyof Report | 'problems'> = {
   files: 'fileId',
   categories: 'category',
   issueId: 'issueid',
+  severity: 'level',
 };
 
 const defaultDisplayStrings = {
@@ -143,6 +145,7 @@ export const ProblemsTable = ({
       const currentTable = context?.currentTable;
       const expandableColumn = currentTable ? (tableStyleAccessor[currentTable] as keyof Report) : undefined;
       const isFileTable = expandableColumn === 'fileId';
+      const isSeverityTable = expandableColumn === 'level';
 
       if (!expandableColumn || context?.currentTable === TableTypeNames.Problems) {
         return reports;
@@ -151,7 +154,16 @@ export const ProblemsTable = ({
       const expandableReports: Record<string, Report[]> = {};
 
       reports.forEach((report) => {
-        const topLevel = report[expandableColumn];
+        // For severity table, group by both level and category
+        let topLevel: string;
+        if (isSeverityTable) {
+          const level = report[expandableColumn] || 'Others';
+          const category = report.category || 'Others';
+          topLevel = `${level}__${category}`;
+        } else {
+          topLevel = report[expandableColumn] as string;
+        }
+
         if (!topLevel) {
           if (!Object.hasOwn(expandableReports, 'Others')) {
             expandableReports.Others = [];
@@ -193,6 +205,15 @@ export const ProblemsTable = ({
             level: highestSeverityLevel,
             subRows: groupRows,
           });
+        } else if (isSeverityTable) {
+          const [severityLevel, categoryName] = topLevel.split('__');
+          const level = severityLevel !== 'Others' ? (severityLevel as Report['level']) : undefined;
+          const category = categoryName !== 'Others' ? categoryName : 'Others';
+          processedReports.push({
+            level,
+            category,
+            subRows: groupRows,
+          } as ExpandableFileReport);
         } else {
           processedReports.push({
             [expandableColumn as keyof Report]: `${topLevel} (${groupRows.length})`,
@@ -207,6 +228,15 @@ export const ProblemsTable = ({
           if (file.fileName && !reportsFileNames.includes(file.fileName)) {
             processedReports.push(file);
           }
+        });
+      }
+
+      if (isSeverityTable) {
+        const severityOrder = ['Fatal', 'Error', 'Critical', 'Warning', 'Info'];
+        processedReports.sort((a, b) => {
+          const aIdx = severityOrder.indexOf((a as any).level ?? '');
+          const bIdx = severityOrder.indexOf((b as any).level ?? '');
+          return (aIdx === -1 ? severityOrder.length : aIdx) - (bIdx === -1 ? severityOrder.length : bIdx);
         });
       }
 
@@ -304,27 +334,27 @@ export const ProblemsTable = ({
           minWidth: 50,
           maxWidth: 170,
           sortType: sortByLevel,
-          cellRenderer: ({ cellElementProps, cellProps }: CellRendererProps<Report>) => {
-            const level = cellProps.row.original.level;
+          Cell: (cellProps: CellProps<TableRow>) => {
+            const level = (cellProps.row.original as Report).level;
+            const isParentSeverityRow =
+              context?.currentTable === TableTypeNames.Severity && cellProps.row.subRows.length > 0;
             const _isError = level === 'Error' || level === 'Fatal' || level === 'Critical';
             const _isWarning = level === 'Warning';
+            const displayValue = isParentSeverityRow ? `${level} (${cellProps.row.subRows.length})` : level;
 
             return (
-              <DefaultCell
-                cellElementProps={cellElementProps}
-                cellProps={cellProps}
-                startIcon={
-                  _isError ? (
+              <div className='isr-file-name-container'>
+                <div className='isr-table-cell-start-icon'>
+                  {_isError ? (
                     <StatusIcon status='error' />
                   ) : _isWarning ? (
                     <StatusIcon status='warning' />
                   ) : level ? (
                     <StatusIcon status='informational' />
-                  ) : undefined
-                }
-              >
-                {level}
-              </DefaultCell>
+                  ) : null}
+                </div>
+                {displayValue}
+              </div>
             );
           },
         },
@@ -486,7 +516,7 @@ export const ProblemsTable = ({
           status: getStatusFromLevel(level),
           className: `isr-table-row table-row__${isActiveRow ? 'active' : 'inactive'}`,
         };
-      } else if (context?.currentTable === TableTypeNames.Files) {
+      } else if (context?.currentTable === TableTypeNames.Files || context?.currentTable === TableTypeNames.Severity) {
         return {
           status: getStatusFromLevel(level),
         };
