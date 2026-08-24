@@ -48,6 +48,7 @@ const helpArticles: { [issueId: string]: string } = {
   Dwg_0162: `${NewKBArticleBaseUrl}KB0098356#Dwg_0162`,
   Dwg_0089: `${NewKBArticleBaseUrl}KB0098329#Dwg_0089`,
   EC_0001: `${NewKBArticleBaseUrl}KB0098327#EC_0001`,
+  Fwk_0001: 'https://bentleysystems.service-now.com/community?sys_kb_id=27c6de818730b250c0fa43f6cebb350c&id=kb_article_view&sysparm_rank=40&sysparm_tsqueryId=1b23e0e587963210e25dbb35dabb350d#ExtentsVolumeErrors',
   ifc_0020: `${NewKBArticleBaseUrl}KB0098331#ifc_0020`,
   Ifc_0021: `${NewKBArticleBaseUrl}KB0098331#ifc_0020`,
   Ifc_0048: `${NewKBArticleBaseUrl}KB0098331#Ifc_0048`,
